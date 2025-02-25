@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Mission - Part 1 - Operation Phantom Chase</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="mission-page">
+    <!-- Matrix canvas background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Binary overlay -->
+    <div id="binary-overlay" class="binary-overlay"></div>
+    
+    <!-- Main mission content -->
+    <div id="mission-container">
+        <div class="mission-header">
+            <h1 class="mission-title">Operation Phantom Chase</h1>
+            <h2 class="mission-subtitle">Part 1: Higher or Lower Game Analysis</h2>
+        </div>
+        
+        <div class="mission-content">
+            <div class="code-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">MISSION DIRECTIVE</h3>
+                    <div class="panel-controls">
+                        <span class="control-dot"></span>
+                        <span class="control-dot"></span>
+                        <span class="control-dot"></span>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <p class="terminal-text">Agent, your first task is to analyze the existing "Higher or Lower" game code we've intercepted from the Phantom group. We need to understand its functionality before we can create our replacement.</p>
+                    <p class="terminal-text">Our cyber team has extracted the following code samples from their server. Study them carefully.</p>
+                    <p class="terminal-text">You will work in the secure Python environment we've set up. Copy the code below and use the link to access our secure sandbox.</p>
+                    <p class="terminal-text warning">REMEMBER: Do not modify the original functionality as Phantom members must not suspect our intervention.</p>
+                </div>
+            </div>
+            
+            <div class="code-samples">
+                <div class="code-section">
+                    <div class="code-header">
+                        <h4 class="code-title">HTML Structure</h4>
+                        <button class="copy-btn" data-target="html-code">COPY CODE</button>
+                    </div>
+                    <pre class="code-block" id="html-code">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Higher or Lower Game&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="game-container"&gt;
+        &lt;h1&gt;Higher or Lower&lt;/h1&gt;
+        &lt;div class="card"&gt;
+            &lt;span id="current-card"&gt;?&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="buttons"&gt;
+            &lt;button id="higher-btn"&gt;Higher&lt;/button&gt;
+            &lt;button id="lower-btn"&gt;Lower&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class="score"&gt;Score: &lt;span id="score"&gt;0&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="message" id="message"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                </div>
+                
+                <div class="code-section">
+                    <div class="code-header">
+                        <h4 class="code-title">CSS Styling</h4>
+                        <button class="copy-btn" data-target="css-code">COPY CODE</button>
+                    </div>
+                    <pre class="code-block" id="css-code">
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.game-container {
+    text-align: center;
+    background-color: #333;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.card {
+    width: 150px;
+    height: 200px;
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    margin: 2rem auto;
+    border-radius: 10px;
+}
+
+.buttons {
+    margin: 2rem 0;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    margin: 0 0.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3e8e41;
+}
+
+.score {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+.message {
+    height: 1.5rem;
+    color: #ff5555;
+}</pre>
+                </div>
+                
+                <div class="code-section">
+                    <div class="code-header">
+                        <h4 class="code-title">Python Code</h4>
+                        <button class="copy-btn" data-target="python-code">COPY CODE</button>
+                    </div>
+                    <pre class="code-block" id="python-code">
+import random
+
+def initialize_game():
+    """Initialize the Higher or Lower game."""
+    print("Welcome to Higher or Lower!")
+    print("Try to guess if the next card will be higher or lower.")
+    
+    # Card values from 2 to Ace (14)
+    cards = list(range(2, 15))
+    score = 0
+    current_card = random.choice(cards)
+    print(f"Starting card: {card_name(current_card)}")
+    
+    return cards, score, current_card
+
+def card_name(card_value):
+    """Convert numeric card value to name."""
+    if card_value == 14:
+        return "Ace"
+    elif card_value == 13:
+        return "King"
+    elif card_value == 12:
+        return "Queen"
+    elif card_value == 11:
+        return "Jack"
+    else:
+        return str(card_value)
+
+def play_round(cards, current_card, guess):
+    """Play a round of Higher or Lower."""
+    # Draw a new card (different from current)
+    new_card = random.choice([c for c in cards if c != current_card])
+    print(f"New card: {card_name(new_card)}")
+    
+    # Check if guess is correct
+    if guess == "higher" and new_card > current_card:
+        return True, new_card
+    elif guess == "lower" and new_card < current_card:
+        return True, new_card
+    else:
+        return False, new_card
+
+def main():
+    cards, score, current_card = initialize_game()
+    
+    while True:
+        # Get player's guess
+        guess = input("Will the next card be higher or lower? (higher/lower/quit): ").lower()
+        
+        if guess == "quit":
+            break
+        
+        if guess not in ["higher", "lower"]:
+            print("Invalid input. Please enter 'higher' or 'lower'.")
+            continue
+        
+        # Play the round
+        correct, current_card = play_round(cards, current_card, guess)
+        
+        if correct:
+            score += 1
+            print(f"Correct! Your score is now {score}")
+        else:
+            print(f"Wrong! Game over. Final score: {score}")
+            break
+        
+    print("Thanks for playing!")
+
+if __name__ == "__main__":
+    main()</pre>
+                </div>
+                
+                <div class="secure-environment">
+                    <div class="environment-header">
+                        <h4>SECURE CODING ENVIRONMENT</h4>
+                    </div>
+                    <p>Access our secure sandbox to test and modify the code:</p>
+                    <a href="https://livecodes.io/?template=python" class="env-link" target="_blank">
+                        <span class="env-icon">🔒</span>
+                        OPEN SECURE PYTHON ENVIRONMENT
+                    </a>
+                </div>
+            </div>
+            
+            <div class="task-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">YOUR TASK</h3>
+                </div>
+                <div class="panel-content">
+                    <ol class="task-list">
+                        <li>Study the provided code to understand how the game works</li>
+                        <li>Run the Python code in the secure environment</li>
+                        <li>Identify key game mechanics that must be preserved</li>
+                        <li>Make notes of potential areas where monitoring capabilities could be added</li>
+                        <li>Be ready to implement your own version in Part 2</li>
+                    </ol>
+                    <div class="mission-status">
+                        <div class="status-label">MISSION STATUS:</div>
+                        <div class="status-value">IN PROGRESS</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mission-buttons">
+                <button id="next-part-btn" class="mission-button">PROCEED TO PART 2</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Logo container -->
+    <div class="logo-container">
+        <div class="learnit-logo">LearnIT</div>
+        <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/part1.js"></script>
+</body>
+</html>

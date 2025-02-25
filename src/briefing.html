@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Briefing - Operation Phantom Chase</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="briefing-page">
+    <!-- Matrix canvas background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Binary overlay -->
+    <div id="binary-overlay" class="binary-overlay"></div>
+    
+    <!-- Main mission content -->
+    <div id="mission-page">
+        <div class="mission-header">
+            <h1 class="mission-title">Operation Phantom Chase</h1>
+            <h2 class="mission-subtitle">Briefing: Phantom Hacker Group</h2>
+        </div>
+        
+        <div class="mission-content">
+            <div class="mission-panel">
+                <h3 class="mission-panel-title">Mission Overview</h3>
+                <p class="mission-text">In February 2025, a hacker collective known as "<span class="highlight">Phantom</span>" 
+                    successfully breached the security systems of Cyberex Exchange, 
+                    resulting in the theft of cryptocurrency assets valued at 
+                    approximately <span class="highlight">$1.5 billion USD</span>.</p>
+                
+                <p class="mission-text">Our intelligence division has discovered that Phantom members 
+                    communicate through an encrypted channel using a seemingly innocent 
+                    "<span class="highlight">Higher or Lower</span>" game as a covert messaging system before executing 
+                    large transactions.</p>
+                
+                <p class="mission-text">The FBI Cyber Division, in collaboration with LearnIT's Python 
+                    specialists, has recruited you to help intercept and decode these 
+                    communications.</p>
+                
+                <p class="mission-text">Your mission is to use <span class="highlight">Python</span> to reverse-engineer their game system 
+                    and develop a replacement that will allow us to monitor their 
+                    communications while appearing identical to their original system.</p>
+            </div>
+            
+            <div class="mission-panel">
+                <h3 class="mission-panel-title">Target Information</h3>
+                <p class="mission-text">Our intelligence has identified the creator of the "Higher or 
+                    Lower" game system as an individual operating under the alias 
+                    "<span class="highlight">ByteMaster</span>". This individual has a background in game 
+                    development and cryptography.</p>
+                
+                <div class="target-panel">
+                    <div class="status-line">
+                        <span>STATUS:</span>
+                        <span>ACTIVE</span>
+                    </div>
+                    <div class="status-line">
+                        <span>SCANNING...</span>
+                        <span class="scanning-dots">...</span>
+                    </div>
+                    
+                    <div class="target-frame">
+                        <div class="target-icon">👤</div>
+                        <div class="target-name">ALIAS: ByteMaster</div>
+                        <div class="security-level">SEC.LVL: GAMMA-9</div>
+                    </div>
+                    
+                    <div class="geo-line">
+                        <span>LAT: 37.7749° N</span>
+                        <span>LONG: 122.4194° W</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="objective-panel">
+            <h3 class="mission-panel-title">YOUR OBJECTIVE</h3>
+            <ul class="objective-list">
+                <li class="objective-item">Study the logic and mechanics of Phantom's "Higher or Lower" game.</li>
+                <li class="objective-item">Develop a Python-based replacement that mimics the original game's functionality.</li>
+                <li class="objective-item">Implement hidden monitoring capabilities that will allow us to track communications.</li>
+                <li class="objective-item">Test your solution to ensure it appears identical to the original system.</li>
+                <li class="objective-item">Deploy the replacement system when ready.</li>
+            </ul>
+            <p class="mission-text">The LearnIT instructors have been granted temporary FBI consultant status and will guide you through this mission using their Python expertise.</p>
+        </div>
+        
+        <div class="mission-buttons">
+            <button id="begin-mission-btn" class="mission-button">BEGIN MISSION</button>
+        </div>
+    </div>
+    
+    <!-- Logo container -->
+    <div class="logo-container">
+        <div class="learnit-logo">LearnIT</div>
+        <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/briefing.js"></script>
+</body>
+</html>

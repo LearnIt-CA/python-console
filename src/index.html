@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FBI Cyber Division - Operation Phantom Chase</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="binary-overlay" id="binary-overlay"></div>
+    <div class="targeting-line targeting-line-h"></div>
+    <div class="targeting-line targeting-line-v"></div>
+
+    <div class="container">
+      <div class="header">
+        <h1 class="title">FBI CYBER DIVISION</h1>
+        <h2 class="subtitle">Operation Phantom Chase</h2>
+        <p>TOP SECRET - AUTHORIZED PERSONNEL ONLY</p>
+      </div>
+
+      <div class="main-content">
+        <div class="panel" id="system-info">
+          <div class="panel-header">
+            <div class="panel-title">System Access</div>
+          </div>
+          <div class="panel-content system-panel">
+            <div class="terminal-window" id="terminal">
+              <p class="terminal-text">
+                Initializing FBI Cyber Division Terminal...
+              </p>
+              <p class="terminal-text">Establishing secure connection...</p>
+              <p class="terminal-text">Connection established.</p>
+              <p class="terminal-text">
+                Crypto Crime Division - Operation Phantom Chase
+              </p>
+              <p class="terminal-text">** CLASSIFIED INFORMATION **</p>
+              <p class="terminal-text">
+                Mission: Infiltrate their system and replace their game to track
+                members.
+              </p>
+              <p class="terminal-text">
+                LearnIT personnel have been granted temporary FBI clearance
+                level GAMMA-9.
+              </p>
+              <p class="terminal-text">Please authenticate to continue...</p>
+              <p class="terminal-text blink">_</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="login-panel">
+          <div class="panel-header">
+            <div class="panel-title">Authentication Required</div>
+          </div>
+          <div class="panel-content">
+            <form class="login-form" id="auth-form">
+              <div class="form-group">
+                <label class="form-label"
+                  >Enter Your Name (Classified Operatives Only)</label
+                >
+                <input
+                  type="text"
+                  class="form-input"
+                  id="username"
+                  placeholder="Agent Name"
+                  required
+                />
+              </div>
+              <button type="submit" class="form-button">Authenticate</button>
+            </form>
+            <div id="message"></div>
+            <div id="progress-bar" class="hidden">
+              <div id="progress"></div>
+              <div id="progress-text">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="logo-container">
+      <div class="learnit-logo">LearnIT</div>
+      <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
+    </div>
+
+    <div id="access-granted" class="hidden">
+      <h1>ACCESS GRANTED</h1>
+      <p>Welcome to Operation Phantom Chase, Agent</p>
+      <button id="continue-btn">Continue to Mission</button>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
