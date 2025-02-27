@@ -212,8 +212,32 @@ document
         
         // Redirect to part1.html page after short delay
         setTimeout(() => {
-          window.location.href = 'part1.html';
+          window.location.href = 'training.html';
         }, 1500);
       }
     }, 300);
+  });
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Retrieve the agent's name from localStorage
+    const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+    
+    // Use the agent's name in the briefing page
+    const agentNameElements = document.querySelectorAll('.agent-name');
+    agentNameElements.forEach(element => {
+      element.textContent = agentName.toUpperCase();
+    });
+    
+    // Example of personalizing briefing content
+    const briefingHeader = document.querySelector('.mission-subtitle');
+    if (briefingHeader) {
+      briefingHeader.textContent = `Mission Briefing for Agent ${agentName.toUpperCase()}`;
+    }
+    
+    // If you need to check if user is authenticated
+    if (!localStorage.getItem('agentName')) {
+      // Redirect unauthorized users back to login
+      //window.location.href = 'index.html';
+    }
   });

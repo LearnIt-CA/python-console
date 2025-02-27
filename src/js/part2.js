@@ -208,6 +208,9 @@ document
     // Add transition effect
     document.body.classList.add("submission-transition");
     
+    // Get agent name for personalization
+    const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+    
     // Show submission overlay
     const submissionOverlay = document.createElement("div");
     submissionOverlay.className = "loading-overlay";
@@ -248,7 +251,7 @@ document
         setTimeout(() => {
           submissionOverlay.querySelector(".loading-content").innerHTML = `
             <h2>MISSION COMPLETE</h2>
-            <p>Excellent work, agent! Your implementation meets all requirements.</p>
+            <p>Excellent work, Agent ${agentName.toUpperCase()}! Your implementation meets all requirements.</p>
             <p>All monitoring systems are now operational.</p>
             <p>Proceeding to mission completion...</p>
           `;
@@ -266,6 +269,9 @@ document
 document.addEventListener("DOMContentLoaded", function() {
   const consoleInput = document.getElementById("console-input");
   const consoleLogs = document.getElementById("console-logs");
+  
+  // Retrieve agent name from localStorage
+  const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
   
   // Collection of hacker-style system messages
   const hackingMessages = [
@@ -328,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Display help information in the console
   function showHelp() {
-    addConsoleLog("=== AVAILABLE COMMANDS ===", "system");
+    addConsoleLog(`=== COMMANDS FOR AGENT ${agentName.toUpperCase()} ===`, "system");
     addConsoleLog("/help - Show this help message", "system");
     addConsoleLog("/python - Toggle Python skeleton code", "system");
     addConsoleLog("/requirements - Toggle requirements section", "system");
@@ -365,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       addConsoleLog("Console cleared.", "system");
     } else if (command === "/status") {
-      addConsoleLog("=== MISSION STATUS ===", "success");
+      addConsoleLog(`=== MISSION STATUS: AGENT ${agentName.toUpperCase()} ===`, "success");
       addConsoleLog("Status: IN PROGRESS", "success");
       addConsoleLog("Objective: Implement modified game with monitoring", "system");
       addConsoleLog("Next step: Complete implementation and submit solution", "system");
@@ -438,7 +444,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   
   // Initialize console
-  addConsoleLog("Terminal v2.7.4 initialized", "system");
+  addConsoleLog(`Terminal v2.7.4 initialized for Agent ${agentName.toUpperCase()}`, "system");
   addConsoleLog("Connected to secure server: OP-PHANTOM", "system");
   addConsoleLog("Mission phase: PART 2 - Implementation", "system");
   addConsoleLog("Type /help for available commands", "system");
@@ -488,4 +494,56 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Append style to head
   document.head.appendChild(style);
+});
+
+// Add personalization based on agent name
+document.addEventListener('DOMContentLoaded', function() {
+  // Retrieve the agent's name from localStorage
+  const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+  
+  // Personalize the mission directive
+  const directiveElement = document.querySelector('.mission-directive .terminal-text');
+  if (directiveElement) {
+    // Replace "Agent," with personalized greeting
+    if (directiveElement.textContent.includes("Agent,")) {
+      directiveElement.textContent = directiveElement.textContent.replace(
+        "Agent,", 
+        `Agent ${agentName.toUpperCase()},`
+      );
+    }
+  }
+  
+  // Update task list to personalize any agent references
+  const taskItems = document.querySelectorAll('.task-list li');
+  taskItems.forEach(item => {
+    if (item.textContent.includes("your solution")) {
+      item.textContent = item.textContent.replace(
+        "your solution", 
+        `your solution, Agent ${agentName.toUpperCase()},`
+      );
+    }
+  });
+  
+  // Update "Submit Solution" button text 
+  const submitButton = document.getElementById("submit-btn");
+  if (submitButton) {
+    submitButton.textContent = `SUBMIT SOLUTION, AGENT ${agentName.toUpperCase()}`;
+  }
+  
+  // Personalize implementation hints if needed
+  const hintItems = document.querySelectorAll('.implementation-hints li');
+  if (hintItems.length > 0) {
+    // Add personalized note to the first hint
+    const firstHint = hintItems[0];
+    if (firstHint && !firstHint.textContent.includes(agentName)) {
+      firstHint.textContent = `${firstHint.textContent} (specially noted for Agent ${agentName.toUpperCase()})`;
+    }
+  }
+  
+  // Check if user is authenticated and redirect if needed
+  if (!localStorage.getItem('agentName')) {
+    console.log("Unauthorized access attempt. Redirecting to login page.");
+    // Uncomment the below line in production to enforce authentication
+    // window.location.href = 'index.html';
+  }
 });

@@ -318,7 +318,8 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Display help information in the console
   function showHelp() {
-    addConsoleLog("=== AVAILABLE COMMANDS ===", "system");
+    const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+    addConsoleLog(`=== COMMANDS FOR AGENT ${agentName.toUpperCase()} ===`, "system");
     addConsoleLog("/help - Show this help message", "system");
     addConsoleLog("/html - Toggle HTML code section", "system");
     addConsoleLog("/css - Toggle CSS code section", "system");
@@ -354,7 +355,8 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       addConsoleLog("Console cleared.", "system");
     } else if (command === "/status") {
-      addConsoleLog("=== MISSION STATUS ===", "success");
+      const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+      addConsoleLog(`=== MISSION STATUS: AGENT ${agentName.toUpperCase()} ===`, "success");
       addConsoleLog("Status: IN PROGRESS", "success");
       addConsoleLog("Objective: Analyze Higher or Lower game code", "system");
       addConsoleLog("Next step: Complete code review and proceed to Part 2", "system");
@@ -423,7 +425,8 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   
   // Initialize console
-  addConsoleLog("Terminal v2.7.4 initialized", "system");
+  const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+  addConsoleLog(`Terminal v2.7.4 initialized for Agent ${agentName.toUpperCase()}`, "system");
   addConsoleLog("Connected to secure server: OP-PHANTOM", "system");
   addConsoleLog("Type /help for available commands", "system");
   
@@ -472,4 +475,46 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Append style to head
   document.head.appendChild(style);
+});
+
+// Add personalization based on agent name
+document.addEventListener('DOMContentLoaded', function() {
+  // Retrieve the agent's name from localStorage
+  const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+  
+  // Personalize the mission directive
+  const directiveElement = document.querySelector('.mission-directive .terminal-text');
+  if (directiveElement) {
+    // Replace "Agent," with personalized greeting
+    if (directiveElement.textContent.includes("Agent,")) {
+      directiveElement.textContent = directiveElement.textContent.replace(
+        "Agent,", 
+        `Agent ${agentName.toUpperCase()},`
+      );
+    }
+  }
+  
+  // Update task list to personalize any agent references
+  const taskItems = document.querySelectorAll('.task-list li');
+  taskItems.forEach(item => {
+    if (item.textContent.includes("your own version")) {
+      item.textContent = item.textContent.replace(
+        "your own version", 
+        `your own version, Agent ${agentName.toUpperCase()},`
+      );
+    }
+  });
+  
+  // Update "Proceed to Part 2" button text if needed
+  const nextPartButton = document.getElementById("next-part-btn");
+  if (nextPartButton) {
+    nextPartButton.textContent = `PROCEED TO PART 2, AGENT ${agentName.toUpperCase()}`;
+  }
+  
+  // Check if user is authenticated and redirect if needed
+  if (!localStorage.getItem('agentName')) {
+    console.log("Unauthorized access attempt. Redirecting to login page.");
+    // Uncomment the below line in production to enforce authentication
+    // window.location.href = 'index.html';
+  }
 });

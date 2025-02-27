@@ -92,7 +92,7 @@ function createTargetingLines() {
     const body = document.body;
     
     // Create horizontal targeting line
-    const hLine = document.createElement("div");
+    const hLine = document.createElement("div"); 
     hLine.className = "targeting-line targeting-line-h";
     body.appendChild(hLine);
     
@@ -102,10 +102,73 @@ function createTargetingLines() {
     body.appendChild(vLine);
 }
 
+// Terminal text animation implementation
+function animateTerminalText() {
+    const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+    const completionMessage = document.querySelector('.completion-message');
+    
+    if (!completionMessage) return;
+    
+    // Clear the existing content but save it
+    const originalLines = [];
+    completionMessage.querySelectorAll('.terminal-line').forEach(line => {
+        let text = line.textContent;
+        // Replace Agent with Agent NAME if found
+        if (text.includes("Agent!")) {
+            text = text.replace("Agent!", `Agent ${agentName.toUpperCase()}!`);
+        }
+        originalLines.push(text);
+        line.remove();
+    });
+    
+    // If no lines were found, use the text content
+    if (originalLines.length === 0 && completionMessage.textContent.trim()) {
+        let allText = completionMessage.textContent.trim();
+        // Split by newlines or periods followed by space
+        originalLines = allText.split(/\n|(?<=\.)\s+/).filter(line => line.trim());
+        completionMessage.textContent = '';
+    }
+    
+    // Add a special line about the agent
+    originalLines.push(`Agent ${agentName.toUpperCase()} designated as lead operative for follow-up mission.`);
+    
+    // Create a div for each line with proper styling
+    originalLines.forEach((text, index) => {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'terminal-line';
+        lineDiv.style.opacity = '0';
+        completionMessage.appendChild(lineDiv);
+        
+        // Animated typing effect for each character
+        let charIndex = 0;
+        const delay = 1000 * index; // Delay each line 
+        
+        setTimeout(() => {
+            lineDiv.style.opacity = '1';
+            
+            function typeNextChar() {
+                if (charIndex < text.length) {
+                    lineDiv.textContent = text.substring(0, charIndex + 1);
+                    charIndex++;
+                    setTimeout(typeNextChar, 50); // Type each character with a delay
+                }
+            }
+            
+            typeNextChar();
+        }, delay);
+    });
+}
+
 // Call functions on load
 document.addEventListener("DOMContentLoaded", function() {
     createBinaryOverlay();
     createTargetingLines();
+    
+    // Animate terminal text with character-by-character typing
+    setTimeout(animateTerminalText, 500);
+    
+    // Retrieve agent name from localStorage
+    const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
     
     // Button event listeners
     document.getElementById('reveal-intel').addEventListener('click', function() {
@@ -149,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Share button function - mock Instagram sharing
     document.getElementById('share-button').addEventListener('click', function() {
         // Create an alert dialog with a "hacker aesthetic"
-        const shareText = "I successfully completed Operation Phantom Chase and helped the CSIS track down a major cyber criminal. #CyberSecurity #WhiteHatHacker #CSISOperation";
+        const shareText = `I successfully completed Operation Phantom Chase and helped the CSIS track down a major cyber criminal. #CyberSecurity #WhiteHatHacker #CSISOperation #Agent${agentName.toUpperCase()}`;
         
         // Create a modal-like alert with cyber styling
         const alertModal = document.createElement('div');
@@ -175,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function() {
         alertContent.innerHTML = `
             <h3 style="color: #ffbd59; margin-bottom: 15px; text-transform: uppercase;">OPERATIONAL SECURITY NOTICE</h3>
             <p style="color: #00ff41; margin-bottom: 20px; text-align: left; line-height: 1.6;">
-                Agent, you are about to share classified mission details on an unsecured platform. 
+                Agent ${agentName.toUpperCase()}, you are about to share classified mission details on an unsecured platform. 
                 For operational security, we've prepared a redacted post for social media:
             </p>
             <div style="background-color: rgba(0,0,0,0.7); border: 1px solid #ffbd59; padding: 15px; margin-bottom: 20px; text-align: left;">
@@ -210,6 +273,19 @@ document.addEventListener("DOMContentLoaded", function() {
             document.body.removeChild(alertModal);
         });
     });
+    
+    // Personalize the "SHARE MISSION SUCCESS" button
+    const shareButton = document.getElementById('share-button');
+    if (shareButton) {
+        shareButton.textContent = `SHARE MISSION SUCCESS - AGENT ${agentName.toUpperCase()}`;
+    }
+    
+    // Check if user is authenticated and redirect if needed
+    if (!localStorage.getItem('agentName')) {
+        console.log("Unauthorized access attempt. Redirecting to login page.");
+        // Uncomment the below line in production to enforce authentication
+        // window.location.href = 'index.html';
+    }
 });
 
 // Add glitch effect to elements with class 'alert'
@@ -222,3 +298,29 @@ setInterval(() => {
         }, 200);
     });
 }, 3000);
+
+// Add necessary CSS for terminal line animation
+document.addEventListener('DOMContentLoaded', function() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .terminal-line {
+            position: relative;
+            margin-bottom: 8px;
+            padding-left: 15px;
+            color: var(--primary);
+        }
+        
+        .terminal-line::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+        }
+        
+        @keyframes cursor-blink {
+            0%, 100% { border-right-color: transparent; }
+            50% { border-right-color: var(--primary); }
+        }
+    `;
+    document.head.appendChild(style);
+});

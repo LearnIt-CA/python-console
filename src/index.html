@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="css/index.css" />
   </head>
   <body>
+
+<div id="intro-animation" class="fullscreen-overlay">
+  <div class="terminal-container">
+    <div id="terminal-content"></div>
+    <div class="cursor-line">
+      <span class="terminal-prompt">></span>
+      <span class="terminal-cursor">_</span>
+    </div>
+  </div>
+</div>
+    
+
+</div>
     <canvas id="matrix-canvas"></canvas>
 
     <div class="binary-overlay" id="binary-overlay"></div>
@@ -37,8 +50,7 @@
               </p>
               <p class="terminal-text">** CLASSIFIED INFORMATION **</p>
               <p class="terminal-text">
-                Mission: Infiltrate their system and replace their game to track
-                members.
+                Mission: Infiltrate Phantom's system .
               </p>
               <p class="terminal-text">
                 LearnIT personnel have been granted temporary CSIS clearance
@@ -87,7 +99,6 @@
 
     <div id="access-granted" class="hidden">
       <h1>ACCESS GRANTED</h1>
-      <p>Welcome to Operation Phantom Chase, Agent</p>
       <button id="continue-btn">Continue to Mission</button>
     </div>
 

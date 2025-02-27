@@ -1,3 +1,221 @@
+// Intro animation sequence
+document.addEventListener('DOMContentLoaded', function() {
+  // Shorter, more focused messages with Ryan connection
+  const introMessages = [
+    "ESTABLISHING SECURE CONNECTION TO CSIS NETWORK...",
+    "ACCESS GRANTED: WELCOME TO OPERATION PHANTOM CHASE",
+    "",
+    "ATTENTION AGENT:",
+    "AGENT RYAN HAS ACTIVATED THIS TERMINAL FOR YOUR BRIEFING.",
+    "HE HAS CLEARANCE LEVEL: GAMMA-9 AND WILL ASSIST YOU.",
+    "USE THE SKILLS RYAN HAS OBSERVED IN YOUR CLASS.",
+    "",
+    "TURN TO RYAN NOW FOR VERBAL AUTHENTICATION CODE."
+  ];
+
+  // DOM elements
+  const introAnimation = document.getElementById('intro-animation');
+  const terminalContent = document.getElementById('terminal-content');
+  const terminalContainer = document.querySelector('.terminal-container');
+  
+  // Add computational overlay for effects
+  const compOverlay = document.createElement('div');
+  compOverlay.className = 'computational-overlay';
+  terminalContainer.appendChild(compOverlay);
+  
+  // Clear any existing content
+  terminalContent.innerHTML = '';
+  
+  let currentMessageIndex = 0;
+  let isComplete = false;
+  
+  // Function to create a typing effect for a message
+  function typeMessage(message, index) {
+    return new Promise(resolve => {
+      // Create a new line element
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      line.style.animation = 'none'; // Disable default animation
+      line.style.opacity = '1';
+      
+      // For empty messages (spacing), resolve immediately
+      if (message === "") {
+        line.innerHTML = "&nbsp;";
+        terminalContent.appendChild(line);
+        resolve();
+        return;
+      }
+      
+      // Add the typing span
+      const typingSpan = document.createElement('span');
+      typingSpan.className = 'typing';
+      typingSpan.textContent = message;
+      line.appendChild(typingSpan);
+      
+      // Add line to terminal
+      terminalContent.appendChild(line);
+      
+      // Faster typing speed
+      const typingDuration = Math.min(message.length * 20, 800);
+      
+      // Set the animation duration dynamically
+      typingSpan.style.animationDuration = `${typingDuration}ms`;
+      
+      // Auto-scroll to bottom
+      setTimeout(() => {
+        terminalContent.scrollTop = terminalContent.scrollHeight;
+      }, 50);
+      
+      // Resolve after animation completes
+      setTimeout(resolve, typingDuration + 100);
+    });
+  }
+  
+  // Function to handle enter key press for skipping or continuing
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      if (isComplete) {
+        // Transition to login when complete and Enter is pressed
+        createGridTransition();
+      } else if (currentMessageIndex < introMessages.length) {
+        // Skip to last message
+        currentMessageIndex = introMessages.length;
+        typeMessage("PRESS ENTER TO CONTINUE TO LOGIN", introMessages.length).then(() => {
+          isComplete = true;
+        });
+      }
+    }
+  }
+  
+  // Add event listener for key press
+  document.addEventListener('keydown', handleKeyPress);
+  
+  // Create grid transition effect
+function createGridTransition() {
+  // Remove keyboard event listener
+  document.removeEventListener('keydown', handleKeyPress);
+  
+  // First apply a glitch effect to the terminal
+  terminalContainer.classList.add('terminal-glitch');
+  
+  setTimeout(() => {
+    // Get the actual position and dimensions of the terminal container
+    const terminalRect = terminalContainer.getBoundingClientRect();
+    const gridSize = 10; // More grid items for a more detailed effect
+    const width = terminalRect.width;
+    const height = terminalRect.height;
+    const itemWidth = width / gridSize;
+    const itemHeight = height / gridSize;
+    
+    // Clone the terminal content for the grid effect
+    const terminalClone = terminalContent.cloneNode(true);
+    
+    // Hide original terminal content
+    terminalContent.style.visibility = 'hidden';
+    document.querySelector('.cursor-line').style.visibility = 'hidden';
+    
+    // Create grid items
+    const gridItems = [];
+    for (let i = 0; i < gridSize; i++) {
+      for (let j = 0; j < gridSize; j++) {
+        const item = document.createElement('div');
+        item.className = 'grid-item';
+        item.style.width = `${itemWidth}px`;
+        item.style.height = `${itemHeight}px`;
+        
+        // Use absolute positioning relative to the terminal container
+        item.style.position = 'absolute';
+        item.style.left = `${j * itemWidth}px`;
+        item.style.top = `${i * itemHeight}px`;
+        item.style.borderLeft = i % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+        item.style.borderTop = j % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+        
+        // Calculate delay based on pattern
+        const patternDelay = ((i+j) % 4) * 0.1;
+        
+        // Add item content from original terminal (cropped view)
+        item.style.overflow = 'hidden';
+        const inner = terminalClone.cloneNode(true);
+        inner.style.position = 'absolute';
+        inner.style.top = `-${i * itemHeight}px`;
+        inner.style.left = `-${j * itemWidth}px`;
+        inner.style.width = `${width}px`;
+        inner.style.visibility = 'visible';
+        item.appendChild(inner);
+        
+        // Apply animation with delay
+        setTimeout(() => {
+          item.style.animation = `shatter 0.6s cubic-bezier(0.36, 0.11, 0.89, 0.32) forwards`;
+        }, patternDelay * 1000);
+        
+        terminalContainer.appendChild(item);
+        gridItems.push(item);
+      }
+    }
+    
+    // Add system alerts during transition
+    const alertMessages = [
+      "SYSTEM BREACH DETECTED",
+      "FIREWALL BYPASSED",
+      "ENCRYPTION KEYS COMPROMISED",
+      "INITIATING CORE DUMP",
+      "REROUTING CONNECTION",
+      "BACKDOOR ACTIVATED"
+    ];
+    
+    // Display alerts randomly during transition
+    let alertCount = 0;
+    const alertInterval = setInterval(() => {
+      if (alertCount >= 3) {
+        clearInterval(alertInterval);
+        return;
+      }
+      
+      const randomAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+      const alertElem = document.createElement('div');
+      alertElem.className = 'system-alert';
+      alertElem.textContent = randomAlert;
+      alertElem.style.position = 'absolute';
+      alertElem.style.top = `${20 + alertCount * 30}px`;
+      alertElem.style.left = '50%';
+      alertElem.style.transform = 'translateX(-50%)';
+      alertElem.style.zIndex = '10';
+      
+      terminalContainer.appendChild(alertElem);
+      alertCount++;
+    }, 200);
+    
+    // Fade out the entire overlay after transition
+    setTimeout(() => {
+      introAnimation.style.transition = 'opacity 0.5s ease-out';
+      introAnimation.style.opacity = '0';
+      
+      // Remove the intro animation from DOM after fade out
+      setTimeout(() => {
+        introAnimation.style.display = 'none';
+        // Your existing login screen should now be visible
+      }, 500);
+    }, 1500);
+  }, 600);
+}
+  
+  // Function to display all messages in sequence
+  async function displayMessages() {
+    
+    for (let i = 0; i < introMessages.length; i++) {
+      currentMessageIndex = i;
+      await typeMessage(introMessages[i], i);
+    }
+    
+    // After all messages, show "PRESS ENTER TO CONTINUE" prompt
+    await typeMessage("PRESS ENTER TO CONTINUE TO LOGIN", introMessages.length);
+    isComplete = true;
+  }
+  
+  // Start the intro animation
+  setTimeout(displayMessages, 500);
+});
+
 // Matrix rain effect
 const canvas = document.getElementById("matrix-canvas");
 const ctx = canvas.getContext("2d");
@@ -110,6 +328,9 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
   );
 
   if (isAuthorized) {
+    // Store the username in localStorage for use across pages
+    localStorage.setItem('agentName', username);
+    
     messageElement.textContent =
       "Authentication successful. Initializing secure connection...";
     messageElement.style.color = "#00ff41";
@@ -135,6 +356,12 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
         // Show access granted screen after a short delay
         setTimeout(() => {
           document.getElementById("access-granted").classList.remove("hidden");
+          
+          // Update welcome message with the agent's name
+          const welcomeElement = document.querySelector("#access-granted h1");
+          if (welcomeElement) {
+            welcomeElement.textContent = `Welcome to Operation Phantom Chase, Agent ${username.toUpperCase()}`;
+          }
         }, 1000);
       }
     }, 200);

@@ -58,7 +58,7 @@ body {
     font-size: 2.5rem;
     color: var(--primary);
     text-shadow: 0 0 10px var(--primary);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 2px;
     opacity: 0;
@@ -78,7 +78,7 @@ body {
 .mission-complete-panel {
     background-color: rgba(0, 0, 0, 0.7);
     border: 2px solid var(--primary);
-    padding: 25px;
+    padding: 25px 25px 25px 25px; /* Further reduced top padding to 15px */
     border-radius: 5px;
     width: 100%;
     max-width: 800px;
@@ -95,8 +95,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    margin-bottom: 10px; /* Further reduced from 10px to 5px */
+    padding-bottom: 5px; /* Further reduced from 5px to 2px */
     border-bottom: 1px solid var(--primary);
 }
 
@@ -119,18 +119,29 @@ body {
 }
 
 .completion-message {
-    line-height: 1.8;
+    line-height: 1.8; /* Further reduced from 1.6 to 1.4 */
     color: var(--primary);
     margin-bottom: 20px;
+    margin-top: 0px; /* Changed to negative margin to pull content up */
     opacity: 0;
     animation: fadeIn 1s forwards 2s;
+}
+
+/* Target and remove br tags inside completion-message */
+.completion-message br {
+    display: none; /* Hide <br> tags completely */
+}
+
+/* Make first terminal line connect directly to header */
+.terminal-line:first-child {
+    margin-top: 0;
 }
 
 .intel-panel {
     background-color: rgba(0, 0, 0, 0.8);
     border: 1px solid var(--secondary);
     padding: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
     position: relative;
     opacity: 0;
     display: none;
@@ -215,7 +226,6 @@ body {
     z-index: 2;
 }
 
-/* 添加扫描线和网格效果 */
 .suspect-photo::after {
     content: "";
     position: absolute;
@@ -231,7 +241,6 @@ body {
     z-index: 1;
 }
 
-/* 添加扫描线动画 */
 .suspect-photo::after {
     content: "";
     position: absolute;
@@ -463,7 +472,7 @@ body {
 /* Terminal text effects */
 .terminal-line {
     position: relative;
-    margin-bottom: 8px;
+    margin-bottom: 5px; /* Further reduced from 6px to 5px */
     padding-left: 15px;
     color: var(--primary);
     opacity: 0;
@@ -478,7 +487,7 @@ body {
 
 .terminal-prompt {
     line-height: 1.5;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Further reduced from 15px to 10px */
     display: flex;
     align-items: center;
 }

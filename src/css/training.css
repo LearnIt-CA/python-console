@@ -1,0 +1,490 @@
+/* Import base styles */
+@import url("base.css");
+
+.training-page {
+  overflow-y: auto;
+  justify-content: flex-start;
+  padding-bottom: 320px; /* Increase bottom padding to make room for the console */
+}
+
+#training-page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.mission-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.mission-title {
+  font-size: 2.5rem;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-bottom: 10px;
+}
+
+.mission-subtitle {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+/* Directive panel styling */
+.directive-panel {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--primary);
+  padding: 25px;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.directive-title {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+  text-align: center;
+  border-bottom: 1px dashed var(--secondary);
+  padding-bottom: 10px;
+}
+
+.security-stamp {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  color: rgba(255, 189, 89, 0.3);
+  font-size: 0.8rem;
+  transform: rotate(-5deg);
+  border: 1px dashed rgba(255, 189, 89, 0.3);
+  padding: 3px 8px;
+}
+
+/* Training modules container */
+.modules-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+/* Individual training module */
+.training-module {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--primary);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 20, 0, 0.8);
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--primary);
+}
+
+.module-title {
+  margin: 0;
+  color: var(--primary);
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.module-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.expand-btn {
+  background-color: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.expand-btn:hover {
+  background-color: rgba(0, 255, 65, 0.2);
+}
+
+.expand-btn.active {
+  background-color: var(--primary);
+  color: #000;
+}
+
+/* Module content (expandable) */
+.module-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.module-content.expanded {
+  max-height: 2000px;
+  padding: 15px;
+}
+
+.module-text {
+  color: var(--primary);
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+/* Code sections */
+.code-section {
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 20, 0, 0.8);
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--primary);
+}
+
+.code-title {
+  color: var(--secondary);
+  font-size: 0.9rem;
+}
+
+.copy-btn {
+  background-color: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background-color: rgba(0, 255, 65, 0.2);
+}
+
+.copy-btn.copied {
+  background-color: var(--primary);
+  color: #000;
+}
+
+.code-block {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #f0f0f0;
+  font-family: "Courier New", monospace;
+  padding: 15px;
+  margin: 0;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+.code-block.flash {
+  background-color: rgba(0, 255, 65, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+/* Syntax highlighting */
+.code-block .comment {
+  color: #6a9955;
+}
+
+.code-block .keyword {
+  color: #569cd6;
+}
+
+.code-block .string {
+  color: #ce9178;
+}
+
+.code-block .function {
+  color: #dcdcaa;
+}
+
+.code-block .number {
+  color: #b5cea8;
+}
+
+/* Secure environment section */
+.secure-environment {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+  padding: 20px;
+  margin: 30px 0;
+  text-align: center;
+}
+
+.environment-header {
+  margin-bottom: 15px;
+  color: var(--primary);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.env-link {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  padding: 12px 25px;
+  margin-top: 15px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border-radius: 3px;
+}
+
+.env-link:hover {
+  background-color: var(--primary);
+  color: var(--background);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.env-icon {
+  margin-right: 10px;
+}
+
+/* Training directive */
+.training-directive {
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--primary);
+  padding: 20px;
+  margin: 20px 0;
+  position: relative;
+}
+
+.training-directive:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, 
+    transparent 48%, 
+    rgba(0, 255, 65, 0.1) 49%, 
+    rgba(0, 255, 65, 0.1) 51%, 
+    transparent 52%);
+  background-size: 20px 20px;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* Terminal text */
+.terminal-text {
+  color: var(--primary);
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Mission buttons */
+.mission-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.mission-button {
+  background-color: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 12px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.mission-button:hover {
+  background-color: var(--primary);
+  color: var(--background);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+#begin-mission-btn {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+#begin-mission-btn.button-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Command console styles */
+.command-console {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-top: 1px solid var(--primary);
+  display: flex;
+  z-index: 1000;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
+  height: 300px;
+}
+
+.console-input-area {
+  width: 50%;
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  border-right: 1px solid rgba(0, 255, 65, 0.3);
+}
+
+.console-prefix {
+  color: var(--secondary);
+  margin-right: 10px;
+  user-select: none;
+}
+
+.console-input {
+  background-color: transparent;
+  border: none;
+  color: var(--primary);
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+}
+
+.console-logs {
+  width: 50%;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: rgba(0, 20, 0, 0.4);
+}
+
+.console-log {
+  color: var(--primary);
+  font-size: 0.8rem;
+  margin-bottom: 3px;
+  font-family: "Courier New", monospace;
+}
+
+.console-log.system {
+  color: var(--secondary);
+}
+
+.console-log.error {
+  color: var(--error);
+}
+
+.console-log.success {
+  color: #4CAF50;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mission-title {
+    font-size: 1.8rem;
+  }
+
+  .mission-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .directive-panel, .training-module {
+    padding: 15px;
+  }
+  
+  .code-block {
+    font-size: 0.8rem;
+    padding: 10px;
+  }
+  
+  .env-link {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .console-input-area {
+    width: 60%;
+  }
+  
+  .console-logs {
+    width: 40%;
+  }
+}
+
+/* Typing and animation effects */
+.typed {
+  animation: typing 1.5s steps(30, end);
+}
+
+@keyframes typing {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Loading overlay for mission transition */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-content {
+  text-align: center;
+  color: var(--primary);
+}
+
+.loading-content h2 {
+  margin-bottom: 20px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px var(--primary);
+}
+
+.loading-progress {
+  width: 300px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--primary);
+  margin: 0 auto 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0%;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.loading-status {
+  font-size: 0.9rem;
+  color: var(--secondary);
+}
