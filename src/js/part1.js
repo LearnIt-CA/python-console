@@ -305,11 +305,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
     if (section.classList.contains("visible")) {
       section.classList.remove("visible");
-      addConsoleLog(`${sectionId.toUpperCase()} code retrived by FBI.`, "system");
+      addConsoleLog(`${sectionId.toUpperCase()} code retrived by CSIS.`, "system");
       return false;
     } else {
       section.classList.add("visible");
-      addConsoleLog(`${sectionId.toUpperCase()} code sent by FBI.`, "success");
+      addConsoleLog(`${sectionId.toUpperCase()} code sent by CSIS.`, "success");
       // Scroll to the section
       section.scrollIntoView({ behavior: 'smooth' });
       return true;

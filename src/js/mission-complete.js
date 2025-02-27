@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Share button function - mock Instagram sharing
     document.getElementById('share-button').addEventListener('click', function() {
         // Create an alert dialog with a "hacker aesthetic"
-        const shareText = "I successfully completed Operation Phantom Chase and helped the FBI track down a major cyber criminal. #CyberSecurity #WhiteHatHacker #FBIOperation";
+        const shareText = "I successfully completed Operation Phantom Chase and helped the CSIS track down a major cyber criminal. #CyberSecurity #WhiteHatHacker #CSISOperation";
         
         // Create a modal-like alert with cyber styling
         const alertModal = document.createElement('div');

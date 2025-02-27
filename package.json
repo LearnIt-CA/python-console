@@ -1,7 +1,7 @@
 {
   "name": "operation-phantom-chase",
   "version": "1.0.0",
-  "description": "FBI Cyber Division - Operation Phantom Chase",
+  "description": "CSIS Cyber Division - Operation Phantom Chase",
   "scripts": {
     "start": "live-server src --port=8080",
     "test": "echo \"Error: no test specified\" && exit 1"
