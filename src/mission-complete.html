@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Complete - Operation Phantom Chase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/mission-complete.css">
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div class="binary-overlay" id="binary-overlay"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Operation Phantom Chase</h1>
+            <p class="subtitle">Mission Complete - FBI Cyber Division</p>
+        </div>
+        
+        <div class="mission-complete-panel">
+            <div class="panel-header">
+                <div class="panel-title">Mission Report</div>
+                <div class="status-badge">Mission Successful</div>
+            </div>
+            
+            <div class="completion-message">
+                <p class="terminal-line" style="animation: fadeIn 0.5s forwards 2.2s">Secure connection established...</p>
+                <p class="terminal-line" style="animation: fadeIn 0.5s forwards 2.6s">Decrypting mission data...</p>
+                <p class="terminal-line" style="animation: fadeIn 0.5s forwards 3s">Access granted to FBI servers...</p>
+                <p class="terminal-line" style="animation: fadeIn 0.5s forwards 3.4s">Loading mission report...</p>
+                <br>
+                <p class="terminal-line" style="animation: fadeIn 0.5s forwards 4s">
+                    <span class="typewriter" style="animation-delay: 4.2s; display: inline-block;">Excellent work, Agent! Your modified game has been deployed.</span>
+                </p>
+                <p class="terminal-line" style="animation: fadeIn 0.5s forwards 4.6s">
+                    <span class="typewriter" style="animation-delay: 4.8s; display: inline-block;">The monitoring system is now logging critical Phantom data.</span>
+                </p>
+                <p class="terminal-line" style="animation: fadeIn 0.5s forwards 5.2s">
+                    <span class="typewriter" style="animation-delay: 5.4s; display: inline-block;">We've intercepted their next meeting coordinates.</span>
+                </p>
+                <br>
+                <p class="terminal-line" style="animation: fadeIn 0.5s forwards 6s">
+                    <span class="typewriter" style="animation-delay: 6.2s; display: inline-block; color: var(--secondary);">FBI Director: "Authorization granted to proceed."</span>
+                </p>
+            </div>
+            
+            <button id="reveal-intel" class="decrypt-button">DECRYPT SUSPECT INTELLIGENCE</button>
+        </div>
+        
+        <div class="intel-panel" id="intel-panel">
+            <div class="intel-header">
+                <div class="intel-title">Suspect Intelligence</div>
+                <div class="classification">TOP SECRET</div>
+            </div>
+            
+            <div class="intel-content">
+                <div class="suspect-profile" id="suspect-profile">
+                    <div class="suspect-photo">
+                        <img src="img/test.jpg" alt="Suspect Photo">
+                    </div>
+                    
+                    <div class="data-row">
+                        <div class="data-label">IDENTITY:</div>
+                        <div class="data-value">Sean "ByteMaster" Morrison</div>
+                    </div>
+                    
+                    <div class="data-row">
+                        <div class="data-label">STATUS:</div>
+                        <div class="data-value alert">WANTED</div>
+                    </div>
+                </div>
+                
+                <div class="suspect-data" id="suspect-data">
+                    <div class="data-row">
+                        <div class="data-label">ALIAS:</div>
+                        <div class="data-value">ByteMaster</div>
+                    </div>
+                    
+                    <div class="data-row">
+                        <div class="data-label">AGE:</div>
+                        <div class="data-value">30</div>
+                    </div>
+                    
+                    <div class="data-row">
+                        <div class="data-label">OCCUPATION:</div>
+                        <div class="data-value">DISGUISE: Teacher</div>
+                    </div>
+                    
+                    <div class="data-row highlight">
+                        <div class="data-label">NEXT MEETING:</div>
+                        <div class="data-value">March 7, 2025 - 21:00 EST</div>
+                    </div>
+                    
+                    <div class="data-row highlight">
+                        <div class="data-label">LOCATION:</div>
+                        <div class="data-value">Postal Code H4V 2M3, Montreal</div>
+                    </div>
+                    
+                    <div class="data-row">
+                        <div class="data-label">EXPERTISE:</div>
+                        <div class="data-value">Python, Cryptography, Game Design</div>
+                    </div>
+                    
+                    <div class="data-row">
+                        <div class="data-label">KNOWN ASSOC:</div>
+                        <div class="data-value">Phantom Group (5-8 members)</div>
+                    </div>
+                    
+                    <button id="show-location" class="decrypt-button">REVEAL MEETING LOCATION</button>
+                </div>
+            </div>
+            
+            <div class="map-container" id="map-container">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMzAwIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzIyMjIyMiIvPjxwYXRoIGQ9Ik01MCw1MCBMNDUwLDUwIiBzdHJva2U9IiM0NDQ0NDQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik01MCwxMDAgTDQ1MCwxMDAiIHN0cm9rZT0iIzQ0NDQ0NCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTUwLDE1MCBMNDVCLDE1MCIgc3Ryb2tlPSIjNDQ0NDQ0IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNTAsMjAwIEw0NTAsMjAwIiBzdHJva2U9IiM0NDQ0NDQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik01MCwyNTAgTDQ1MCwyNTAiIHN0cm9rZT0iIzQ0NDQ0NCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTUwLDUwIEw1MCwyNTAiIHN0cm9rZT0iIzQ0NDQ0NCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTEwMCw1MCBMMTAwLDI1MCIgc3Ryb2tlPSIjNDQ0NDQ0IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTUwLDUwIEwxNTAsMjUwIiBzdHJva2U9IiM0NDQ0NDQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0yMDAsNTAgTDIwMCwyNTAiIHN0cm9rZT0iIzQ0NDQ0NCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTI1MCw1MCBMMjUwLDI1MCIgc3Ryb2tlPSIjNDQ0NDQ0IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMzAwLDUwIEwzMDAsMjUwIiBzdHJva2U9IiM0NDQ0NDQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0zNTAsNTAgTDM1MCwyNTAiIHN0cm9rZT0iIzQ0NDQ0NCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTQwMCw1MCBMNDAwLDI1MCIgc3Ryb2tlPSIjNDQ0NDQ0IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNDUwLDUwIEw0NTAsMjUwIiBzdHJva2U9IiM0NDQ0NDQiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjE1MCIgcj0iNSIgZmlsbD0iI2ZmMDAwMCIvPjwvc3ZnPg==" alt="Mission Map">
+                <div class="map-marker"></div>
+                <div class="map-coordinates">LAT: 45.4738° N, LONG: 73.6299° W</div>
+            </div>
+        </div>
+        
+        <div class="final-action">
+            <button class="action-button" id="share-button">SHARE MISSION SUCCESS</button>
+        </div>
+    </div>
+    
+    <div class="logo-container">
+        <div class="learnit-logo">LearnIT</div>
+        <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
+    </div>
+
+    <script src="js/mission-complete.js"></script>
+</body>
+</html>

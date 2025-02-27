@@ -1,0 +1,135 @@
+/* Import base styles */
+@import url("base.css");
+
+#login-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  color: var(--secondary);
+}
+
+.form-input {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--primary);
+  padding: 10px;
+  color: var(--primary);
+  font-size: 1rem;
+  border-radius: 3px;
+  outline: none;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 5px var(--primary);
+}
+
+.form-button {
+  background-color: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+.form-button:hover {
+  background-color: var(--primary);
+  color: var(--background);
+}
+
+#message {
+  margin-top: 15px;
+  text-align: center;
+  min-height: 20px;
+  color: var(--error);
+}
+
+#progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--primary);
+  margin-top: 15px;
+  position: relative;
+}
+
+#progress {
+  height: 100%;
+  width: 0%;
+  background-color: var(--primary);
+  transition: width 0.5s ease;
+}
+
+#progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--secondary);
+  font-size: 0.8rem;
+}
+
+#access-granted {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#access-granted h1 {
+  font-size: 3rem;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary);
+  letter-spacing: 5px;
+}
+
+#continue-btn {
+  background-color: var(--primary);
+  color: var(--background);
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+#continue-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--primary);
+}
+
+.system-panel {
+  min-height: 400px;
+  overflow-y: auto;
+}

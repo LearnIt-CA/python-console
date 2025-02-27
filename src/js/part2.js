@@ -179,9 +179,9 @@ function initTerminalEffect() {
     setTimeout(() => {
       revealElements(taskItems, 300);
       
-      // Show next part button after all text is revealed
+      // Show submit button after all text is revealed
       setTimeout(() => {
-        document.getElementById("next-part-btn").classList.add("button-revealed");
+        document.getElementById("submit-btn").classList.add("button-revealed");
       }, taskItems.length * 300 + 500);
     }, terminalTexts.length * 400 + 500);
   }, 800);
@@ -201,37 +201,37 @@ function addBlinkingCursor() {
 // Call blinking cursor
 setTimeout(addBlinkingCursor, 3000);
 
-// Next part button action
+// Submit button action
 document
-  .getElementById("next-part-btn")
+  .getElementById("submit-btn")
   .addEventListener("click", function () {
     // Add transition effect
-    document.body.classList.add("mission-transition");
+    document.body.classList.add("submission-transition");
     
-    // Show loading overlay
-    const loadingOverlay = document.createElement("div");
-    loadingOverlay.className = "loading-overlay";
-    loadingOverlay.innerHTML = `
+    // Show submission overlay
+    const submissionOverlay = document.createElement("div");
+    submissionOverlay.className = "loading-overlay";
+    submissionOverlay.innerHTML = `
       <div class="loading-content">
-        <h2>LOADING PART 2</h2>
+        <h2>SUBMITTING SOLUTION</h2>
         <div class="loading-progress">
           <div class="loading-bar"></div>
         </div>
-        <p class="loading-status">Processing code analysis...</p>
+        <p class="loading-status">Validating code...</p>
       </div>
     `;
-    document.body.appendChild(loadingOverlay);
+    document.body.appendChild(submissionOverlay);
     
-    // Simulate loading progress
+    // Simulate submission progress
     let progress = 0;
-    const loadingBar = loadingOverlay.querySelector(".loading-bar");
-    const loadingStatus = loadingOverlay.querySelector(".loading-status");
+    const loadingBar = submissionOverlay.querySelector(".loading-bar");
+    const loadingStatus = submissionOverlay.querySelector(".loading-status");
     const statuses = [
-      "Processing code analysis...",
-      "Preparing development environment...",
-      "Securing communication channels...",
-      "Initializing mission parameters...",
-      "Ready to proceed!"
+      "Validating code...",
+      "Checking monitoring functionality...",
+      "Verifying original game mechanics...",
+      "Testing log structure...",
+      "Solution accepted!"
     ];
     
     const interval = setInterval(() => {
@@ -244,9 +244,19 @@ document
       if (progress === 100) {
         clearInterval(interval);
         
-        // Redirect to part 2 after short delay
+        // Show success message and then redirect to final page
         setTimeout(() => {
-          window.location.href = "part2.html";
+          submissionOverlay.querySelector(".loading-content").innerHTML = `
+            <h2>MISSION COMPLETE</h2>
+            <p>Excellent work, agent! Your implementation meets all requirements.</p>
+            <p>All monitoring systems are now operational.</p>
+            <p>Proceeding to mission completion...</p>
+          `;
+          
+          // Redirect to completion page after showing success message
+          setTimeout(() => {
+            window.location.href = "mission-complete.html";
+          }, 3000);
         }, 1500);
       }
     }, 300);
@@ -259,31 +269,31 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Collection of hacker-style system messages
   const hackingMessages = [
-    "Scanning network traffic...",
-    "Monitoring Phantom communications...",
-    "Analyzing encryption patterns...",
-    "Secure connection maintained...",
-    "Intercepting data packets...",
-    "Checking for intrusions...",
-    "Updating security protocols...",
-    "Bypassing firewall...",
-    "Decrypting secure channels...",
-    "Routing through proxy servers...",
-    "Detecting potential vulnerabilities...",
-    "System integrity check: PASSED",
-    "Phantom activity detected in sector 7G",
-    "Monitoring network for suspicious activity",
-    "Backdoor access established",
-    "Signal intercepted: origin unknown",
-    "Establishing encrypted connection",
-    "Memory fragmentation detected",
-    "Checking for rootkits...",
-    "Analyzing malware signatures...",
-    "Quantum encryption protocols enabled",
-    "Server response: 200 OK",
-    "Packet inspection complete",
-    "Executing countermeasures against intrusion",
-    "System load: 42% - within parameters"
+    "Monitoring target systems...",
+    "Analyzing Phantom data structures...",
+    "Scanning for security vulnerabilities...",
+    "Encrypted connection stable...",
+    "Capturing player activity patterns...",
+    "Testing monitoring modules...",
+    "Optimizing data collection algorithms...",
+    "Bypassing detection countermeasures...",
+    "Running stealth diagnostics...",
+    "Encoding log files...",
+    "Simulating player behaviors...",
+    "Data analysis complete...",
+    "Pattern recognition engaged",
+    "Predictive model training in progress",
+    "Hidden monitoring systems active",
+    "Phantom database injection successful",
+    "Automated log rotation initiated",
+    "System resources optimized",
+    "Validating encryption protocols...",
+    "Anti-tampering measures deployed",
+    "Memory footprint minimized",
+    "Server response: 204 No Content",
+    "Monitoring session initiated",
+    "Obfuscation layer activated",
+    "Zero-day vulnerability patched"
   ];
   
   // Function to add log to console
@@ -305,11 +315,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
     if (section.classList.contains("visible")) {
       section.classList.remove("visible");
-      addConsoleLog(`${sectionId.toUpperCase()} code retrived by FBI.`, "system");
+      addConsoleLog(`${sectionId.toUpperCase()} section hidden.`, "system");
       return false;
     } else {
       section.classList.add("visible");
-      addConsoleLog(`${sectionId.toUpperCase()} code sent by FBI.`, "success");
+      addConsoleLog(`${sectionId.toUpperCase()} section revealed.`, "success");
       // Scroll to the section
       section.scrollIntoView({ behavior: 'smooth' });
       return true;
@@ -320,14 +330,15 @@ document.addEventListener("DOMContentLoaded", function() {
   function showHelp() {
     addConsoleLog("=== AVAILABLE COMMANDS ===", "system");
     addConsoleLog("/help - Show this help message", "system");
-    addConsoleLog("/html - Toggle HTML code section", "system");
-    addConsoleLog("/css - Toggle CSS code section", "system");
-    addConsoleLog("/python - Toggle Python code section", "system");
+    addConsoleLog("/python - Toggle Python skeleton code", "system");
+    addConsoleLog("/requirements - Toggle requirements section", "system");
+    addConsoleLog("/data - Toggle example log structure", "system");
     addConsoleLog("/clear - Clear console logs", "system");
     addConsoleLog("/status - Show mission status", "system");
-    addConsoleLog("/showall - Show all code sections", "system");
-    addConsoleLog("/hideall - Hide all code sections", "system");
-    addConsoleLog("/part2 - Proceed to Part 2", "system");
+    addConsoleLog("/showall - Show all sections", "system");
+    addConsoleLog("/hideall - Hide all sections", "system");
+    addConsoleLog("/submit - Submit your solution", "system");
+    addConsoleLog("/back - Return to Part 1", "system");
     addConsoleLog("========================", "system");
   }
   
@@ -341,12 +352,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Process based on command
     if (command === "/help") {
       showHelp();
-    } else if (command === "/html") {
-      toggleCodeSection("html");
-    } else if (command === "/css") {
-      toggleCodeSection("css");
     } else if (command === "/python") {
       toggleCodeSection("python");
+    } else if (command === "/requirements") {
+      toggleCodeSection("requirements");
+    } else if (command === "/data") {
+      toggleCodeSection("data");
     } else if (command === "/clear") {
       // Clear console logs except for the initial system message
       while (consoleLogs.children.length > 1) {
@@ -356,26 +367,30 @@ document.addEventListener("DOMContentLoaded", function() {
     } else if (command === "/status") {
       addConsoleLog("=== MISSION STATUS ===", "success");
       addConsoleLog("Status: IN PROGRESS", "success");
-      addConsoleLog("Objective: Analyze Higher or Lower game code", "system");
-      addConsoleLog("Next step: Complete code review and proceed to Part 2", "system");
-      addConsoleLog("Security level: ALPHA", "system");
+      addConsoleLog("Objective: Implement modified game with monitoring", "system");
+      addConsoleLog("Next step: Complete implementation and submit solution", "system");
+      addConsoleLog("Security level: BETA", "system");
       addConsoleLog("=====================", "system");
     } else if (command === "/showall") {
-      toggleCodeSection("html");
-      toggleCodeSection("css");
       toggleCodeSection("python");
-      addConsoleLog("All code sections toggled.", "system");
+      toggleCodeSection("requirements");
+      toggleCodeSection("data");
+      addConsoleLog("All sections toggled.", "system");
     } else if (command === "/hideall") {
       document.querySelectorAll(".code-section.visible").forEach(section => {
         section.classList.remove("visible");
       });
-      addConsoleLog("All code sections hidden.", "system");
-    } else if (command === "/part2") {
-      addConsoleLog("Proceeding to Part 2...", "success");
-      // Redirect to part 2
+      addConsoleLog("All sections hidden.", "system");
+    } else if (command === "/submit") {
+      addConsoleLog("Submitting solution...", "success");
+      // Trigger submit button click
       setTimeout(() => {
-        // Trigger the same loading animation as the button
-        document.getElementById("next-part-btn").click();
+        document.getElementById("submit-btn").click();
+      }, 1000);
+    } else if (command === "/back") {
+      addConsoleLog("Returning to Part 1...", "system");
+      setTimeout(() => {
+        window.location.href = "part1.html";
       }, 1000);
     } else if (command.startsWith("/")) {
       addConsoleLog(`Unknown command: ${command}. Type /help for available commands.`, "error");
@@ -425,6 +440,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Initialize console
   addConsoleLog("Terminal v2.7.4 initialized", "system");
   addConsoleLog("Connected to secure server: OP-PHANTOM", "system");
+  addConsoleLog("Mission phase: PART 2 - Implementation", "system");
   addConsoleLog("Type /help for available commands", "system");
   
   // Start system message simulation
@@ -440,7 +456,7 @@ document.addEventListener("DOMContentLoaded", function() {
     e.preventDefault();
     addConsoleLog("Opening secure Python environment...", "system");
     // You could redirect to a specific URL here if needed
-    window.open("https://livecodes.io/?template=python", "_blank");
+    window.open("secure-python-environment.html", "_blank");
   });
 });
 

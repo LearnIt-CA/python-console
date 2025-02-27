@@ -4,48 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python Mission - Part 1 - Operation Phantom Chase</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/part1.css">
 </head>
 <body class="mission-page">
-    <!-- Matrix canvas background -->
     <canvas id="matrix-canvas"></canvas>
-    
-    <!-- Binary overlay -->
     <div id="binary-overlay" class="binary-overlay"></div>
     
-    <!-- Main mission content -->
     <div id="mission-container">
-        <div class="mission-header">
+        <header>
             <h1 class="mission-title">Operation Phantom Chase</h1>
             <h2 class="mission-subtitle">Part 1: Higher or Lower Game Analysis</h2>
+        </header>
+        
+        <div class="mission-directive">
+            <h3 class="directive-title">MISSION DIRECTIVE</h3>
+            <p class="terminal-text">Agent, your first task is to analyze the existing "Higher or Lower" game code we've intercepted from the Phantom group. We need to understand its functionality before we can create our replacement.</p>
+            <p class="terminal-text">Our cyber team has extracted the following code samples from their server. Study them carefully.</p>
+            <p class="terminal-text">You will work in the secure Python environment we've set up. Copy the code below and use the link to access our secure sandbox.</p>
+            <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom members must not suspect our intervention.</p>
         </div>
         
-        <div class="mission-content">
-            <div class="code-panel">
-                <div class="panel-header">
-                    <h3 class="panel-title">MISSION DIRECTIVE</h3>
-                    <div class="panel-controls">
-                        <span class="control-dot"></span>
-                        <span class="control-dot"></span>
-                        <span class="control-dot"></span>
-                    </div>
-                </div>
-                <div class="panel-content">
-                    <p class="terminal-text">Agent, your first task is to analyze the existing "Higher or Lower" game code we've intercepted from the Phantom group. We need to understand its functionality before we can create our replacement.</p>
-                    <p class="terminal-text">Our cyber team has extracted the following code samples from their server. Study them carefully.</p>
-                    <p class="terminal-text">You will work in the secure Python environment we've set up. Copy the code below and use the link to access our secure sandbox.</p>
-                    <p class="terminal-text warning">REMEMBER: Do not modify the original functionality as Phantom members must not suspect our intervention.</p>
-                </div>
-            </div>
-            
-            <div class="code-samples">
-                <div class="code-section">
-                    <div class="code-header">
-                        <h4 class="code-title">HTML Structure</h4>
-                        <button class="copy-btn" data-target="html-code">COPY CODE</button>
-                    </div>
-                    <pre class="code-block" id="html-code">
-&lt;!DOCTYPE html&gt;
+        <div class="code-samples">
+            <!-- HTML Code Section -->
+<!-- HTML Code Section -->
+<div id="html-section" class="code-section">
+    <div class="code-header">
+        <h4 class="code-title">HTML Structure</h4>
+        <button class="copy-btn" data-target="html-code">COPY CODE</button>
+    </div>
+    <pre id="html-code" class="code-block">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Higher or Lower Game&lt;/title&gt;
@@ -67,15 +54,15 @@
     &lt;script src="script.js"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</pre>
+</div>
+            
+            <!-- CSS Code Section -->
+            <div id="css-section" class="code-section">
+                <div class="code-header">
+                    <h4 class="code-title">CSS Styling</h4>
+                    <button class="copy-btn" data-target="css-code">COPY CODE</button>
                 </div>
-                
-                <div class="code-section">
-                    <div class="code-header">
-                        <h4 class="code-title">CSS Styling</h4>
-                        <button class="copy-btn" data-target="css-code">COPY CODE</button>
-                    </div>
-                    <pre class="code-block" id="css-code">
-body {
+                <pre id="css-code" class="code-block">body {
     font-family: Arial, sans-serif;
     background-color: #1a1a1a;
     color: white;
@@ -135,15 +122,15 @@ button:hover {
     height: 1.5rem;
     color: #ff5555;
 }</pre>
+            </div>
+            
+            <!-- Python Code Section -->
+            <div id="python-section" class="code-section">
+                <div class="code-header">
+                    <h4 class="code-title">Python Code</h4>
+                    <button class="copy-btn" data-target="python-code">COPY CODE</button>
                 </div>
-                
-                <div class="code-section">
-                    <div class="code-header">
-                        <h4 class="code-title">Python Code</h4>
-                        <button class="copy-btn" data-target="python-code">COPY CODE</button>
-                    </div>
-                    <pre class="code-block" id="python-code">
-import random
+                <pre id="python-code" class="code-block">import random
 
 def initialize_game():
     """Initialize the Higher or Lower game."""
@@ -213,52 +200,57 @@ def main():
 
 if __name__ == "__main__":
     main()</pre>
-                </div>
-                
-                <div class="secure-environment">
-                    <div class="environment-header">
-                        <h4>SECURE CODING ENVIRONMENT</h4>
-                    </div>
-                    <p>Access our secure sandbox to test and modify the code:</p>
-                    <a href="https://livecodes.io/?template=python" class="env-link" target="_blank">
-                        <span class="env-icon">🔒</span>
-                        OPEN SECURE PYTHON ENVIRONMENT
-                    </a>
-                </div>
             </div>
-            
-            <div class="task-panel">
-                <div class="panel-header">
-                    <h3 class="panel-title">YOUR TASK</h3>
-                </div>
-                <div class="panel-content">
-                    <ol class="task-list">
-                        <li>Study the provided code to understand how the game works</li>
-                        <li>Run the Python code in the secure environment</li>
-                        <li>Identify key game mechanics that must be preserved</li>
-                        <li>Make notes of potential areas where monitoring capabilities could be added</li>
-                        <li>Be ready to implement your own version in Part 2</li>
-                    </ol>
-                    <div class="mission-status">
-                        <div class="status-label">MISSION STATUS:</div>
-                        <div class="status-value">IN PROGRESS</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mission-buttons">
-                <button id="next-part-btn" class="mission-button">PROCEED TO PART 2</button>
-            </div>
+        </div>
+        
+        <!-- Secure Environment Link -->
+        <div class="secure-environment">
+            <h3 class="environment-header">SECURE CODING ENVIRONMENT</h3>
+            <p>Access our secure sandbox to test and modify the code:</p>
+            <a href="#" class="env-link"><span class="env-icon">🔒</span> OPEN SECURE PYTHON ENVIRONMENT</a>
+        </div>
+        
+        <!-- Task Panel -->
+        <div class="task-panel">
+            <h3 class="directive-title">YOUR TASK</h3>
+            <ul class="task-list">
+                <li>Study the provided code to understand how the game works</li>
+                <li>Run the Python code in the secure environment</li>
+                <li>Identify key game mechanics that must be preserved</li>
+                <li>Make notes of potential areas where monitoring capabilities could be added</li>
+                <li>Be ready to implement your own version in Part 2</li>
+            </ul>
+        </div>
+        
+        <!-- Mission Status -->
+        <div class="mission-status">
+            <span class="status-label">MISSION STATUS:</span> 
+            <span class="status-value">IN PROGRESS</span>
+        </div>
+        
+        <!-- Next Part Button -->
+        <div style="text-align: center;">
+            <button id="next-part-btn" class="mission-button">PROCEED TO PART 2</button>
         </div>
     </div>
     
-    <!-- Logo container -->
+    <!-- Command Console -->
+    <div class="command-console">
+        <div class="console-input-area">
+            <span class="console-prefix">></span>
+            <input type="text" class="console-input" id="console-input" placeholder="Type a command... (try /help)" autocomplete="off">
+        </div>
+        <div class="console-logs" id="console-logs">
+            <!-- Initial messages will be added via JS -->
+        </div>
+    </div>
+    
+    <!-- Footer -->
     <div class="logo-container">
         <div class="learnit-logo">LearnIT</div>
         <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
     </div>
     
-    <!-- Scripts -->
     <script src="js/part1.js"></script>
 </body>
 </html>

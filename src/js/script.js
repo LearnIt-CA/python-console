@@ -183,3 +183,32 @@ function typeNextLine() {
 
 // Start typing effect
 setTimeout(typeNextLine, 1000);
+// Additional CSS injection for console height and layout changes
+document.addEventListener("DOMContentLoaded", function() {
+  // Create style element
+  const style = document.createElement('style');
+  
+  // Add custom styles to fix console layout
+  style.textContent = `
+    .command-console {
+      height: 200px !important;
+    }
+    
+    .console-input-area {
+      width: 50% !important;
+      align-items: flex-start !important;
+    }
+    
+    .console-logs {
+      width: 50% !important;
+      max-height: 200px !important;
+    }
+    
+    .mission-page {
+      padding-bottom: 220px !important;
+    }
+  `;
+  
+  // Append style to head
+  document.head.appendChild(style);
+});

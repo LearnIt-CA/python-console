@@ -1,0 +1,446 @@
+/* Import base styles */
+@import url("base.css");
+
+.briefing-page {
+  overflow-y: auto;
+  justify-content: flex-start;
+}
+
+#mission-page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.mission-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.mission-title {
+  font-size: 2.5rem;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-bottom: 10px;
+}
+
+.mission-subtitle {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.mission-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Wider mission panels to match objective panel */
+.mission-panel {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--primary);
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px; /* Increased to match objective panel */
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+}
+
+/* For side-by-side layout option */
+.mission-panel.half-width {
+  max-width: calc(50% - 10px);
+}
+
+.mission-panel-title {
+  font-size: 1.2rem;
+  color: var(--primary);
+  border-bottom: 1px solid var(--primary);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.mission-text {
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: var(--primary); /* Ensure all text is green */
+}
+
+/* Enhanced objective panel with hacker aesthetics */
+.objective-panel {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--primary);
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 30px;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Terminal-style top bar */
+.objective-panel:before {
+  content: "MISSION PARAMETERS";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 255, 65, 0.15);
+  color: var(--primary);
+  font-size: 0.8rem;
+  padding: 5px 15px;
+  border-bottom: 1px solid var(--primary);
+  letter-spacing: 2px;
+}
+
+/* Scanning line effect */
+.objective-panel:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--primary) 20%, 
+    var(--primary) 80%, 
+    transparent);
+  animation: scan-line 4s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes scan-line {
+  0% {
+    top: 30px;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+/* Enhanced title style */
+.objective-panel .mission-panel-title {
+  font-size: 1.4rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  padding: 15px 0 15px 0;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed var(--primary);
+  text-shadow: 0 0 10px var(--primary);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Title icon */
+.objective-panel .mission-panel-title:before {
+  content: ">";
+  margin-right: 10px;
+  animation: blink 1s step-end infinite;
+  color: var(--primary);
+}
+
+.objective-list {
+  padding-left: 0;
+  margin: 20px 0 20px 20px; /* Added left margin as requested */
+  list-style-type: none;
+}
+
+.objective-item {
+  margin-bottom: 15px;
+  padding-left: 30px;
+  color: var(--primary); /* Green text for numbered items */
+  position: relative;
+  line-height: 1.8;
+  border-left: 2px solid rgba(0, 255, 65, 0.3);
+  padding-left: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for objective items */
+.objective-item:hover {
+  border-left: 2px solid var(--primary);
+  background-color: rgba(0, 255, 65, 0.05);
+}
+
+/* Numbered objectives */
+.objective-item:before {
+  content: "0" counter(objective-counter);
+  counter-increment: objective-counter;
+  position: absolute;
+  left: -30px;
+  color: var(--primary); /* Green counter number */
+  font-size: 0.85rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0 8px;
+  border-radius: 3px;
+  border: 1px solid var(--primary);
+}
+
+/* Initialize counter */
+.objective-list {
+  counter-reset: objective-counter;
+}
+
+/* Binary decoration */
+.objective-panel:after {
+  content: "10010110";
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: rgba(0, 255, 65, 0.2);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+
+/* Terminal-style decorations */
+.terminal-decoration {
+  position: absolute;
+  font-family: monospace;
+  color: rgba(0, 255, 65, 0.2);
+  user-select: none;
+  font-size: 0.75rem;
+}
+
+.term-dec-1 {
+  top: 20px;
+  right: 20px;
+  content: "SYS:0xFF";
+}
+
+.term-dec-2 {
+  bottom: 20px;
+  left: 20px;
+  content: "SEC_LEVEL:9";
+}
+
+/* Target panel */
+.target-panel {
+  border: 1px solid var(--primary);
+  margin-top: 20px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.target-panel:before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    transparent 45%,
+    rgba(0, 255, 65, 0.1) 50%,
+    transparent 55%
+  );
+  animation: scan 4s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.status-line, .geo-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  color: var(--primary);
+  font-size: 0.8rem;
+}
+
+.status-line span:last-child {
+  color: #ff0;
+}
+
+.status-line span:last-child.blink {
+  opacity: 0.5;
+}
+
+.target-frame {
+  border: 1px dashed var(--primary);
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: relative;
+  overflow: hidden;
+}
+
+.target-frame:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary);
+  opacity: 0.7;
+  animation: scanning-line 3s linear infinite;
+}
+
+@keyframes scanning-line {
+  0% {
+    left: -100%;
+    top: 0;
+  }
+  49% {
+    left: 100%;
+    top: 0;
+  }
+  50% {
+    left: 100%;
+    top: 0;
+  }
+  51% {
+    left: 100%;
+    top: 100%;
+  }
+  100% {
+    left: -100%;
+    top: 100%;
+  }
+}
+
+.target-icon {
+  font-size: 3rem;
+  color: #8855aa;
+  margin-bottom: 10px;
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.target-name {
+  color: var(--secondary);
+  font-size: 1.2rem;
+}
+
+/* Mission buttons */
+.mission-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.mission-button {
+  background-color: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 12px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.mission-button:hover {
+  background-color: var(--primary);
+  color: var(--background);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+#begin-mission-btn {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+#begin-mission-btn.button-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.typed {
+  animation: typing 1.5s steps(30, end);
+}
+
+.mission-text:last-child:after,
+.objective-item:last-child:after {
+  content: "_";
+  animation: blink 1s step-end infinite;
+}
+
+.mission-transition {
+  animation: glitch 0.3s infinite;
+}
+
+/* Ready indicator */
+.mission-ready-indicator {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 0.8rem;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 2px 8px;
+  border-radius: 3px;
+  animation: ready-blink 2s infinite;
+}
+
+@keyframes ready-blink {
+  0%, 100% {
+    opacity: 1;
+    background-color: transparent;
+  }
+  50% {
+    opacity: 0.8;
+    background-color: rgba(0, 255, 65, 0.2);
+  }
+}
+
+@media (max-width: 768px) {
+  .mission-title {
+    font-size: 1.8rem;
+  }
+
+  .mission-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .mission-panel, .objective-panel {
+    padding: 15px;
+  }
+  
+  .target-frame {
+    height: 120px;
+  }
+  
+  .objective-panel .mission-panel-title {
+    font-size: 1.2rem;
+  }
+  
+  /* Stack the panels on mobile */
+  .mission-panel.half-width {
+    max-width: 100%;
+  }
+}

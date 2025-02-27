@@ -210,11 +210,9 @@ document
       if (progress === 100) {
         clearInterval(interval);
         
-        // Redirect to game page after short delay
+        // Redirect to part1.html page after short delay
         setTimeout(() => {
-          alert("Mission initiated! You would now proceed to the Higher or Lower game implementation phase.");
-          // Uncomment when game.html is ready:
-          // window.location.href = 'game.html';
+          window.location.href = 'part1.html';
         }, 1500);
       }
     }, 300);

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Mission - Part 2 - Operation Phantom Chase</title>
+    <link rel="stylesheet" href="css/part2.css">
+</head>
+<body class="mission-page">
+    <canvas id="matrix-canvas"></canvas>
+    <div id="binary-overlay" class="binary-overlay"></div>
+    
+    <div id="mission-container">
+        <header>
+            <h1 class="mission-title">Operation Phantom Chase</h1>
+            <h2 class="mission-subtitle">Part 2: Implement Modified Game</h2>
+        </header>
+        
+        <div class="mission-directive">
+            <h3 class="directive-title">MISSION DIRECTIVE</h3>
+            <p class="terminal-text">Agent, now that you've analyzed the original game code, your next task is to create a modified version with monitoring capabilities.</p>
+            <p class="terminal-text">This new version must maintain identical functionality to avoid detection by Phantom group members, while secretly logging all game activities and player choices.</p>
+            <p class="terminal-text">Your implementation should track: game sessions, player decisions, scores, and play patterns.</p>
+            <p class="terminal-text">Use the secure Python environment and skeleton code below as a starting point.</p>
+        </div>
+        
+        <div class="code-samples">
+            <!-- Python Skeleton Code Section -->
+            <div id="python-section" class="code-section">
+                <div class="code-header">
+                    <h4 class="code-title">Python Skeleton Code</h4>
+                    <button class="copy-btn" data-target="python-code">COPY CODE</button>
+                </div>
+                <pre id="python-code" class="code-block">import random
+import datetime
+import json
+import os
+
+# Monitoring functionality
+class GameMonitor:
+    def __init__(self, session_id=None):
+        """Initialize the game monitoring system."""
+        self.session_id = session_id or self._generate_session_id()
+        self.game_log = []
+        self.start_time = datetime.datetime.now()
+        
+    def _generate_session_id(self):
+        """Generate a unique session ID."""
+        return f"game-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}-{random.randint(1000, 9999)}"
+    
+    def log_event(self, event_type, data):
+        """Log a game event."""
+        timestamp = datetime.datetime.now().isoformat()
+        event = {
+            "timestamp": timestamp,
+            "type": event_type,
+            "data": data
+        }
+        self.game_log.append(event)
+    
+    def save_log(self, filename=None):
+        """Save the game log to a file."""
+        if filename is None:
+            filename = f"logs/{self.session_id}.json"
+            
+        # Create logs directory if it doesn't exist
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        
+        # Add session summary
+        session_data = {
+            "session_id": self.session_id,
+            "start_time": self.start_time.isoformat(),
+            "end_time": datetime.datetime.now().isoformat(),
+            "events": self.game_log
+        }
+        
+        with open(filename, 'w') as f:
+            json.dump(session_data, f, indent=2)
+        
+        return filename
+
+# TODO: Implement the Higher or Lower game with monitoring
+def initialize_game():
+    """Initialize the Higher or Lower game with monitoring."""
+    # Create a game monitor instance
+    monitor = GameMonitor()
+    
+    print("Welcome to Higher or Lower!")
+    print("Try to guess if the next card will be higher or lower.")
+    
+    # Initialize game state
+    # TODO: Initialize the game state similar to the original game
+    # but with added monitoring
+    
+    # Log game start
+    monitor.log_event("game_start", {"message": "Game initialized"})
+    
+    return # TODO: Return necessary game state
+    
+# TODO: Implement the card_name function from the original game
+
+# TODO: Implement the play_round function with monitoring
+
+def main():
+    # TODO: Implement the main game loop with monitoring
+    
+    # TODO: Save the game log at the end of the session
+    
+if __name__ == "__main__":
+    main()</pre>
+            </div>
+            
+            <!-- Monitoring Requirements Section -->
+            <div id="requirements-section" class="code-section">
+                <div class="code-header">
+                    <h4 class="code-title">Monitoring Requirements</h4>
+                    <button class="copy-btn" data-target="requirements-code">COPY CODE</button>
+                </div>
+                <pre id="requirements-code" class="code-block"># Monitoring Requirements
+
+1. Session Tracking
+   - Generate unique session ID for each game
+   - Record start and end times
+   - Track total session duration
+
+2. Player Actions Logging
+   - Log each guess (higher or lower)
+   - Record the cards shown
+   - Track success/failure of each guess
+
+3. Score Tracking
+   - Monitor current score
+   - Record max score achieved
+   - Calculate average score over multiple sessions
+
+4. Pattern Analysis
+   - Track frequency of "higher" vs "lower" guesses
+   - Note patterns in player decision making
+   - Identify correlation between card values and player choices
+
+5. Data Storage
+   - Save logs in JSON format 
+   - Use hierarchical structure for easy analysis
+   - Implement file rotation to prevent log file growth
+
+6. Security
+   - Ensure logs are not visible to players
+   - Implement discreet monitoring that doesn't affect gameplay
+   - Add option to encrypt sensitive log data</pre>
+            </div>
+            
+            <!-- Data Structure Example -->
+            <div id="data-section" class="code-section">
+                <div class="code-header">
+                    <h4 class="code-title">Example Log Structure</h4>
+                    <button class="copy-btn" data-target="data-code">COPY CODE</button>
+                </div>
+                <pre id="data-code" class="code-block">{
+  "session_id": "game-20250226134522-4567",
+  "start_time": "2025-02-26T13:45:22.123456",
+  "end_time": "2025-02-26T13:48:17.987654",
+  "events": [
+    {
+      "timestamp": "2025-02-26T13:45:22.234567",
+      "type": "game_start",
+      "data": {
+        "message": "Game initialized"
+      }
+    },
+    {
+      "timestamp": "2025-02-26T13:45:25.345678",
+      "type": "card_shown",
+      "data": {
+        "card": 7,
+        "card_name": "7"
+      }
+    },
+    {
+      "timestamp": "2025-02-26T13:45:30.456789",
+      "type": "player_guess",
+      "data": {
+        "current_card": 7,
+        "guess": "higher",
+        "new_card": 10,
+        "result": "correct",
+        "score": 1
+      }
+    },
+    {
+      "timestamp": "2025-02-26T13:45:45.567890",
+      "type": "player_guess",
+      "data": {
+        "current_card": 10,
+        "guess": "lower",
+        "new_card": 4,
+        "result": "correct",
+        "score": 2
+      }
+    },
+    {
+      "timestamp": "2025-02-26T13:46:02.678901",
+      "type": "player_guess",
+      "data": {
+        "current_card": 4,
+        "guess": "higher",
+        "new_card": 2,
+        "result": "incorrect",
+        "score": 2
+      }
+    },
+    {
+      "timestamp": "2025-02-26T13:46:05.789012",
+      "type": "game_over",
+      "data": {
+        "final_score": 2,
+        "reason": "incorrect_guess"
+      }
+    }
+  ],
+  "summary": {
+    "total_guesses": 3,
+    "correct_guesses": 2,
+    "incorrect_guesses": 1,
+    "final_score": 2,
+    "higher_guesses": 2,
+    "lower_guesses": 1
+  }
+}</pre>
+            </div>
+        </div>
+        
+        <!-- Secure Environment Link -->
+        <div class="secure-environment">
+            <h3 class="environment-header">SECURE CODING ENVIRONMENT</h3>
+            <p>Access our secure sandbox to implement and test your solution:</p>
+            <a href="#" class="env-link"><span class="env-icon">🔒</span> OPEN SECURE PYTHON ENVIRONMENT</a>
+        </div>
+        
+        <!-- Task Panel -->
+        <div class="task-panel">
+            <h3 class="directive-title">YOUR TASK</h3>
+            <ul class="task-list">
+                <li>Implement the game with hidden monitoring functionality</li>
+                <li>Ensure it looks and plays exactly like the original game</li>
+                <li>Add comprehensive logging of player actions and game state</li>
+                <li>Store logs in a structured JSON format</li>
+                <li>Test thoroughly to ensure no bugs or performance issues</li>
+                <li>Submit your solution when completed</li>
+            </ul>
+        </div>
+        
+        <!-- Hints Panel -->
+        <div class="hints-panel">
+            <h3 class="directive-title">IMPLEMENTATION HINTS</h3>
+            <p class="terminal-text">• Separate game logic from monitoring functionality</p>
+            <p class="terminal-text">• Use decorators or wrapper functions to add monitoring without changing core logic</p>
+            <p class="terminal-text">• Consider creating a logging context manager</p>
+            <p class="terminal-text">• Implement error handling to prevent logging failures from affecting gameplay</p>
+            <p class="terminal-text">• Test with different play patterns to ensure robust logging</p>
+        </div>
+        
+        <!-- Mission Status -->
+        <div class="mission-status">
+            <span class="status-label">MISSION STATUS:</span>
+            <span class="status-value">IN PROGRESS</span>
+        </div>
+        
+        <!-- Submit Solution Button -->
+        <div style="text-align: center;">
+            <button id="submit-btn" class="mission-button">SUBMIT SOLUTION</button>
+        </div>
+    </div>
+    
+    <!-- Command Console -->
+    <div class="command-console">
+        <div class="console-input-area">
+            <span class="console-prefix">></span>
+            <input type="text" class="console-input" id="console-input" placeholder="Type a command... (try /help)" autocomplete="off">
+        </div>
+        <div class="console-logs" id="console-logs">
+            <!-- Initial messages will be added via JS -->
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="logo-container">
+        <div class="learnit-logo">LearnIT</div>
+        <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
+    </div>
+    
+    <script src="js/part2.js"></script>
+</body>
+</html>
