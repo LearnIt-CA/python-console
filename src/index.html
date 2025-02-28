@@ -1,107 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CSIS Cyber Division - Operation Phantom Chase</title>
-    <link rel="stylesheet" href="css/index.css" />
-  </head>
-  <body>
-
-<div id="intro-animation" class="fullscreen-overlay">
-  <div class="terminal-container">
-    <div id="terminal-content"></div>
-    <div class="cursor-line">
-      <span class="terminal-prompt">></span>
-      <span class="terminal-cursor">_</span>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSIS Cyber Division - Operation Phantom Chase</title>
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+  <!-- Matrix Canvas Background -->
+  <canvas id="matrix-canvas"></canvas>
+  
+  <!-- Binary Overlay -->
+  <div id="binary-overlay" class="binary-overlay"></div>
+  
+  <!-- Targeting Lines for Visual Effect -->
+  <div class="targeting-line targeting-line-h"></div>
+  <div class="targeting-line targeting-line-v"></div>
+  
+  <!-- Intro Animation -->
+  <div id="intro-animation" class="fullscreen-overlay">
+    <div class="terminal-container">
+      <div id="terminal-content"></div>
+      <div class="cursor-line">
+        <span class="terminal-prompt">&gt;</span>
+        <span class="terminal-cursor">_</span>
+      </div>
     </div>
   </div>
-</div>
+  
+  <div class="container">
+    <div class="header">
+      <h1 class="title">CSIS CYBER DIVISION</h1>
+      <p class="subtitle">Operation Phantom Chase</p>
+      <p class="subtitle">TOP SECRET - AUTHORIZED PERSONNEL ONLY</p>
+    </div>
     
-
-</div>
-    <canvas id="matrix-canvas"></canvas>
-
-    <div class="binary-overlay" id="binary-overlay"></div>
-    <div class="targeting-line targeting-line-h"></div>
-    <div class="targeting-line targeting-line-v"></div>
-
-    <div class="container">
-      <div class="header">
-        <h1 class="title">CSIS CYBER DIVISION</h1>
-        <h2 class="subtitle">Operation Phantom Chase</h2>
-        <p>TOP SECRET - AUTHORIZED PERSONNEL ONLY</p>
-      </div>
-
-      <div class="main-content">
-        <div class="panel" id="system-info">
-          <div class="panel-header">
-            <div class="panel-title">System Access</div>
-          </div>
-          <div class="panel-content system-panel">
-            <div class="terminal-window" id="terminal">
-              <p class="terminal-text">
-                Initializing CSIS Cyber Division Terminal...
-              </p>
-              <p class="terminal-text">Establishing secure connection...</p>
-              <p class="terminal-text">Connection established.</p>
-              <p class="terminal-text">
-                Crypto Crime Division - Operation Phantom Chase
-              </p>
-              <p class="terminal-text">** CLASSIFIED INFORMATION **</p>
-              <p class="terminal-text">
-                Mission: Infiltrate Phantom's system .
-              </p>
-              <p class="terminal-text">
-                LearnIT personnel have been granted temporary CSIS clearance
-                level GAMMA-9.
-              </p>
-              <p class="terminal-text">Please authenticate to continue...</p>
-              <p class="terminal-text blink">_</p>
-            </div>
+    <div class="main-content">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">System Access</div>
+        </div>
+        <div class="panel-content">
+          <div class="terminal-window">
+            <div class="terminal-text">Initializing CSIS Cyber Division Terminal...</div>
+            <div class="terminal-text">Establishing secure connection...</div>
+            <div class="terminal-text">Connection established.</div>
+            <div class="terminal-text">Crypto Crime Division - Operation Phantom Chase</div>
+            <div class="terminal-text">** CLASSIFIED INFORMATION **</div>
+            <div class="terminal-text">Mission: Infiltrate Phantom's system .</div>
+            <div class="terminal-text">LearnIT personnel have been granted temporary CSIS clearance
+                level GAMMA-9.</div>
+            <div class="terminal-text">Please authenticate to continue...</div>
           </div>
         </div>
-
-        <div class="panel" id="login-panel">
-          <div class="panel-header">
-            <div class="panel-title">Authentication Required</div>
-          </div>
-          <div class="panel-content">
-            <form class="login-form" id="auth-form">
-              <div class="form-group">
-                <label class="form-label"
-                  >Enter Your Name (Classified Operatives Only)</label
-                >
-                <input
-                  type="text"
-                  class="form-input"
-                  id="username"
-                  placeholder="Agent Name"
-                  required
-                />
-              </div>
-              <button type="submit" class="form-button">Authenticate</button>
-            </form>
+      </div>
+      
+      <div id="login-panel" class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Authentication Required</div>
+        </div>
+        <div class="panel-content">
+          <form id="auth-form" class="login-form">
+            <div class="form-group">
+              <label for="username" class="form-label">Enter Your Name (Classified Operatives Only)</label>
+              <input type="text" id="username" class="form-input" required autocomplete="off">
+            </div>
+            
+            <button type="submit" class="form-button">Authenticate</button>
+            
             <div id="message"></div>
+            
             <div id="progress-bar" class="hidden">
               <div id="progress"></div>
               <div id="progress-text">0%</div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
+  
+  <!-- Logo and footer info -->
+  <div class="logo-container">
+    <div class="learnit-logo">LearnIT</div>
+    <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
+  </div>
+  
+  <!-- Access Granted Overlay -->
+  <div id="access-granted" class="hidden">
+    <h1>ACCESS GRANTED</h1>
+    <button id="continue-btn">Continue to Mission</button>
+  </div>
 
-    <div class="logo-container">
-      <div class="learnit-logo">LearnIT</div>
-      <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
-    </div>
-
-    <div id="access-granted" class="hidden">
-      <h1>ACCESS GRANTED</h1>
-      <button id="continue-btn">Continue to Mission</button>
-    </div>
-
-    <script src="js/script.js"></script>
-  </body>
+  <script src="js/script.js"></script>
+</body>
 </html>

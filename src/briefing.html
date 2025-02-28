@@ -1,100 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission Briefing - Operation Phantom Chase</title>
-    <link rel="stylesheet" href="css/briefing.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Briefing - Operation Phantom Chase</title>
+  <link rel="stylesheet" href="css/briefing.css">
 </head>
 <body class="briefing-page">
-    <!-- Matrix canvas background -->
-    <canvas id="matrix-canvas"></canvas>
-    
-    <!-- Binary overlay -->
-    <div id="binary-overlay" class="binary-overlay"></div>
-    
-    <!-- Main mission content -->
-    <div id="mission-page">
-        <div class="mission-header">
-            <h1 class="mission-title">Operation Phantom Chase</h1>
-            <h2 class="mission-subtitle">Briefing: Phantom Hacker</h2>
-        </div>
+  <!-- Matrix canvas background -->
+  <canvas id="matrix-canvas"></canvas>
+  
+  <!-- Intro animation container -->
+  <div id="intro-animation" class="fullscreen-overlay">
+    <div class="terminal-container">
+      <div id="terminal-content"></div>
+      <div class="cursor-line">
+        <span class="terminal-prompt">&gt;</span>
+        <span class="terminal-cursor">_</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main mission content (initially hidden) -->
+  <div id="mission-page" style="display: none;">
+    <div class="mission-content">
+      <!-- Objectives panel (moved to top) -->
+      <div class="objective-panel">
+        <h3 class="mission-panel-title">YOUR OBJECTIVE</h3>
+        <div class="terminal-decoration term-dec-1">SYS:0xFF</div>
+        <div class="terminal-decoration term-dec-2">SEC_LEVEL:9</div>
         
-        <div class="mission-content">
-            <div class="mission-panel">
-                <h3 class="mission-panel-title">Mission Overview</h3>
-                <p class="mission-text">In February 2025, a hacker known as "<span class="highlight">Phantom</span>" 
-                    successfully breached the security systems of Cyberex Exchange, 
-                    resulting in the theft of cryptocurrency assets valued at 
-                    approximately <span class="highlight">$1.5 billion USD</span>.</p>
-                
-                <p class="mission-text">Our intelligence division has discovered that Phantom 
-                    communicates with potential buyers through an encrypted channel using a seemingly innocent 
-                    "<span class="highlight">Higher or Lower</span>" game as a covert messaging system before executing 
-                    large transactions.</p>
-                
-                <p class="mission-text">The CSIS Cyber Division, in collaboration with LearnIT's Python 
-                    specialists, has recruited you to help intercept and decode these 
-                    communications.</p>
-                
-                <p class="mission-text">Your mission is to use <span class="highlight">Python</span> to reverse-engineer his game system 
-                    and develop a replacement that will allow us to monitor his 
-                    communications while appearing identical to his original system.</p>
-            </div>
+        <ul class="objective-list">
+          <li class="objective-item">Complete the Python training to learn essential syntax and game mechanics.</li>
+          <li class="objective-item">Work with our CSIS agents to understand the "Higher or Lower" game structure.</li>
+          <li class="objective-item">Develop a Python replacement that perfectly mimics Phantom's game interface.</li>
+          <li class="objective-item">Implement surveillance code that will allow us to monitor communications.</li>
+        </ul>
+        
+      </div>
+      
+      <!-- Target information panel -->
+      <div class="mission-panel">
+        <h3 class="mission-panel-title">Target Information</h3>
+        <!-- <p class="mission-text">Phantom is a highly skilled individual 
+                    with a background in game development and cryptography.</p>
+         -->
+        <div class="target-panel">
+          <div class="status-line">
+            <span>STATUS:</span>
+            <span>ACTIVE</span>
+          </div>
+          <div class="status-line">
+            <span>SCANNING...</span>
+            <span>...</span>
+          </div>
+          
+          <div class="target-frame" id="target-info">
+            <div class="target-icon">👤</div>
+            <div class="target-name">ALIAS: Phantom</div>
+            <div style="color: var(--secondary); font-size: 0.8rem;">SEC.LVL: GAMMA-9</div>
             
-            <div class="mission-panel">
-                <h3 class="mission-panel-title">Target Information</h3>
-                <p class="mission-text">Our intelligence has identified Phantom as a highly skilled individual 
-                    with a background in game development and cryptography, who works alone to orchestrate 
-                    complex cyber heists.</p>
-                
-                <div class="target-panel">
-                    <div class="status-line">
-                        <span>STATUS:</span>
-                        <span>ACTIVE</span>
-                    </div>
-                    <div class="status-line">
-                        <span>SCANNING...</span>
-                        <span class="scanning-dots">...</span>
-                    </div>
-                    
-                    <div class="target-frame">
-                        <div class="target-icon">👤</div>
-                        <div class="target-name">ALIAS: Phantom</div>
-                        <div class="security-level">SEC.LVL: GAMMA-9</div>
-                    </div>
-                    
-                    <div class="geo-line">
-                        <span>LAT: 37.7749° N</span>
-                        <span>LONG: 122.4194° W</span>
-                    </div>
-                </div>
+            <!-- Hidden glitch overlay -->
+            <div class="glitch-overlay" style="display:none;">
+              <div class="glitch-text">UNKNOWN</div>
+              <div class="signal-noise"></div>
             </div>
+          </div>
+          
+          <div class="geo-line">
+            <span>LAT: 37.7749° N</span>
+            <span>LONG: 122.4194° W</span>
+          </div>
         </div>
-        
-        <div class="objective-panel">
-            <h3 class="mission-panel-title">YOUR OBJECTIVE</h3>
-            <ul class="objective-list">
-                <li class="objective-item">Study the logic and mechanics of Phantom's "Higher or Lower" game.</li>
-                <li class="objective-item">Develop a Python-based replacement that mimics the original game's functionality.</li>
-                <li class="objective-item">Implement hidden monitoring capabilities that will allow us to track his communications.</li>
-                <li class="objective-item">Test and deploy the replacement system to intercept Phantom's transactions.</li>
-            </ul>
-            <p class="mission-text">The LearnIT instructors have been granted temporary CSIS consultant status and will guide you through this mission using their Python expertise.</p>
-        </div>
-        
-        <div class="mission-buttons">
-            <button id="begin-mission-btn" class="mission-button">BEGIN MISSION</button>
-        </div>
+      </div>
+      
+      <!-- Begin mission button -->
+      <div class="mission-buttons">
+        <button id="begin-mission-btn" class="mission-button">BEGIN MISSION</button>
+      </div>
     </div>
-    
-    <!-- Logo container -->
-    <div class="logo-container">
-        <div class="learnit-logo">LearnIT</div>
-        <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
-    </div>
-    
-    <!-- Scripts -->
-    <script src="js/briefing.js"></script>
+  </div>
+  
+  <!-- LearnIT Logo -->
+  <div class="logo-container">
+    <span class="logo-text">LearnIT</span>
+    <span class="connection-text">SECURE CONNECTION ESTABLISHED</span>
+  </div>
+  
+  <script src="js/briefing.js"></script>
 </body>
 </html>

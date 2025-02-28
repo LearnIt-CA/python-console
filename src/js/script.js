@@ -1,16 +1,12 @@
 // Intro animation sequence
 document.addEventListener('DOMContentLoaded', function() {
-  // Shorter, more focused messages with Ryan connection
+  // More conversational messages with Ryan connection
   const introMessages = [
-    "ESTABLISHING SECURE CONNECTION TO CSIS NETWORK...",
-    "ACCESS GRANTED: WELCOME TO OPERATION PHANTOM CHASE",
-    "",
-    "ATTENTION AGENT:",
-    "AGENT RYAN HAS ACTIVATED THIS TERMINAL FOR YOUR BRIEFING.",
-    "HE HAS CLEARANCE LEVEL: GAMMA-9 AND WILL ASSIST YOU.",
-    "USE THE SKILLS RYAN HAS OBSERVED IN YOUR CLASS.",
-    "",
-    "TURN TO RYAN NOW FOR VERBAL AUTHENTICATION CODE."
+    "Hey there, rookie! Nice to meet you.",
+    "I believe you've met Agent Ryan already, he's one of our best agents in the field.",
+    "Ryan told me he's found an unpolished gem in you, I trust his judgment completely",
+    "Now, I need you to log into our classified portal.",
+    "Let's see what you're made of!"
   ];
 
   // DOM elements
@@ -29,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentMessageIndex = 0;
   let isComplete = false;
   
-  // Function to create a typing effect for a message
+  // Function to create a typing effect for a message with slower speed
   function typeMessage(message, index) {
     return new Promise(resolve => {
       // Create a new line element
@@ -55,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Add line to terminal
       terminalContent.appendChild(line);
       
-      // Faster typing speed
-      const typingDuration = Math.min(message.length * 20, 800);
+      // Slower typing speed - increased duration
+      const typingDuration = Math.min(message.length * 50, 2000);
       
       // Set the animation duration dynamically
       typingSpan.style.animationDuration = `${typingDuration}ms`;
@@ -67,25 +63,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 50);
       
       // Resolve after animation completes
-      setTimeout(resolve, typingDuration + 100);
+      setTimeout(resolve, typingDuration + 400);
     });
   }
   
-  // Function to handle enter key press for skipping or continuing
-  function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-      if (isComplete) {
-        // Transition to login when complete and Enter is pressed
-        createGridTransition();
-      } else if (currentMessageIndex < introMessages.length) {
-        // Skip to last message
-        currentMessageIndex = introMessages.length;
-        typeMessage("PRESS ENTER TO CONTINUE TO LOGIN", introMessages.length).then(() => {
-          isComplete = true;
-        });
-      }
-    }
+// Function to handle enter key press for skipping or continuing
+function handleKeyPress(event) {
+  if (event.key === 'Enter') {
+    // Always allow skipping the intro animation with Enter
+    createGridTransition();
   }
+}
   
   // Add event listener for key press
   document.addEventListener('keydown', handleKeyPress);
@@ -321,6 +309,12 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
 
   const username = document.getElementById("username").value.trim();
   const messageElement = document.getElementById("message");
+  const authButton = document.querySelector(".form-button");
+  
+  // Disable the authentication button immediately
+  authButton.disabled = true;
+  authButton.style.opacity = "0.6";
+  authButton.style.cursor = "not-allowed";
 
   // Check if username is in authorized list (case insensitive)
   const isAuthorized = authorizedUsers.some(
@@ -352,17 +346,11 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
 
       if (progress === 100) {
         clearInterval(interval);
-
-        // Show access granted screen after a short delay
+        
+        // Redirect to the next page directly after loading completes
         setTimeout(() => {
-          document.getElementById("access-granted").classList.remove("hidden");
-          
-          // Update welcome message with the agent's name
-          const welcomeElement = document.querySelector("#access-granted h1");
-          if (welcomeElement) {
-            welcomeElement.textContent = `Welcome to Operation Phantom Chase, Agent ${username.toUpperCase()}`;
-          }
-        }, 1000);
+          window.location.href = "briefing.html";
+        }, 500);
       }
     }, 200);
   } else {
@@ -374,11 +362,18 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
     document.body.classList.add("glitch");
     setTimeout(() => {
       document.body.classList.remove("glitch");
+      
+      // Re-enable the button after 2 seconds for failed attempts
+      setTimeout(() => {
+        authButton.disabled = false;
+        authButton.style.opacity = "1";
+        authButton.style.cursor = "pointer";
+      }, 2000);
     }, 1000);
   }
 });
 
-// Continue button action
+// Continue button action - not needed anymore but keeping for reference
 document.getElementById("continue-btn").addEventListener("click", function () {
   window.location.href = "briefing.html";
 });

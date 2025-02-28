@@ -1,6 +1,204 @@
 /* Import base styles */
 @import url("base.css");
 
+/* Same intro animation styles as index.css */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.terminal-container {
+  width: 80%;
+  max-width: 800px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--primary);
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.terminal-container:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: var(--primary);
+  opacity: 0.8;
+}
+
+#terminal-content {
+  margin-bottom: 15px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.terminal-line {
+  color: var(--primary);
+  margin-bottom: 8px;
+  line-height: 1.5;
+  overflow: hidden;
+  white-space: pre-wrap;
+  opacity: 0;
+  transform: translateY(5px);
+  animation: fadeInUp 0.3s forwards;
+}
+
+.terminal-prompt {
+  color: var(--secondary);
+  margin-right: 10px;
+}
+
+.terminal-cursor {
+  color: var(--primary);
+  animation: blink-cursor 1s step-end infinite;
+}
+
+.cursor-line {
+  display: flex;
+  align-items: center;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.typing {
+  overflow: hidden;
+  display: inline-block;
+  white-space: nowrap;
+  width: 0;
+  animation: typing-effect 1s steps(40, end) forwards;
+}
+
+@keyframes typing-effect {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Enhanced hacker-style transition animation */
+.terminal-glitch {
+  animation: terminal-glitch 0.2s ease 3;
+}
+
+@keyframes terminal-glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-5px, 5px);
+  }
+  40% {
+    transform: translate(-5px, -5px);
+  }
+  60% {
+    transform: translate(5px, 5px);
+  }
+  80% {
+    transform: translate(5px, -5px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.grid-item {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-sizing: border-box;
+  display: inline-block;
+  overflow: hidden;
+  transform-origin: center;
+  z-index: 2;
+}
+
+.grid-item:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 255, 65, 0.1);
+  opacity: 0;
+  animation: flicker 0.2s ease infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.computational-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 1;
+  overflow: hidden;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}
+
+@keyframes shatter {
+  0% {
+    transform: scale(1) translateZ(0);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(1.02) translateZ(0);
+  }
+  100% {
+    transform: scale(0) translateZ(0);
+    opacity: 0;
+  }
+}
+
+.system-alert {
+  color: var(--primary);
+  font-weight: bold;
+  animation: alert-blink 0.3s step-end infinite;
+}
+
+@keyframes alert-blink {
+  0%, 100% { color: var(--primary); }
+  50% { color: var(--error); }
+}
+
+/* Briefing page styles */
 .briefing-page {
   overflow-y: auto;
   justify-content: flex-start;
@@ -13,26 +211,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-}
-
-.mission-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.mission-title {
-  font-size: 2.5rem;
-  color: var(--primary);
-  text-shadow: 0 0 10px var(--primary);
-  text-transform: uppercase;
-  letter-spacing: 5px;
-  margin-bottom: 10px;
-}
-
-.mission-subtitle {
-  font-size: 1.5rem;
-  color: var(--primary);
-  margin-bottom: 20px;
 }
 
 .mission-content {
@@ -79,10 +257,12 @@
   padding: 20px;
   width: 100%;
   max-width: 1200px;
-  margin-top: 30px;
+  margin-bottom: 30px;
   box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
   position: relative;
   overflow: hidden;
+  /* Fixed height to prevent resizing during animation */
+  min-height: 320px;
 }
 
 /* Terminal-style top bar */
@@ -159,12 +339,21 @@
 .objective-item {
   margin-bottom: 15px;
   padding-left: 30px;
-  color: var(--primary); /* Green text for numbered items */
+  color: var(--primary);
   position: relative;
   line-height: 1.8;
   border-left: 2px solid rgba(0, 255, 65, 0.3);
   padding-left: 20px;
   transition: all 0.3s ease;
+  visibility: hidden; /* Start hidden */
+  opacity: 0;
+}
+
+/* Show objective items one by one with fade in instead of typing effect */
+.objective-item.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
 /* Hover effect for objective items */
@@ -190,17 +379,6 @@
 /* Initialize counter */
 .objective-list {
   counter-reset: objective-counter;
-}
-
-/* Binary decoration */
-.objective-panel:after {
-  content: "10010110";
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  color: rgba(0, 255, 65, 0.2);
-  font-size: 0.8rem;
-  letter-spacing: 2px;
 }
 
 /* Terminal-style decorations */
@@ -268,7 +446,7 @@
 }
 
 .status-line span:last-child {
-  color: #ff0;
+  color: var(--primary);
 }
 
 .status-line span:last-child.blink {
@@ -286,6 +464,7 @@
   background-color: rgba(0, 0, 0, 0.7);
   position: relative;
   overflow: hidden;
+  cursor: pointer; /* Add cursor pointer to indicate clickable */
 }
 
 .target-frame:after {
@@ -298,6 +477,60 @@
   background-color: var(--primary);
   opacity: 0.7;
   animation: scanning-line 3s linear infinite;
+}
+
+/* Glitch overlay for target information */
+.glitch-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+.glitch-text {
+  color: red;
+  font-size: 1.5rem;
+  font-family: monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: glitch-text 0.3s ease infinite;
+}
+
+.signal-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    transparent,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent
+  );
+  background-size: 100% 3px;
+  animation: signal-noise 0.2s linear infinite;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+@keyframes glitch-text {
+  0% { transform: translate(0); color: red; }
+  25% { transform: translate(-2px, 1px); color: white; }
+  50% { transform: translate(1px, -1px); color: red; }
+  75% { transform: translate(-1px, -2px); color: white; }
+  100% { transform: translate(0); color: red; }
+}
+
+@keyframes signal-noise {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
 }
 
 @keyframes scanning-line {
@@ -355,34 +588,71 @@
 
 .mission-button {
   background-color: transparent;
-  border: 1px solid var(--primary);
-  color: var(--primary);
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
   padding: 12px 25px;
   font-size: 1rem;
   cursor: pointer;
   text-transform: uppercase;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--secondary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
 }
 
 .mission-button:hover {
-  background-color: var(--primary);
   color: var(--background);
-  box-shadow: 0 0 10px var(--primary);
+  box-shadow: 0 0 10px var(--secondary);
+}
+
+.mission-button:hover:before {
+  opacity: 1;
 }
 
 #begin-mission-btn {
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease;
+  position: relative;
+  z-index: 5; /* Ensure button is above other elements */
 }
 
 #begin-mission-btn.button-revealed {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto; /* Ensure button is clickable when revealed */
+  z-index: 5;
 }
 
 .typed {
-  animation: typing 1.5s steps(30, end);
+  animation: typing 0.5s steps(30, end);
+}
+
+/* Exclude objective items from typing animation */
+.objective-item.typed {
+  animation: none;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .mission-text:last-child:after,
@@ -395,36 +665,111 @@
   animation: glitch 0.3s infinite;
 }
 
-/* Ready indicator */
-.mission-ready-indicator {
-  display: inline-block;
-  margin-left: 10px;
-  font-size: 0.8rem;
-  color: var(--primary);
-  border: 1px solid var(--primary);
-  padding: 2px 8px;
-  border-radius: 3px;
-  animation: ready-blink 2s infinite;
+@keyframes glitch {
+  0% { transform: skew(0deg); filter: hue-rotate(0deg); }
+  25% { transform: skew(3deg); filter: hue-rotate(90deg); }
+  50% { transform: skew(-3deg); filter: hue-rotate(180deg); }
+  75% { transform: skew(3deg); filter: hue-rotate(270deg); }
+  100% { transform: skew(0deg); filter: hue-rotate(360deg); }
 }
 
-@keyframes ready-blink {
-  0%, 100% {
-    opacity: 1;
-    background-color: transparent;
-  }
-  50% {
-    opacity: 0.8;
-    background-color: rgba(0, 255, 65, 0.2);
-  }
+/* Loading overlay for mission transition */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-content {
+  text-align: center;
+  color: var(--primary);
+}
+
+.loading-content h2 {
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  animation: glitchText 0.3s infinite;
+}
+
+.loading-progress {
+  width: 300px;
+  height: 5px;
+  background-color: rgba(0, 255, 65, 0.2);
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0;
+  background-color: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+  transition: width 0.3s;
+}
+
+.loading-status {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+/* Targeting lines */
+.targeting-line {
+  position: fixed;
+  background-color: rgba(0, 255, 65, 0.2);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.targeting-line-h {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+  left: 0;
+}
+
+.targeting-line-v {
+  width: 1px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+}
+
+/* Logo at the bottom of the page */
+.logo-container {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 0;
+}
+
+.logo-text {
+  font-family: monospace;
+  color: var(--primary);
+  font-size: 1rem;
+  letter-spacing: 2px;
+}
+
+.connection-text {
+  font-family: monospace;
+  color: var(--primary);
+  font-size: 0.6rem;
+  opacity: 0.7;
 }
 
 @media (max-width: 768px) {
-  .mission-title {
-    font-size: 1.8rem;
-  }
-
-  .mission-subtitle {
-    font-size: 1.2rem;
+  .mission-panel-title {
+    font-size: 1.1rem;
   }
   
   .mission-panel, .objective-panel {

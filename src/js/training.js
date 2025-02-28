@@ -167,6 +167,219 @@ document.querySelectorAll('.copy-btn').forEach(button => {
   });
 });
 
+// Intro animation sequence - similar to briefing.js
+document.addEventListener('DOMContentLoaded', function() {
+  // Retrieve the agent's name from localStorage
+  const agentName = localStorage.getItem('agentName') || 'AGENT';
+  
+  // Training-specific intro messages
+  const introMessages = [
+    `Agent ${agentName.toUpperCase()}, before we start our mission against Phantom...`,
+    "We've prepared a special Python training program for you.",
+    "This mission is urgent and critical, so we must ensure everything is perfect.",
+    "Agent Ryan personally selected you for this task - he clearly sees your potential.",
+    "I'm confident this training will be a piece of cake for someone with your abilities.",
+    `Good luck, Agent ${agentName.toUpperCase()}. talk to you soon.`
+];
+
+  // DOM elements
+  const introAnimation = document.getElementById('intro-animation');
+  const terminalContent = document.getElementById('terminal-content');
+  const terminalContainer = document.querySelector('.terminal-container');
+  const trainingPage = document.getElementById('training-page');
+  
+  // Add computational overlay for effects
+  const compOverlay = document.createElement('div');
+  compOverlay.className = 'computational-overlay';
+  terminalContainer.appendChild(compOverlay);
+  
+  // Make sure main content is hidden during intro
+  document.querySelector('.container').style.opacity = '0';
+  
+  // Clear any existing content
+  terminalContent.innerHTML = '';
+  
+  let currentMessageIndex = 0;
+  let isComplete = false;
+  
+  // Function to create a typing effect for a message
+  function typeMessage(message, index) {
+    return new Promise(resolve => {
+      // Create a new line element
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      
+      // For empty messages (spacing), resolve immediately
+      if (message === "") {
+        line.innerHTML = "&nbsp;";
+        terminalContent.appendChild(line);
+        resolve();
+        return;
+      }
+      
+      // Add the typing span
+      const typingSpan = document.createElement('span');
+      typingSpan.className = 'typing';
+      typingSpan.textContent = message;
+      line.appendChild(typingSpan);
+      
+      // Add line to terminal
+      terminalContent.appendChild(line);
+      
+      // Typing speed based on message length
+      const typingDuration = Math.min(message.length * 50, 2000);
+      
+      // Set the animation duration dynamically
+      typingSpan.style.animationDuration = `${typingDuration}ms`;
+      
+      // Auto-scroll to bottom
+      setTimeout(() => {
+        terminalContent.scrollTop = terminalContent.scrollHeight;
+      }, 50);
+      
+      // Resolve after animation completes
+      setTimeout(resolve, typingDuration + 400);
+    });
+  }
+  
+// Function to handle enter key press for skipping or continuing
+function handleKeyPress(event) {
+  if (event.key === 'Enter') {
+    // Always allow skipping the intro animation with Enter
+    createGridTransition();
+  }
+}
+  
+  // Add event listener for key press
+  document.addEventListener('keydown', handleKeyPress);
+  
+  // Create grid transition effect
+  function createGridTransition() {
+    // Remove keyboard event listener
+    document.removeEventListener('keydown', handleKeyPress);
+    
+    // First apply a glitch effect to the terminal
+    terminalContainer.classList.add('terminal-glitch');
+    
+    setTimeout(() => {
+      // Get the actual position and dimensions of the terminal container
+      const terminalRect = terminalContainer.getBoundingClientRect();
+      const gridSize = 10; // More grid items for a more detailed effect
+      const width = terminalRect.width;
+      const height = terminalRect.height;
+      const itemWidth = width / gridSize;
+      const itemHeight = height / gridSize;
+      
+      // Clone the terminal content for the grid effect
+      const terminalClone = terminalContent.cloneNode(true);
+      
+      // Hide original terminal content
+      terminalContent.style.visibility = 'hidden';
+      document.querySelector('.cursor-line').style.visibility = 'hidden';
+      
+      // Create grid items
+      const gridItems = [];
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          const item = document.createElement('div');
+          item.className = 'grid-item';
+          item.style.width = `${itemWidth}px`;
+          item.style.height = `${itemHeight}px`;
+          
+          // Use absolute positioning relative to the terminal container
+          item.style.position = 'absolute';
+          item.style.left = `${j * itemWidth}px`;
+          item.style.top = `${i * itemHeight}px`;
+          item.style.borderLeft = i % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+          item.style.borderTop = j % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+          
+          // Calculate delay based on pattern
+          const patternDelay = ((i+j) % 4) * 0.1;
+          
+          // Add item content from original terminal (cropped view)
+          item.style.overflow = 'hidden';
+          const inner = terminalClone.cloneNode(true);
+          inner.style.position = 'absolute';
+          inner.style.top = `-${i * itemHeight}px`;
+          inner.style.left = `-${j * itemWidth}px`;
+          inner.style.width = `${width}px`;
+          inner.style.visibility = 'visible';
+          item.appendChild(inner);
+          
+          // Apply animation with delay
+          setTimeout(() => {
+            item.style.animation = `shatter 0.6s cubic-bezier(0.36, 0.11, 0.89, 0.32) forwards`;
+          }, patternDelay * 1000);
+          
+          terminalContainer.appendChild(item);
+          gridItems.push(item);
+        }
+      }
+      
+      // Add system alerts during transition
+      const alertMessages = [
+        "LOADING PYTHON TRAINING MODULES",
+        "INITIALIZING CODE ENVIRONMENT",
+        "COMPILING EXAMPLES",
+        "PREPARING INTERACTIVE CONTENT",
+        "TRAINING READY"
+      ];
+      
+      // Display alerts randomly during transition
+      let alertCount = 0;
+      const alertInterval = setInterval(() => {
+        if (alertCount >= 3) {
+          clearInterval(alertInterval);
+          return;
+        }
+        
+        const randomAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+        const alertElem = document.createElement('div');
+        alertElem.className = 'system-alert';
+        alertElem.textContent = randomAlert;
+        alertElem.style.position = 'absolute';
+        alertElem.style.top = `${20 + alertCount * 30}px`;
+        alertElem.style.left = '50%';
+        alertElem.style.transform = 'translateX(-50%)';
+        alertElem.style.zIndex = '10';
+        
+        terminalContainer.appendChild(alertElem);
+        alertCount++;
+      }, 200);
+      
+      // Fade out the entire overlay after transition
+      setTimeout(() => {
+        introAnimation.style.transition = 'opacity 0.5s ease-out';
+        introAnimation.style.opacity = '0';
+        
+        // Show the main content after intro animation is gone
+        setTimeout(() => {
+          introAnimation.style.display = 'none';
+          document.querySelector('.container').style.opacity = '1';
+          
+          // Initialize the terminal effect for text elements
+          initTerminalEffect();
+        }, 500);
+      }, 1500);
+    }, 600);
+  }
+  
+  // Function to display all messages in sequence
+  async function displayMessages() {
+    for (let i = 0; i < introMessages.length; i++) {
+      currentMessageIndex = i;
+      await typeMessage(introMessages[i], i);
+    }
+    
+    // After all messages, show "PRESS ENTER TO CONTINUE" prompt
+    await typeMessage("PRESS ENTER TO CONTINUE", introMessages.length);
+    isComplete = true;
+  }
+  
+  // Start the intro animation
+  setTimeout(displayMessages, 500);
+});
+
 // Terminal typing effect for text
 function initTerminalEffect() {
   const terminalTexts = document.querySelectorAll(".terminal-text");
@@ -203,9 +416,6 @@ function initTerminalEffect() {
     }, terminalTexts.length * 500 + 1000);
   }, 800);
 }
-
-// Initialize the terminal effect
-document.addEventListener("DOMContentLoaded", initTerminalEffect);
 
 // Begin mission button action with transition
 document
@@ -263,215 +473,6 @@ document
       }, 300);
     }, 500); // 500ms delay to ensure scrolling completes
   });
-
-// Console commands functionality
-document.addEventListener("DOMContentLoaded", function() {
-  const consoleInput = document.getElementById("console-input");
-  const consoleLogs = document.getElementById("console-logs");
-  
-  // Collection of training-related system messages
-  const trainingMessages = [
-    "Reviewing Python basics...",
-    "Analyzing agent skill level...",
-    "Compiling training materials...",
-    "Secure connection maintained...",
-    "Monitoring training progress...",
-    "Checking for security vulnerabilities...",
-    "Updating Python syntax database...",
-    "Running code verification systems...",
-    "Analyzing learning patterns...",
-    "System integrity check: PASSED",
-    "Agent training protocol: ACTIVE",
-    "Python interpreter v3.11 ready",
-    "Training module 4 of 7 completed",
-    "Memory usage: 42% - within parameters",
-    "Training effectiveness: 89%",
-    "Syntax error detection online",
-    "Logic analysis tools initialized",
-    "Algorithm efficiency scanner ready",
-    "Code execution sandbox active",
-    "Security protocols enabled",
-    "Training data encrypted",
-    "Resources allocation optimized",
-    "Python libraries validated",
-    "Agent potential assessment: HIGH",
-    "Mission readiness increasing: 73%"
-  ];
-  
-  // Function to add log to console
-  function addConsoleLog(message, type = "") {
-    const logElement = document.createElement("div");
-    logElement.className = `console-log ${type}`;
-    logElement.textContent = message;
-    consoleLogs.appendChild(logElement);
-    consoleLogs.scrollTop = consoleLogs.scrollHeight;
-    
-    // Limit the number of logs to prevent performance issues
-    if (consoleLogs.children.length > 50) {
-      consoleLogs.removeChild(consoleLogs.children[0]);
-    }
-  }
-  
-  // Toggle module expansion
-  function toggleModule(moduleId) {
-    const module = document.getElementById(`module-${moduleId}`);
-    if (!module) {
-      addConsoleLog(`Error: Module "${moduleId}" not found.`, "error");
-      return false;
-    }
-    
-    const contentId = `${moduleId}-content`;
-    const content = document.getElementById(contentId);
-    const button = module.querySelector(`.expand-btn[data-target="${contentId}"]`);
-    
-    if (content.classList.contains("expanded")) {
-      content.classList.remove("expanded");
-      button.textContent = "EXPAND";
-      button.classList.remove("active");
-      addConsoleLog(`Module ${moduleId.toUpperCase()} collapsed.`, "system");
-    } else {
-      content.classList.add("expanded");
-      button.textContent = "COLLAPSE";
-      button.classList.add("active");
-      addConsoleLog(`Module ${moduleId.toUpperCase()} expanded.`, "success");
-      
-      // Scroll to the module
-      module.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-    return true;
-  }
-  
-  // Display help information in the console
-  function showHelp() {
-    addConsoleLog("=== AVAILABLE COMMANDS ===", "system");
-    addConsoleLog("/help - Show this help information", "system");
-    addConsoleLog("/module [name] - Toggle specific module", "system");
-    addConsoleLog("/expand-all - Expand all modules", "system");
-    addConsoleLog("/collapse-all - Collapse all modules", "system");
-    addConsoleLog("/start-mission - Proceed to mission", "system");
-    addConsoleLog("/clear - Clear console logs", "system");
-    addConsoleLog("/status - Show training status", "system");
-    addConsoleLog("Available modules: variables, datatypes, operations, functions, io, conditionals, loops, cheatsheet", "system");
-    addConsoleLog("========================", "system");
-  }
-  
-  // Process console command
-  function processCommand(command) {
-    command = command.trim().toLowerCase();
-    
-    // Log the command
-    addConsoleLog("> " + command);
-    
-    // Process based on command
-    if (command === "/help") {
-      showHelp();
-    } else if (command.startsWith("/module ")) {
-      const moduleId = command.split(" ")[1];
-      if (!moduleId) {
-        addConsoleLog("Error: Module name required. Use /help for available modules.", "error");
-      } else {
-        toggleModule(moduleId);
-      }
-    } else if (command === "/expand-all") {
-      const modules = ["variables", "datatypes", "operations", "functions", "io", "conditionals", "loops", "cheatsheet"];
-      modules.forEach(moduleId => {
-        const contentId = `${moduleId}-content`;
-        const content = document.getElementById(contentId);
-        const button = document.querySelector(`.expand-btn[data-target="${contentId}"]`);
-        
-        content.classList.add("expanded");
-        button.textContent = "COLLAPSE";
-        button.classList.add("active");
-      });
-      addConsoleLog("All modules expanded.", "success");
-    } else if (command === "/collapse-all") {
-      document.querySelectorAll(".module-content.expanded").forEach(content => {
-        content.classList.remove("expanded");
-        const targetId = content.id;
-        const button = document.querySelector(`.expand-btn[data-target="${targetId}"]`);
-        button.textContent = "EXPAND";
-        button.classList.remove("active");
-      });
-      addConsoleLog("All modules collapsed.", "system");
-    } else if (command === "/clear") {
-      // Clear console logs except for the initial system message
-      while (consoleLogs.children.length > 1) {
-        consoleLogs.removeChild(consoleLogs.lastChild);
-      }
-      addConsoleLog("Console cleared.", "system");
-    } else if (command === "/status") {
-      addConsoleLog("=== TRAINING STATUS ===", "success");
-      addConsoleLog("Status: IN PROGRESS", "success");
-      addConsoleLog("Modules available: 8", "system");
-      addConsoleLog("Training completion: 67%", "system");
-      addConsoleLog("Python proficiency required: Beginner-Intermediate", "system");
-      addConsoleLog("Mission readiness: PENDING", "system");
-      addConsoleLog("=====================", "system");
-    } else if (command === "/start-mission") {
-      addConsoleLog("Initializing mission sequence...", "success");
-      setTimeout(() => {
-        // Trigger the button click event for the mission button
-        document.getElementById("begin-mission-btn").click();
-      }, 1000);
-    } else if (command.startsWith("/")) {
-      addConsoleLog(`Unknown command: ${command}. Type /help for available commands.`, "error");
-    } else {
-      addConsoleLog(`Command execution failed: ${command}`, "error");
-    }
-  }
-  
-  // Console input event handler
-  consoleInput.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-      const command = consoleInput.value;
-      
-      if (command.trim() !== "") {
-        processCommand(command);
-        consoleInput.value = "";
-      }
-    }
-  });
-  
-  // Enhanced system message simulation
-  function simulateSystemMessages() {
-    // Only add new messages if there aren't too many already
-    if (consoleLogs.children.length < 20) {
-      const messageElement = document.createElement("div");
-      messageElement.className = "console-log system";
-      
-      // Select a random message
-      const message = trainingMessages[Math.floor(Math.random() * trainingMessages.length)];
-      messageElement.textContent = message;
-      
-      // Randomly add numeric codes or status indicators
-      if (Math.random() > 0.7) {
-        const status = Math.random() > 0.5 ? "OK" : "PENDING";
-        const code = Math.floor(Math.random() * 999);
-        messageElement.textContent += ` [${status}:${code}]`;
-      }
-      
-      consoleLogs.appendChild(messageElement);
-      consoleLogs.scrollTop = consoleLogs.scrollHeight;
-      
-      // Limit the number of logs to prevent performance issues
-      if (consoleLogs.children.length > 50) {
-        consoleLogs.removeChild(consoleLogs.children[0]);
-      }
-    }
-    
-    // Schedule next message at random interval
-    setTimeout(simulateSystemMessages, Math.random() * 5000 + 3000);
-  }
-  
-  // Initialize console
-  addConsoleLog("CSIS Training Module v3.2.1 initialized", "system");
-  addConsoleLog("Connected to secure training server", "system");
-  addConsoleLog("Type /help for available commands", "system");
-  
-  // Start system message simulation
-  setTimeout(simulateSystemMessages, 2000);
-});
 
 // Apply syntax highlighting to code blocks
 document.addEventListener("DOMContentLoaded", function() {
@@ -602,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (directiveTexts.length > 0) {
       // Update the first paragraph that contains "Agent,"
       const firstPara = directiveTexts[0];
-      if (firstPara.textContent.includes("Agent,")) {
+      if (firstPara && firstPara.textContent.includes("Agent,")) {
         firstPara.textContent = firstPara.textContent.replace(
           "Agent,", 
           `Agent ${agentName.toUpperCase()},`
@@ -613,7 +614,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Also update training directive at the bottom
     const trainingDirectiveTexts = document.querySelectorAll(".training-directive .terminal-text");
     trainingDirectiveTexts.forEach(text => {
-      if (text.textContent.includes("these Python concepts")) {
+      if (text && text.textContent.includes("these Python concepts")) {
         // This is likely the concluding paragraph
         text.textContent = text.textContent.replace(
           "you'll be ready", 
@@ -622,10 +623,11 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
     
-    // Update button text if needed
+    // Update button text to use the agent name and secondary color
     const missionButton = document.getElementById("begin-mission-btn");
     if (missionButton) {
       missionButton.textContent = `PROCEED TO MISSION, AGENT ${agentName.toUpperCase()}`;
+      missionButton.classList.add("secondary-button");
     }
     
     // Also consider redirecting unauthorized users

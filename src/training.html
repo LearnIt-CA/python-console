@@ -3,80 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Training - Operation Phantom Chase</title>
+    <title>Python Training</title>
+    <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/training.css">
 </head>
-<body class="training-page">
-    <!-- Matrix canvas background -->
+<body>
+    <!-- Intro animation overlay (similar to briefing page) -->
+    <div class="fullscreen-overlay" id="intro-animation">
+        <div class="terminal-container">
+            <div id="terminal-content">
+                <!-- Terminal content will be added by JavaScript -->
+            </div>
+            <div class="cursor-line">
+                <span class="terminal-prompt">></span>
+                <span class="terminal-cursor">_</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matrix background -->
     <canvas id="matrix-canvas"></canvas>
     
     <!-- Binary overlay -->
     <div id="binary-overlay" class="binary-overlay"></div>
     
-    <!-- Main training content -->
-    <div id="training-page">
-        <div class="mission-header">
-            <h1 class="mission-title">Operation Phantom Chase</h1>
-            <h2 class="mission-subtitle">Agent Training Protocol</h2>
-        </div>
-        
-        <div class="directive-panel">
-            <h3 class="directive-title">CSIS CLEARANCE: TOP SECRET</h3>
-            <p class="terminal-text">Agent, before you begin your mission to intercept Phantom's communications, you must complete this training module to ensure you have the necessary Python skills.</p>
-            <p class="terminal-text">This knowledge will be essential for analyzing and replicating the "Higher or Lower" game system. Study the following sections carefully.</p>
-            <div class="security-stamp">CSIS TRAINING DIVISION</div>
-        </div>
-        
-        <div class="modules-container">
-            <!-- Module 1: Variables -->
-            <div class="training-module" id="module-variables">
-                <div class="module-header">
-                    <h3 class="module-title">01_VARIABLES</h3>
-                    <div class="module-controls">
-                        <button class="expand-btn" data-target="variables-content">EXPAND</button>
-                    </div>
-                </div>
-                <div class="module-content" id="variables-content">
-                    <p class="module-text">Variables store data that can be used and modified throughout your code. Think of them as containers with labels.</p>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <span class="code-title">VARIABLE SYNTAX</span>
-                            <button class="copy-btn" data-target="variables-code">COPY CODE</button>
-                        </div>
-                        <pre class="code-block" id="variables-code"># Assigning variables
-agent_name = "CLASSIFIED"
-security_level = 9
-is_active = True
-
-# You can change the value stored in a variable
-security_level = security_level + 1
-
-# Multiple assignments
-x, y, z = 10, "coordinate", False
-
-# Print variable values
-print(agent_name)        # Output: CLASSIFIED
-print(security_level)    # Output: 10</pre>
-                    </div>
-                </div>
+    <!-- Main content -->
+    <div class="container training-page">
+        <div id="training-page">
+            <header class="mission-header">
+                <h1 class="mission-title">Python Training</h1>
+            </header>
+            
+            <!-- Secure Python Environment Section -->
+            <div class="secure-environment">
+                <h3 class="environment-header">SECURE ENVIRONMENT</h3>
+                <p>You may use the secure Python environment to practice these concepts.</p>
+                <span class="env-icon">🔒</span>
+                <a href="#" class="env-link">ACCESS SECURE PYTHON ENVIRONMENT</a>
             </div>
             
-            <!-- Module 2: Data Types -->
-            <div class="training-module" id="module-datatypes">
-                <div class="module-header">
-                    <h3 class="module-title">02_DATA_TYPES</h3>
-                    <div class="module-controls">
-                        <button class="expand-btn" data-target="datatypes-content">EXPAND</button>
+            <!-- Training modules -->
+            <div class="modules-container">
+                <!-- Module 1: Variables -->
+                <div class="training-module">
+                    <div class="module-header">
+                        <h3 class="module-title">01_VARIABLES</h3>
+                        <div class="module-controls">
+                            <button class="expand-btn" data-target="module-content-1">EXPAND</button>
+                        </div>
+                    </div>
+                    <div id="module-content-1" class="module-content">
+                        <p class="module-text">Variables store data that can be used and modified throughout your code. Think of them as containers with labels.</p>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <span class="code-title">VARIABLE SYNTAX</span>
+                                <button class="copy-btn" data-target="code-1">COPY CODE</button>
+                            </div>
+                            <pre id="code-1" class="code-block">
+name = "Alex"              
+age = 16                        
+print(name, "is", age) </pre>
+                        </div>
                     </div>
                 </div>
-                <div class="module-content" id="datatypes-content">
-                    <p class="module-text">Python has several built-in data types. The most common are:</p>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <span class="code-title">COMMON DATA TYPES</span>
-                            <button class="copy-btn" data-target="datatypes-code">COPY CODE</button>
+                
+                <!-- Module 2: Data Types -->
+                <div class="training-module">
+                    <div class="module-header">
+                        <h3 class="module-title">02_DATA_TYPES</h3>
+                        <div class="module-controls">
+                            <button class="expand-btn" data-target="module-content-2">EXPAND</button>
                         </div>
-                        <pre class="code-block" id="datatypes-code"># Strings - text data (enclosed in quotes)
+                    </div>
+                    <div id="module-content-2" class="module-content">
+                        <p class="module-text">Python has several built-in data types. The most common are:</p>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <span class="code-title">COMMON DATA TYPES</span>
+                                <button class="copy-btn" data-target="code-2">COPY CODE</button>
+                            </div>
+                            <pre id="code-2" class="code-block">
+# Strings - text data (enclosed in quotes)
 code_name = "Phantom"
 message = 'Encrypted communication detected'
 
@@ -93,31 +102,33 @@ card_values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
 agents = ["Agent 1", "Agent 2", "Agent 3"]
 
 # Check the type of a variable
-print(type(code_name))      # Output: class 'str'
-print(type(stolen_amount))  # Output: class 'int'
-print(type(success_rate))   # Output: class 'float'
-print(type(is_secure))      # Output: class 'bool'
-print(type(card_values))    # Output: class 'list'</pre>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Module 3: Basic Operations -->
-            <div class="training-module" id="module-operations">
-                <div class="module-header">
-                    <h3 class="module-title">03_BASIC_OPERATIONS</h3>
-                    <div class="module-controls">
-                        <button class="expand-btn" data-target="operations-content">EXPAND</button>
-                    </div>
-                </div>
-                <div class="module-content" id="operations-content">
-                    <p class="module-text">Python supports various operations for manipulating data:</p>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <span class="code-title">OPERATIONS</span>
-                            <button class="copy-btn" data-target="operations-code">COPY CODE</button>
+print(type(code_name))      # Output:
+print(type(stolen_amount))  # Output:
+print(type(success_rate))   # Output:
+print(type(is_secure))      # Output:
+print(type(card_values))    # Output:</pre>
                         </div>
-                        <pre class="code-block" id="operations-code"># Arithmetic operations
+                    </div>
+                </div>
+                
+                <!-- Module 3: Basic Operations -->
+                <div class="training-module">
+                    <div class="module-header">
+                        <h3 class="module-title">03_BASIC_OPERATIONS</h3>
+                        <div class="module-controls">
+                            <button class="expand-btn" data-target="module-content-3">EXPAND</button>
+                        </div>
+                    </div>
+                    <div id="module-content-3" class="module-content">
+                        <p class="module-text">Python supports various operations for manipulating data:</p>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <span class="code-title">OPERATIONS</span>
+                                <button class="copy-btn" data-target="code-3">COPY CODE</button>
+                            </div>
+                            <pre id="code-3" class="code-block">
+# Arithmetic operations
 a = 10
 b = 3
 sum_result = a + b        # Addition: 13
@@ -151,26 +162,28 @@ last = "Security"
 full = first + " " + last  # Concatenation: "Cyber Security"
 repeated = "Secure" * 3    # Repetition: "SecureSecureSecure"
 print("ber" in first)      # Membership: True</pre>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Module 4: Functions -->
-            <div class="training-module" id="module-functions">
-                <div class="module-header">
-                    <h3 class="module-title">04_FUNCTIONS</h3>
-                    <div class="module-controls">
-                        <button class="expand-btn" data-target="functions-content">EXPAND</button>
-                    </div>
-                </div>
-                <div class="module-content" id="functions-content">
-                    <p class="module-text">Functions are reusable blocks of code that perform specific tasks:</p>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <span class="code-title">FUNCTION DEFINITION & USAGE</span>
-                            <button class="copy-btn" data-target="functions-code">COPY CODE</button>
                         </div>
-                        <pre class="code-block" id="functions-code"># Define a function
+                    </div>
+                </div>
+                
+                <!-- Module 4: Functions -->
+                <div class="training-module">
+                    <div class="module-header">
+                        <h3 class="module-title">04_FUNCTIONS</h3>
+                        <div class="module-controls">
+                            <button class="expand-btn" data-target="module-content-4">EXPAND</button>
+                        </div>
+                    </div>
+                    <div id="module-content-4" class="module-content">
+                        <p class="module-text">Functions are reusable blocks of code that perform specific tasks:</p>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <span class="code-title">FUNCTION DEFINITION & USAGE</span>
+                                <button class="copy-btn" data-target="code-4">COPY CODE</button>
+                            </div>
+                            <pre id="code-4" class="code-block">
+# Define a function
 def greet_agent(agent_id):
     """This function greets an agent with their ID."""
     return f"Welcome, Agent {agent_id}. Your mission is ready."
@@ -200,26 +213,28 @@ def encrypt_message(message, encryption_level=3):
 secret1 = encrypt_message("Attack at dawn")
 # Overriding the default parameter
 secret2 = encrypt_message("Attack at dawn", 5)</pre>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Module 5: Input/Output -->
-            <div class="training-module" id="module-io">
-                <div class="module-header">
-                    <h3 class="module-title">05_INPUT_OUTPUT</h3>
-                    <div class="module-controls">
-                        <button class="expand-btn" data-target="io-content">EXPAND</button>
-                    </div>
-                </div>
-                <div class="module-content" id="io-content">
-                    <p class="module-text">Python provides ways to get input from users and display output:</p>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <span class="code-title">INPUT/OUTPUT OPERATIONS</span>
-                            <button class="copy-btn" data-target="io-code">COPY CODE</button>
                         </div>
-                        <pre class="code-block" id="io-code"># Basic output with print()
+                    </div>
+                </div>
+                
+                <!-- Module 5: Input/Output -->
+                <div class="training-module">
+                    <div class="module-header">
+                        <h3 class="module-title">05_INPUT_OUTPUT</h3>
+                        <div class="module-controls">
+                            <button class="expand-btn" data-target="module-content-5">EXPAND</button>
+                        </div>
+                    </div>
+                    <div id="module-content-5" class="module-content">
+                        <p class="module-text">Python provides ways to get input from users and display output:</p>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <span class="code-title">INPUT/OUTPUT OPERATIONS</span>
+                                <button class="copy-btn" data-target="code-5">COPY CODE</button>
+                            </div>
+                            <pre id="code-5" class="code-block">
+# Basic output with print()
 print("System initialized")
 print("Multiple", "arguments", "separated by commas")
 
@@ -243,26 +258,28 @@ print("Loading", end="")
 print(".", end="")
 print(".", end="")
 print(".")  # Output: Loading...</pre>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Module 6: Conditionals -->
-            <div class="training-module" id="module-conditionals">
-                <div class="module-header">
-                    <h3 class="module-title">06_CONDITIONALS</h3>
-                    <div class="module-controls">
-                        <button class="expand-btn" data-target="conditionals-content">EXPAND</button>
-                    </div>
-                </div>
-                <div class="module-content" id="conditionals-content">
-                    <p class="module-text">Conditional statements allow your program to make decisions:</p>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <span class="code-title">IF-ELSE STATEMENTS</span>
-                            <button class="copy-btn" data-target="conditionals-code">COPY CODE</button>
                         </div>
-                        <pre class="code-block" id="conditionals-code"># Basic if statement
+                    </div>
+                </div>
+                
+                <!-- Module 6: Conditionals -->
+                <div class="training-module">
+                    <div class="module-header">
+                        <h3 class="module-title">06_CONDITIONALS</h3>
+                        <div class="module-controls">
+                            <button class="expand-btn" data-target="module-content-6">EXPAND</button>
+                        </div>
+                    </div>
+                    <div id="module-content-6" class="module-content">
+                        <p class="module-text">Conditional statements allow your program to make decisions:</p>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <span class="code-title">IF-ELSE STATEMENTS</span>
+                                <button class="copy-btn" data-target="code-6">COPY CODE</button>
+                            </div>
+                            <pre id="code-6" class="code-block">
+# Basic if statement
 access_level = 7
 if access_level >= 5:
     print("Access granted to secure terminal")
@@ -300,26 +317,28 @@ if is_authenticated:
         print("Authorization confirmed. Access granted.")
     else:
         print("Not authorized for this resource.")</pre>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Module 7: Loops -->
-            <div class="training-module" id="module-loops">
-                <div class="module-header">
-                    <h3 class="module-title">07_LOOPS</h3>
-                    <div class="module-controls">
-                        <button class="expand-btn" data-target="loops-content">EXPAND</button>
-                    </div>
-                </div>
-                <div class="module-content" id="loops-content">
-                    <p class="module-text">Loops execute a block of code multiple times:</p>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <span class="code-title">LOOP STRUCTURES</span>
-                            <button class="copy-btn" data-target="loops-code">COPY CODE</button>
                         </div>
-                        <pre class="code-block" id="loops-code"># For loop with range
+                    </div>
+                </div>
+                
+                <!-- Module 7: Loops -->
+                <div class="training-module">
+                    <div class="module-header">
+                        <h3 class="module-title">07_LOOPS</h3>
+                        <div class="module-controls">
+                            <button class="expand-btn" data-target="module-content-7">EXPAND</button>
+                        </div>
+                    </div>
+                    <div id="module-content-7" class="module-content">
+                        <p class="module-text">Loops execute a block of code multiple times:</p>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <span class="code-title">LOOP STRUCTURES</span>
+                                <button class="copy-btn" data-target="code-7">COPY CODE</button>
+                            </div>
+                            <pre id="code-7" class="code-block">
+# For loop with range
 print("Initiating countdown:")
 for i in range(5, 0, -1):  # (start, stop, step)
     print(i)
@@ -361,120 +380,24 @@ for attempt in range(3):
         break
 else:
     print("Maximum attempts reached. Access denied.")</pre>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Python Cheat Sheet Section -->
-            <div class="training-module" id="module-cheatsheet">
-                <div class="module-header">
-                    <h3 class="module-title">PYTHON_CHEAT_SHEET</h3>
-                    <div class="module-controls">
-                        <button class="expand-btn" data-target="cheatsheet-content">EXPAND</button>
-                    </div>
-                </div>
-                <div class="module-content" id="cheatsheet-content">
-                    <p class="module-text">Quick reference for Python syntax you'll need for this mission:</p>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <span class="code-title">QUICK REFERENCE</span>
-                            <button class="copy-btn" data-target="cheatsheet-code">COPY CODE</button>
-                        </div>
-                        <pre class="code-block" id="cheatsheet-code"># Comments start with # and are ignored by Python
-
-# Variables and assignment
-variable_name = value
-
-# Basic data types
-text = "string with quotes"
-whole_number = 42
-decimal_number = 3.14
-is_true = True  # or False
-
-# Operators
-x + y    # Addition
-x - y    # Subtraction
-x * y    # Multiplication
-x / y    # Division
-x // y   # Floor division
-x % y    # Modulus (remainder)
-x ** y   # Exponentiation (power)
-x > y    # Greater than
-x < y    # Less than
-x >= y   # Greater than or equal
-x <= y   # Less than or equal
-x == y   # Equal to
-x != y   # Not equal to
-x and y  # Logical AND
-x or y   # Logical OR
-not x    # Logical NOT
-
-# Input/Output
-variable = input("Prompt: ")  # Get user input as string
-print("Output text")          # Display output
-
-# Conditional statements
-if condition:
-    # code to execute if condition is True
-elif another_condition:
-    # code to execute if another_condition is True
-else:
-    # code to execute if all conditions are False
-
-# Loops
-for item in sequence:
-    # code to execute for each item
-
-while condition:
-    # code to execute while condition is True
-
-# Functions
-def function_name(parameter1, parameter2):
-    # code to execute
-    return result  # Optional return value
-
-# Calling a function
-result = function_name(argument1, argument2)</pre>
-                    </div>
-                </div>
+            <!-- Mission action button -->
+            <div class="mission-buttons">
+                <button id="begin-mission-btn" class="mission-button secondary-button">PROCEED TO MISSION</button>
             </div>
-        </div>
-        
-        <div class="secure-environment">
-            <h4 class="environment-header">PRACTICE ENVIRONMENT</h4>
-            <p class="terminal-text">You may use the secure Python environment to practice these concepts.</p>
-            <a href="https://livecodes.io/?template=python" class="env-link" target="_blank">
-                <span class="env-icon">🔒</span> ACCESS SECURE PYTHON ENVIRONMENT
-            </a>
-        </div>
-        
-        <div class="training-directive">
-            <p class="terminal-text">Once you've familiarized yourself with these Python concepts, you'll be ready to begin the mission to analyze and replicate Phantom's Higher or Lower game.</p>
-            <p class="terminal-text">This knowledge will be crucial for identifying patterns in the game code and implementing hidden monitoring capabilities.</p>
-        </div>
-        
-        <div class="mission-buttons">
-            <button id="begin-mission-btn" class="mission-button">PROCEED TO MISSION</button>
         </div>
     </div>
     
-    <!-- Logo container -->
+    <!-- Logo at bottom -->
     <div class="logo-container">
-        <div class="learnit-logo">LearnIT</div>
+        <div class="logo-text">LearnIT</div>
         <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
     </div>
     
-    <div class="command-console">
-        <div class="console-input-area">
-            <span class="console-prefix">&gt;</span>
-            <input type="text" id="console-input" class="console-input" placeholder="Enter command (/help for commands)">
-        </div>
-        <div class="console-logs" id="console-logs">
-            <div class="console-log system">CSIS Training Module v3.2.1 initialized</div>
-        </div>
-    </div>
-    
-    <!-- Scripts -->
     <script src="js/training.js"></script>
 </body>
 </html>

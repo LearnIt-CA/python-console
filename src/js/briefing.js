@@ -58,39 +58,225 @@ function drawMatrixRain() {
 // Start matrix rain animation
 setInterval(drawMatrixRain, 50);
 
-// Create binary overlay
-function createBinaryOverlay() {
-  const overlay = document.getElementById("binary-overlay");
+// Intro animation sequence - With updated messages
+document.addEventListener('DOMContentLoaded', function() {
+  // Retrieve the agent's name from localStorage
+  const agentName = localStorage.getItem('agentName') || 'AGENT';
+  
+  // New briefing-specific messages with agent name
+  const introMessages = [
+    `Alright Agent ${agentName.toUpperCase()}, welcome aboard`,
+    "Let me bring you up to speed on your mission.",
+    "We're tracking a hacker known as 'Phantom' who stole $1.5 billion in cryptocurrency.",
+    "Phantom uses a simple 'Higher or Lower' game to communicate with buyers.",
+    "Your mission is to recreate this game in Python",
+    "Replace his system with our version.",
+    "This will allow us to intercept and monitor all his communications without detection.",
+    "Here is what you gonna do"
+  ];
 
-  for (let i = 0; i < 50; i++) {
-    const binaryText = document.createElement("div");
-    binaryText.className = "binary-text";
-
-    // Random binary string
-    let text = "";
-    const length = Math.floor(Math.random() * 20) + 10;
-
-    for (let j = 0; j < length; j++) {
-      text += Math.floor(Math.random() * 2);
-    }
-
-    binaryText.textContent = text;
-
-    // Random position
-    const left = Math.random() * 100;
-    const top = Math.random() * 100;
-
-    binaryText.style.left = `${left}%`;
-    binaryText.style.top = `${top}%`;
-
-    overlay.appendChild(binaryText);
+  // DOM elements
+  const introAnimation = document.getElementById('intro-animation');
+  const terminalContent = document.getElementById('terminal-content');
+  const terminalContainer = document.querySelector('.terminal-container');
+  const missionPage = document.getElementById('mission-page');
+  
+  // Add computational overlay for effects
+  const compOverlay = document.createElement('div');
+  compOverlay.className = 'computational-overlay';
+  terminalContainer.appendChild(compOverlay);
+  
+  // Make sure mission page is hidden
+  missionPage.style.display = 'none';
+  
+  // Clear any existing content
+  terminalContent.innerHTML = '';
+  
+  let currentMessageIndex = 0;
+  let isComplete = false;
+  
+  // Function to create a typing effect for a message with slower speed
+  function typeMessage(message, index) {
+    return new Promise(resolve => {
+      // Create a new line element
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      
+      // For empty messages (spacing), resolve immediately
+      if (message === "") {
+        line.innerHTML = "&nbsp;";
+        terminalContent.appendChild(line);
+        resolve();
+        return;
+      }
+      
+      // Add the typing span
+      const typingSpan = document.createElement('span');
+      typingSpan.className = 'typing';
+      typingSpan.textContent = message;
+      line.appendChild(typingSpan);
+      
+      // Add line to terminal
+      terminalContent.appendChild(line);
+      
+      // Slower typing speed - increased duration
+      const typingDuration = Math.min(message.length * 50, 2000);
+      
+      // Set the animation duration dynamically
+      typingSpan.style.animationDuration = `${typingDuration}ms`;
+      
+      // Auto-scroll to bottom
+      setTimeout(() => {
+        terminalContent.scrollTop = terminalContent.scrollHeight;
+      }, 50);
+      
+      // Resolve after animation completes
+      setTimeout(resolve, typingDuration + 400);
+    });
+  }
+  
+// Function to handle enter key press for skipping or continuing
+function handleKeyPress(event) {
+  if (event.key === 'Enter') {
+    // Always allow skipping the intro animation with Enter
+    createGridTransition();
   }
 }
+  
+  // Add event listener for key press
+  document.addEventListener('keydown', handleKeyPress);
+  
+  // Create grid transition effect
+  function createGridTransition() {
+    // Remove keyboard event listener
+    document.removeEventListener('keydown', handleKeyPress);
+    
+    // First apply a glitch effect to the terminal
+    terminalContainer.classList.add('terminal-glitch');
+    
+    setTimeout(() => {
+      // Get the actual position and dimensions of the terminal container
+      const terminalRect = terminalContainer.getBoundingClientRect();
+      const gridSize = 10; // More grid items for a more detailed effect
+      const width = terminalRect.width;
+      const height = terminalRect.height;
+      const itemWidth = width / gridSize;
+      const itemHeight = height / gridSize;
+      
+      // Clone the terminal content for the grid effect
+      const terminalClone = terminalContent.cloneNode(true);
+      
+      // Hide original terminal content
+      terminalContent.style.visibility = 'hidden';
+      document.querySelector('.cursor-line').style.visibility = 'hidden';
+      
+      // Create grid items
+      const gridItems = [];
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          const item = document.createElement('div');
+          item.className = 'grid-item';
+          item.style.width = `${itemWidth}px`;
+          item.style.height = `${itemHeight}px`;
+          
+          // Use absolute positioning relative to the terminal container
+          item.style.position = 'absolute';
+          item.style.left = `${j * itemWidth}px`;
+          item.style.top = `${i * itemHeight}px`;
+          item.style.borderLeft = i % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+          item.style.borderTop = j % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+          
+          // Calculate delay based on pattern
+          const patternDelay = ((i+j) % 4) * 0.1;
+          
+          // Add item content from original terminal (cropped view)
+          item.style.overflow = 'hidden';
+          const inner = terminalClone.cloneNode(true);
+          inner.style.position = 'absolute';
+          inner.style.top = `-${i * itemHeight}px`;
+          inner.style.left = `-${j * itemWidth}px`;
+          inner.style.width = `${width}px`;
+          inner.style.visibility = 'visible';
+          item.appendChild(inner);
+          
+          // Apply animation with delay
+          setTimeout(() => {
+            item.style.animation = `shatter 0.6s cubic-bezier(0.36, 0.11, 0.89, 0.32) forwards`;
+          }, patternDelay * 1000);
+          
+          terminalContainer.appendChild(item);
+          gridItems.push(item);
+        }
+      }
+      
+      // Add system alerts during transition - with briefing-specific alerts
+      const alertMessages = [
+        "ACCESSING MISSION DATA",
+        "DECRYPTING PHANTOM FILES",
+        "RETRIEVING TARGET INFORMATION",
+        "PREPARING MISSION BRIEFING",
+        "MISSION DETAILS LOADED"
+      ];
+      
+      // Display alerts randomly during transition
+      let alertCount = 0;
+      const alertInterval = setInterval(() => {
+        if (alertCount >= 3) {
+          clearInterval(alertInterval);
+          return;
+        }
+        
+        const randomAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+        const alertElem = document.createElement('div');
+        alertElem.className = 'system-alert';
+        alertElem.textContent = randomAlert;
+        alertElem.style.position = 'absolute';
+        alertElem.style.top = `${20 + alertCount * 30}px`;
+        alertElem.style.left = '50%';
+        alertElem.style.transform = 'translateX(-50%)';
+        alertElem.style.zIndex = '10';
+        
+        terminalContainer.appendChild(alertElem);
+        alertCount++;
+      }, 200);
+      
+      // Fade out the entire overlay after transition
+      setTimeout(() => {
+        introAnimation.style.transition = 'opacity 0.5s ease-out';
+        introAnimation.style.opacity = '0';
+        
+        // Show the mission page after intro animation is gone
+        setTimeout(() => {
+          introAnimation.style.display = 'none';
+          missionPage.style.display = 'block';
+          
+          // Initialize the terminal effect for objective items
+          animateObjectiveItems();
+          
+          // Setup the target info click handler
+          setupTargetInfoClickHandler();
+        }, 500);
+      }, 1500);
+    }, 600);
+  }
+  
+  // Function to display all messages in sequence
+  async function displayMessages() {
+    for (let i = 0; i < introMessages.length; i++) {
+      currentMessageIndex = i;
+      await typeMessage(introMessages[i], i);
+    }
+    
+    // After all messages, show "PRESS ENTER TO CONTINUE" prompt
+    await typeMessage("PRESS ENTER TO CONTINUE", introMessages.length);
+    isComplete = true;
+  }
+  
+  // Start the intro animation
+  setTimeout(displayMessages, 500);
+});
 
-// Call binary overlay function
-createBinaryOverlay();
-
-// Add targeting lines (like in index page)
+// Add targeting lines
 function createTargetingLines() {
   const body = document.body;
   
@@ -108,51 +294,81 @@ function createTargetingLines() {
 // Call targeting lines function
 createTargetingLines();
 
-// Terminal typing effect for mission briefing
-function initTerminalEffect() {
-  const missionText = document.querySelectorAll(".mission-text");
+// Function to animate objective items - improved for stable height
+function animateObjectiveItems() {
   const objectiveItems = document.querySelectorAll(".objective-item");
+  const missionText = document.querySelector(".objective-panel .mission-text");
+  const targetInfo = document.querySelector(".target-frame p");
   
-  // Hide all text initially
-  [...missionText, ...objectiveItems].forEach(el => {
-    el.style.opacity = "0";
-    el.style.display = "block";
+  // First ensure all items have proper display setting but remain invisible
+  objectiveItems.forEach(item => {
+    item.style.display = "block";
+    item.style.visibility = "hidden";
   });
   
-  // Function to reveal text elements with typing effect
-  function revealElements(elements, delay = 100) {
-    let index = 0;
-    
-    function revealNext() {
-      if (index < elements.length) {
-        elements[index].style.opacity = "1";
-        elements[index].classList.add("typed");
-        index++;
-        setTimeout(revealNext, delay);
-      }
-    }
-    
-    revealNext();
+  if (missionText) {
+    missionText.style.display = "block";
+    missionText.style.visibility = "hidden";
   }
   
-  // Start revealing mission text after a short delay
-  setTimeout(() => {
-    revealElements(missionText, 600);
-    
-    // Start revealing objective items after mission text
-    setTimeout(() => {
-      revealElements(objectiveItems, 400);
-      
-      // Show begin mission button after all text is revealed
+  // Add animation to target info paragraph if it exists
+  if (targetInfo) {
+    targetInfo.classList.add("typed");
+  }
+  
+  // Then show them one by one with typing effect
+  let index = 0;
+  
+  function showNextItem() {
+    if (index < objectiveItems.length) {
+      const item = objectiveItems[index];
+      item.style.visibility = "visible";
+      item.classList.add("visible");
+      item.classList.add("typed");
+      index++;
+      setTimeout(showNextItem, 250); // Faster typing for objectives
+    } else if (missionText) {
+      // Show mission text after objectives
+      setTimeout(() => {
+        missionText.style.visibility = "visible";
+        missionText.classList.add("typed");
+        
+        // Show begin mission button after all items are revealed
+        setTimeout(() => {
+          document.getElementById("begin-mission-btn").classList.add("button-revealed");
+        }, 500);
+      }, 300);
+    } else {
+      // If no mission text, just show the button
       setTimeout(() => {
         document.getElementById("begin-mission-btn").classList.add("button-revealed");
-      }, objectiveItems.length * 400 + 500);
-    }, missionText.length * 600 + 500);
-  }, 1000);
+      }, 500);
+    }
+  }
+  
+  // Start showing items after a short delay
+  setTimeout(showNextItem, 500);
 }
 
-// Initialize the terminal effect
-document.addEventListener("DOMContentLoaded", initTerminalEffect);
+// Setup the target info click handler
+function setupTargetInfoClickHandler() {
+  const targetInfo = document.getElementById("target-info");
+  
+  if (targetInfo) {
+    targetInfo.addEventListener("click", function() {
+      // Get the glitch overlay
+      const glitchOverlay = targetInfo.querySelector(".glitch-overlay");
+      
+      // Show the glitch overlay
+      glitchOverlay.style.display = "flex";
+      
+      // Hide it after a short period
+      setTimeout(() => {
+        glitchOverlay.style.display = "none";
+      }, 1200);
+    });
+  }
+}
 
 // Add status blinking effect
 function addStatusBlinking() {
@@ -167,77 +383,19 @@ function addStatusBlinking() {
 // Call status blinking
 addStatusBlinking();
 
-// Begin mission button action with improved transition
-document
-  .getElementById("begin-mission-btn")
-  .addEventListener("click", function () {
-    // Add transition effect
-    document.body.classList.add("mission-transition");
-    
-    // Show loading overlay
-    const loadingOverlay = document.createElement("div");
-    loadingOverlay.className = "loading-overlay";
-    loadingOverlay.innerHTML = `
-      <div class="loading-content">
-        <h2>INITIALIZING MISSION</h2>
-        <div class="loading-progress">
-          <div class="loading-bar"></div>
-        </div>
-        <p class="loading-status">Loading mission parameters...</p>
-      </div>
-    `;
-    document.body.appendChild(loadingOverlay);
-    
-    // Simulate loading progress
-    let progress = 0;
-    const loadingBar = loadingOverlay.querySelector(".loading-bar");
-    const loadingStatus = loadingOverlay.querySelector(".loading-status");
-    const statuses = [
-      "Loading mission parameters...",
-      "Accessing secure servers...",
-      "Decrypting game data...",
-      "Establishing secure connection...",
-      "Mission ready!"
-    ];
-    
-    const interval = setInterval(() => {
-      progress += Math.random() * 15;
-      if (progress > 100) progress = 100;
-      
-      loadingBar.style.width = `${progress}%`;
-      loadingStatus.textContent = statuses[Math.min(Math.floor(progress/25), 4)];
-      
-      if (progress === 100) {
-        clearInterval(interval);
-        
-        // Redirect to part1.html page after short delay
-        setTimeout(() => {
-          window.location.href = 'training.html';
-        }, 1500);
-      }
-    }, 300);
-  });
-
-
-  document.addEventListener('DOMContentLoaded', function() {
+// Begin mission button action with direct navigation
+document.addEventListener('DOMContentLoaded', function() {
+  const beginMissionBtn = document.getElementById("begin-mission-btn");
+  if (beginMissionBtn) {
     // Retrieve the agent's name from localStorage
-    const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+    const agentName = localStorage.getItem('agentName') || 'AGENT';
     
-    // Use the agent's name in the briefing page
-    const agentNameElements = document.querySelectorAll('.agent-name');
-    agentNameElements.forEach(element => {
-      element.textContent = agentName.toUpperCase();
+    // Update button text to include agent name
+    beginMissionBtn.textContent = `BEGIN MISSION, AGENT ${agentName.toUpperCase()}`;
+    
+    beginMissionBtn.addEventListener("click", function () {
+      // Direct navigation to training.html without loading screen
+      window.location.href = 'training.html';
     });
-    
-    // Example of personalizing briefing content
-    const briefingHeader = document.querySelector('.mission-subtitle');
-    if (briefingHeader) {
-      briefingHeader.textContent = `Mission Briefing for Agent ${agentName.toUpperCase()}`;
-    }
-    
-    // If you need to check if user is authenticated
-    if (!localStorage.getItem('agentName')) {
-      // Redirect unauthorized users back to login
-      //window.location.href = 'index.html';
-    }
-  });
+  }
+});

@@ -208,12 +208,12 @@ body {
 
 .learnit-logo {
   font-size: 1.2rem;
-  color: var(--secondary);
+  color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 2px;
   padding: 5px 10px;
-  border: 1px solid var(--secondary);
-  text-shadow: 0 0 5px var(--secondary);
+  border: 1px solid var(--primary);
+  text-shadow: 0 0 5px var(--primary);
 }
 
 .connection-info {
