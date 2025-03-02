@@ -43,28 +43,26 @@
                         <h3 class="code-title">HTML Structure</h3>
                         <button class="copy-btn" data-target="html-code">COPY CODE</button>
                     </div>
-                    <pre id="html-code" class="code-block"><!DOCTYPE html>
-<html>
-<head>
-    <title>Higher or Lower Game</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="game-container">
-        <h1>Higher or Lower</h1>
-        <div class="card">
-            <span id="current-card">?</span>
-        </div>
-        <div class="buttons">
-            <button id="higher-btn">Higher</button>
-            <button id="lower-btn">Lower</button>
-        </div>
-        <div class="score">Score: <span id="score">0</span></div>
-        <div class="message" id="message"></div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html></pre>
+                    <pre id="html-code" class="code-block">
+&lt;div class="game-container"&gt;
+    &lt;div class="option left-option"&gt;
+        &lt;h2 id="option1-title"&gt;option1-title&lt;/h2&gt;
+        &lt;div class="value" id="option1-value"&gt;option1-value&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="vs-badge"&gt;VS&lt;/div&gt;
+
+    &lt;div class="option right-option"&gt;
+        &lt;h2 id="option2-title"&gt;option2-title&lt;/h2&gt;
+        &lt;div class="value" id="option2-value"&gt;option2-value&lt;/div&gt;
+        &lt;div class="buttons"&gt;
+            &lt;button id="higher-btn"&gt;Higher&lt;/button&gt;
+            &lt;button id="lower-btn"&gt;Lower&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="message" class="message"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
                 </div>
                 
                 <div id="css-section" class="code-section">
