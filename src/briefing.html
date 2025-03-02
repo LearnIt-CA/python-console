@@ -1,92 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mission Briefing - Operation Phantom Chase</title>
-  <link rel="stylesheet" href="css/briefing.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Briefing - Operation Phantom Chase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/briefing.css">
 </head>
-<body class="briefing-page">
-  <!-- Matrix canvas background -->
-  <canvas id="matrix-canvas"></canvas>
-  
-  <!-- Intro animation container -->
-  <div id="intro-animation" class="fullscreen-overlay">
-    <div class="terminal-container">
-      <div id="terminal-content"></div>
-      <div class="cursor-line">
-        <span class="terminal-prompt">&gt;</span>
-        <span class="terminal-cursor">_</span>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Main mission content (initially hidden) -->
-  <div id="mission-page" style="display: none;">
-    <div class="mission-content">
-      <!-- Objectives panel (moved to top) -->
-      <div class="objective-panel">
-        <h3 class="mission-panel-title">YOUR OBJECTIVE</h3>
-        <div class="terminal-decoration term-dec-1">SYS:0xFF</div>
-        <div class="terminal-decoration term-dec-2">SEC_LEVEL:9</div>
-        
-        <ul class="objective-list">
-          <li class="objective-item">Complete the Python training to learn essential syntax and game mechanics.</li>
-          <li class="objective-item">Work with our CSIS agents to understand the "Higher or Lower" game structure.</li>
-          <li class="objective-item">Develop a Python replacement that perfectly mimics Phantom's game interface.</li>
-          <li class="objective-item">Implement surveillance code that will allow us to monitor communications.</li>
-        </ul>
-        
-      </div>
-      
-      <!-- Target information panel -->
-      <div class="mission-panel">
-        <h3 class="mission-panel-title">Target Information</h3>
-        <!-- <p class="mission-text">Phantom is a highly skilled individual 
-                    with a background in game development and cryptography.</p>
-         -->
-        <div class="target-panel">
-          <div class="status-line">
-            <span>STATUS:</span>
-            <span>ACTIVE</span>
-          </div>
-          <div class="status-line">
-            <span>SCANNING...</span>
-            <span>...</span>
-          </div>
-          
-          <div class="target-frame" id="target-info">
-            <div class="target-icon">👤</div>
-            <div class="target-name">ALIAS: Phantom</div>
-            <div style="color: var(--secondary); font-size: 0.8rem;">SEC.LVL: GAMMA-9</div>
-            
-            <!-- Hidden glitch overlay -->
-            <div class="glitch-overlay" style="display:none;">
-              <div class="glitch-text">UNKNOWN</div>
-              <div class="signal-noise"></div>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Main mission page (visible by default now) -->
+    <div id="mission-page" class="briefing-page">
+        <div class="mission-content">
+            <div class="objective-panel">
+                <div class="terminal-decoration term-dec-1">SYS:0xFF</div>
+                <div class="terminal-decoration term-dec-2">SEC_LEVEL:9</div>
+                <h2 class="mission-panel-title">YOUR OBJECTIVE</h2>
+                
+                <!-- Replace list with paragraph -->
+                <div class="objective-paragraph">
+                    You will complete the Python training to learn essential syntax and work with our CSIS agents to understand a web app's structure. You will help us develop a Python-based web app and extract the secret code from it. Let's hunt down this Phantom.
+                </div>
             </div>
-          </div>
-          
-          <div class="geo-line">
-            <span>LAT: 37.7749° N</span>
-            <span>LONG: 122.4194° W</span>
-          </div>
+            
+            <div class="mission-panel">
+                <h2 class="mission-panel-title">Target Information</h2>
+                <div class="target-panel">
+                    <div class="status-line">
+                        <span>STATUS:</span>
+                        <span>ACTIVE</span>
+                    </div>
+                    <div id="target-info" class="target-frame">
+                        <div class="glitch-overlay" style="display: none;">
+                            <div class="glitch-text">ACCESS DENIED</div>
+                            <div class="signal-noise"></div>
+                        </div>
+                        <div class="target-icon">👤</div>
+                        <div class="target-name">ALIAS: Phantom</div>
+                    </div>
+                    <div class="status-line">
+                        <span>SEC.LVL:</span>
+                        <span>GAMMA-9</span>
+                    </div>
+                    <div class="geo-line">
+                        <span>LAT: 37.7749° N</span>
+                        <span>LONG: 122.4194° W</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mission-buttons">
+                <button id="begin-mission-btn" class="mission-button">BEGIN MISSION</button>
+            </div>
         </div>
-      </div>
-      
-      <!-- Begin mission button -->
-      <div class="mission-buttons">
-        <button id="begin-mission-btn" class="mission-button">BEGIN MISSION</button>
-      </div>
     </div>
-  </div>
-  
-  <!-- LearnIT Logo -->
-  <div class="logo-container">
-    <span class="logo-text">LearnIT</span>
-    <span class="connection-text">SECURE CONNECTION ESTABLISHED</span>
-  </div>
-  
-  <script src="js/briefing.js"></script>
+    
+    <div class="logo-container">
+        <div class="logo-text">LearnIT</div>
+        <div class="connection-text">SECURE CONNECTION ESTABLISHED</div>
+    </div>
+    
+    <script src="js/briefing.js"></script>
 </body>
 </html>

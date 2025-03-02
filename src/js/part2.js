@@ -1,3 +1,210 @@
+// Intro animation sequence - added from index.js
+document.addEventListener('DOMContentLoaded', function() {
+  // More conversational messages
+  const introMessages = [
+    "part 2 placeholder message1",
+    "part 2 placeholder message2",
+    "part 2 placeholder message3",
+    "part 2 placeholder message4",
+  ];
+
+  // DOM elements
+  const introAnimation = document.getElementById('intro-animation');
+  const terminalContent = document.getElementById('terminal-content');
+  const terminalContainer = document.querySelector('.terminal-container');
+  
+  // Add computational overlay for effects
+  const compOverlay = document.createElement('div');
+  compOverlay.className = 'computational-overlay';
+  terminalContainer.appendChild(compOverlay);
+  
+  // Clear any existing content
+  terminalContent.innerHTML = '';
+  
+  let currentMessageIndex = 0;
+  let isComplete = false;
+  
+  // Function to create a typing effect for a message with slower speed
+  function typeMessage(message, index) {
+    return new Promise(resolve => {
+      // Create a new line element
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      line.style.animation = 'none'; // Disable default animation
+      line.style.opacity = '1';
+      
+      // For empty messages (spacing), resolve immediately
+      if (message === "") {
+        line.innerHTML = "&nbsp;";
+        terminalContent.appendChild(line);
+        resolve();
+        return;
+      }
+      
+      // Add the typing span
+      const typingSpan = document.createElement('span');
+      typingSpan.className = 'typing';
+      typingSpan.textContent = message;
+      line.appendChild(typingSpan);
+      
+      // Add line to terminal
+      terminalContent.appendChild(line);
+      
+      // Slower typing speed - increased duration
+      const typingDuration = Math.min(message.length * 50, 2000);
+      
+      // Set the animation duration dynamically
+      typingSpan.style.animationDuration = `${typingDuration}ms`;
+      
+      // Auto-scroll to bottom
+      setTimeout(() => {
+        terminalContent.scrollTop = terminalContent.scrollHeight;
+      }, 50);
+      
+      // Resolve after animation completes
+      setTimeout(resolve, typingDuration + 400);
+    });
+  }
+  
+  // Function to handle enter key press for skipping or continuing
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      // Always allow skipping the intro animation with Enter
+      createGridTransition();
+    }
+  }
+  
+  // Add event listener for key press
+  document.addEventListener('keydown', handleKeyPress);
+  
+  // Create grid transition effect
+  function createGridTransition() {
+    // Remove keyboard event listener
+    document.removeEventListener('keydown', handleKeyPress);
+    
+    // First apply a glitch effect to the terminal
+    terminalContainer.classList.add('terminal-glitch');
+    
+    setTimeout(() => {
+      // Get the actual position and dimensions of the terminal container
+      const terminalRect = terminalContainer.getBoundingClientRect();
+      const gridSize = 10; // More grid items for a more detailed effect
+      const width = terminalRect.width;
+      const height = terminalRect.height;
+      const itemWidth = width / gridSize;
+      const itemHeight = height / gridSize;
+      
+      // Clone the terminal content for the grid effect
+      const terminalClone = terminalContent.cloneNode(true);
+      
+      // Hide original terminal content
+      terminalContent.style.visibility = 'hidden';
+      document.querySelector('.cursor-line').style.visibility = 'hidden';
+      
+      // Create grid items
+      const gridItems = [];
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          const item = document.createElement('div');
+          item.className = 'grid-item';
+          item.style.width = `${itemWidth}px`;
+          item.style.height = `${itemHeight}px`;
+          
+          // Use absolute positioning relative to the terminal container
+          item.style.position = 'absolute';
+          item.style.left = `${j * itemWidth}px`;
+          item.style.top = `${i * itemHeight}px`;
+          item.style.borderLeft = i % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+          item.style.borderTop = j % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+          
+          // Calculate delay based on pattern
+          const patternDelay = ((i+j) % 4) * 0.1;
+          
+          // Add item content from original terminal (cropped view)
+          item.style.overflow = 'hidden';
+          const inner = terminalClone.cloneNode(true);
+          inner.style.position = 'absolute';
+          inner.style.top = `-${i * itemHeight}px`;
+          inner.style.left = `-${j * itemWidth}px`;
+          inner.style.width = `${width}px`;
+          inner.style.visibility = 'visible';
+          item.appendChild(inner);
+          
+          // Apply animation with delay
+          setTimeout(() => {
+            item.style.animation = `shatter 0.6s cubic-bezier(0.36, 0.11, 0.89, 0.32) forwards`;
+          }, patternDelay * 1000);
+          
+          terminalContainer.appendChild(item);
+          gridItems.push(item);
+        }
+      }
+      
+      // Add system alerts during transition
+      const alertMessages = [
+        "SYSTEM BREACH DETECTED",
+        "FIREWALL BYPASSED",
+        "ENCRYPTION KEYS COMPROMISED",
+        "INITIATING CORE DUMP",
+        "REROUTING CONNECTION",
+        "BACKDOOR ACTIVATED"
+      ];
+      
+      // Display alerts randomly during transition
+      let alertCount = 0;
+      const alertInterval = setInterval(() => {
+        if (alertCount >= 3) {
+          clearInterval(alertInterval);
+          return;
+        }
+        
+        const randomAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+        const alertElem = document.createElement('div');
+        alertElem.className = 'system-alert';
+        alertElem.textContent = randomAlert;
+        alertElem.style.position = 'absolute';
+        alertElem.style.top = `${20 + alertCount * 30}px`;
+        alertElem.style.left = '50%';
+        alertElem.style.transform = 'translateX(-50%)';
+        alertElem.style.zIndex = '10';
+        
+        terminalContainer.appendChild(alertElem);
+        alertCount++;
+      }, 200);
+      
+      // Fade out the entire overlay after transition
+      setTimeout(() => {
+        introAnimation.style.transition = 'opacity 0.5s ease-out';
+        introAnimation.style.opacity = '0';
+        
+        // Remove the intro animation from DOM after fade out
+        setTimeout(() => {
+          introAnimation.style.display = 'none';
+          
+          // Initialize terminal effects after intro animation
+          initTerminalEffect();
+        }, 500);
+      }, 1500);
+    }, 600);
+  }
+  
+  // Function to display all messages in sequence
+  async function displayMessages() {
+    
+    for (let i = 0; i < introMessages.length; i++) {
+      currentMessageIndex = i;
+      await typeMessage(introMessages[i], i);
+    }
+    
+    // After all messages, show "PRESS ENTER TO CONTINUE" prompt
+    await typeMessage("PRESS ENTER TO CONTINUE", introMessages.length);
+    isComplete = true;
+  }
+  
+  // Start the intro animation
+  setTimeout(displayMessages, 500);
+});
+
 // Matrix rain effect
 const canvas = document.getElementById("matrix-canvas");
 const ctx = canvas.getContext("2d");
@@ -178,17 +385,9 @@ function initTerminalEffect() {
     // Start revealing task items after terminal text
     setTimeout(() => {
       revealElements(taskItems, 300);
-      
-      // Show submit button after all text is revealed
-      setTimeout(() => {
-        document.getElementById("submit-btn").classList.add("button-revealed");
-      }, taskItems.length * 300 + 500);
     }, terminalTexts.length * 400 + 500);
   }, 800);
 }
-
-// Initialize the terminal effect
-document.addEventListener("DOMContentLoaded", initTerminalEffect);
 
 // Add blinking cursor to last terminal text
 function addBlinkingCursor() {
@@ -201,43 +400,43 @@ function addBlinkingCursor() {
 // Call blinking cursor
 setTimeout(addBlinkingCursor, 3000);
 
-// Submit button action
-document
-  .getElementById("submit-btn")
-  .addEventListener("click", function () {
-    // Add transition effect
-    document.body.classList.add("submission-transition");
-    
-    // Get agent name for personalization
-    const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
-    
-    // Show submission overlay
-    const submissionOverlay = document.createElement("div");
-    submissionOverlay.className = "loading-overlay";
-    submissionOverlay.innerHTML = `
-      <div class="loading-content">
-        <h2>SUBMITTING SOLUTION</h2>
-        <div class="loading-progress">
-          <div class="loading-bar"></div>
-        </div>
-        <p class="loading-status">Validating code...</p>
+// Show submission overlay function
+function showSubmissionOverlay() {
+  // Get agent name for personalization
+  const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+  
+  // Add transition effect
+  document.body.classList.add("submission-transition");
+  
+  // Show submission overlay
+  const submissionOverlay = document.createElement("div");
+  submissionOverlay.className = "loading-overlay";
+  submissionOverlay.innerHTML = `
+    <div class="loading-content">
+      <h2>SUBMITTING SOLUTION</h2>
+      <div class="loading-progress">
+        <div class="loading-bar"></div>
       </div>
-    `;
-    document.body.appendChild(submissionOverlay);
-    
-    // Simulate submission progress
-    let progress = 0;
-    const loadingBar = submissionOverlay.querySelector(".loading-bar");
-    const loadingStatus = submissionOverlay.querySelector(".loading-status");
-    const statuses = [
-      "Validating code...",
-      "Checking monitoring functionality...",
-      "Verifying original game mechanics...",
-      "Testing log structure...",
-      "Solution accepted!"
-    ];
-    
-    const interval = setInterval(() => {
+      <p class="loading-status">Validating code...</p>
+    </div>
+  `;
+  document.body.appendChild(submissionOverlay);
+  
+  // Simulate submission progress
+  let progress = 0;
+  const loadingBar = submissionOverlay.querySelector(".loading-bar");
+  const loadingStatus = submissionOverlay.querySelector(".loading-status");
+  const statuses = [
+    "Validating code...",
+    "Checking monitoring functionality...",
+    "Verifying original game mechanics...",
+    "Testing log structure...",
+    "Solution accepted!"
+  ];
+  
+  return {
+    overlay: submissionOverlay,
+    progressInterval: setInterval(() => {
       progress += Math.random() * 15;
       if (progress > 100) progress = 100;
       
@@ -245,25 +444,11 @@ document
       loadingStatus.textContent = statuses[Math.min(Math.floor(progress/25), 4)];
       
       if (progress === 100) {
-        clearInterval(interval);
-        
-        // Show success message and then redirect to final page
-        setTimeout(() => {
-          submissionOverlay.querySelector(".loading-content").innerHTML = `
-            <h2>MISSION COMPLETE</h2>
-            <p>Excellent work, Agent ${agentName.toUpperCase()}! Your implementation meets all requirements.</p>
-            <p>All monitoring systems are now operational.</p>
-            <p>Proceeding to mission completion...</p>
-          `;
-          
-          // Redirect to completion page after showing success message
-          setTimeout(() => {
-            window.location.href = "mission-complete.html";
-          }, 3000);
-        }, 1500);
+        clearInterval(this.progressInterval);
       }
-    }, 300);
-  });
+    }, 300)
+  };
+}
 
 // Console commands functionality
 document.addEventListener("DOMContentLoaded", function() {
@@ -325,7 +510,7 @@ document.addEventListener("DOMContentLoaded", function() {
       return false;
     } else {
       section.classList.add("visible");
-      addConsoleLog(`${sectionId.toUpperCase()} section revealed.`, "success");
+      addConsoleLog(`${sectionId.toUpperCase()} section revealed.`, "system");
       // Scroll to the section
       section.scrollIntoView({ behavior: 'smooth' });
       return true;
@@ -337,71 +522,100 @@ document.addEventListener("DOMContentLoaded", function() {
     addConsoleLog(`=== COMMANDS FOR AGENT ${agentName.toUpperCase()} ===`, "system");
     addConsoleLog("/help - Show this help message", "system");
     addConsoleLog("/python - Toggle Python skeleton code", "system");
-    addConsoleLog("/requirements - Toggle requirements section", "system");
-    addConsoleLog("/data - Toggle example log structure", "system");
+    addConsoleLog("/css - Toggle css code", "system");
+    addConsoleLog("/html - Toggle html code", "system");
     addConsoleLog("/clear - Clear console logs", "system");
-    addConsoleLog("/status - Show mission status", "system");
     addConsoleLog("/showall - Show all sections", "system");
     addConsoleLog("/hideall - Hide all sections", "system");
-    addConsoleLog("/submit - Submit your solution", "system");
-    addConsoleLog("/back - Return to Part 1", "system");
+    addConsoleLog("/submit [code] - Submit your solution with verification code", "system");
     addConsoleLog("========================", "system");
   }
   
   // Process console command
   function processCommand(command) {
-    command = command.trim().toLowerCase();
+    const fullCommand = command.trim();
+    const parts = fullCommand.split(' ');
+    const baseCommand = parts[0].toLowerCase();
     
     // Log the command
-    addConsoleLog("> " + command);
+    addConsoleLog("> " + fullCommand,"system");
     
     // Process based on command
-    if (command === "/help") {
+    if (baseCommand === "/help") {
       showHelp();
-    } else if (command === "/python") {
+    } else if (baseCommand === "/python") {
       toggleCodeSection("python");
-    } else if (command === "/requirements") {
-      toggleCodeSection("requirements");
-    } else if (command === "/data") {
-      toggleCodeSection("data");
-    } else if (command === "/clear") {
+    }
+    else if (baseCommand === "/html") {
+      toggleCodeSection("html");
+    }
+    else if (baseCommand === "/css") {
+      toggleCodeSection("css");
+    }
+    else if (baseCommand === "/clear") {
       // Clear console logs except for the initial system message
       while (consoleLogs.children.length > 1) {
         consoleLogs.removeChild(consoleLogs.lastChild);
       }
       addConsoleLog("Console cleared.", "system");
-    } else if (command === "/status") {
-      addConsoleLog(`=== MISSION STATUS: AGENT ${agentName.toUpperCase()} ===`, "success");
-      addConsoleLog("Status: IN PROGRESS", "success");
-      addConsoleLog("Objective: Implement modified game with monitoring", "system");
-      addConsoleLog("Next step: Complete implementation and submit solution", "system");
-      addConsoleLog("Security level: BETA", "system");
-      addConsoleLog("=====================", "system");
-    } else if (command === "/showall") {
+    } else if (baseCommand === "/secrect") {
+      addConsoleLog("print secrect", "system");
+    } else if (baseCommand === "/showall") {
       toggleCodeSection("python");
-      toggleCodeSection("requirements");
-      toggleCodeSection("data");
+      toggleCodeSection("html");
+      toggleCodeSection("css");
       addConsoleLog("All sections toggled.", "system");
-    } else if (command === "/hideall") {
+    } else if (baseCommand === "/hideall") {
       document.querySelectorAll(".code-section.visible").forEach(section => {
         section.classList.remove("visible");
       });
       addConsoleLog("All sections hidden.", "system");
-    } else if (command === "/submit") {
-      addConsoleLog("Submitting solution...", "success");
-      // Trigger submit button click
+    } else if (baseCommand === "/submit") {
+      const verificationCode = parts[1]; // Get the verification code argument
+      
+      // Check if a verification code was provided
+      if (!verificationCode) {
+        addConsoleLog("Error: Missing verification code. Usage: /submit [code]", "error");
+        return;
+      }
+      
+      // Check if the verification code is valid (only 123 or 456)
+      if (verificationCode !== "123" && verificationCode !== "456") {
+        addConsoleLog(`Error: Invalid verification code: ${verificationCode}`, "error");
+        return;
+      }
+      
+      addConsoleLog(`Submitting solution with verification code: ${verificationCode}...`, "success");
+      
+      // Start the submission process
+      const submission = showSubmissionOverlay();
+      
+      // After submission completes, redirect based on verification code
       setTimeout(() => {
-        document.getElementById("submit-btn").click();
-      }, 1000);
-    } else if (command === "/back") {
-      addConsoleLog("Returning to Part 1...", "system");
-      setTimeout(() => {
-        window.location.href = "part1.html";
-      }, 1000);
-    } else if (command.startsWith("/")) {
-      addConsoleLog(`Unknown command: ${command}. Type /help for available commands.`, "error");
+        clearInterval(submission.progressInterval);
+        
+        // Update the success message
+        const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+        submission.overlay.querySelector(".loading-content").innerHTML = `
+          <h2>MISSION COMPLETE</h2>
+          <p>Excellent work, Agent ${agentName.toUpperCase()}! Your implementation meets all requirements.</p>
+          <p>All monitoring systems are now operational.</p>
+          <p>Proceeding to mission completion...</p>
+        `;
+        
+        // Redirect to the appropriate page based on verification code
+        setTimeout(() => {
+          if (verificationCode === "123") {
+            window.location.href = "mission-complete.html";
+          } else if (verificationCode === "456") {
+            window.location.href = "true-ending.html";
+          }
+        }, 3000);
+      }, 3000);
+    } else if (baseCommand.startsWith("/")) {
+      addConsoleLog(`Unknown command: ${baseCommand}. Type /help for available commands.`, "error");
     } else {
-      addConsoleLog(`Command execution failed: ${command}`, "error");
+      addConsoleLog(`Command execution failed: ${fullCommand}`, "error");
     }
   }
   
@@ -422,7 +636,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Only add new messages if there aren't too many already
     if (consoleLogs.children.length < 15) {
       const messageElement = document.createElement("div");
-      messageElement.className = "console-log system";
+      messageElement.className = "console-log";
       
       // Select a random message
       const message = hackingMessages[Math.floor(Math.random() * hackingMessages.length)];
@@ -445,9 +659,6 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Initialize console
   addConsoleLog(`Terminal v2.7.4 initialized for Agent ${agentName.toUpperCase()}`, "system");
-  addConsoleLog("Connected to secure server: OP-PHANTOM", "system");
-  addConsoleLog("Mission phase: PART 2 - Implementation", "system");
-  addConsoleLog("Type /help for available commands", "system");
   
   // Start system message simulation
   setTimeout(simulateSystemMessages, 2000);
@@ -460,9 +671,9 @@ document.addEventListener("DOMContentLoaded", function() {
   // Add command listener for secure environment link
   document.querySelector('.env-link').addEventListener('click', function(e) {
     e.preventDefault();
-    addConsoleLog("Opening secure Python environment...", "system");
-    // You could redirect to a specific URL here if needed
-    window.open("secure-python-environment.html", "_blank");
+    addConsoleLog("Opening secure Python environment...", "success");
+    // You could redirect to a specific URL here if needed 
+    window.open("https://livecodes.io/?template=python", "_blank");
   });
 });
 
@@ -523,22 +734,6 @@ document.addEventListener('DOMContentLoaded', function() {
       );
     }
   });
-  
-  // Update "Submit Solution" button text 
-  const submitButton = document.getElementById("submit-btn");
-  if (submitButton) {
-    submitButton.textContent = `SUBMIT SOLUTION, AGENT ${agentName.toUpperCase()}`;
-  }
-  
-  // Personalize implementation hints if needed
-  const hintItems = document.querySelectorAll('.implementation-hints li');
-  if (hintItems.length > 0) {
-    // Add personalized note to the first hint
-    const firstHint = hintItems[0];
-    if (firstHint && !firstHint.textContent.includes(agentName)) {
-      firstHint.textContent = `${firstHint.textContent} (specially noted for Agent ${agentName.toUpperCase()})`;
-    }
-  }
   
   // Check if user is authenticated and redirect if needed
   if (!localStorage.getItem('agentName')) {

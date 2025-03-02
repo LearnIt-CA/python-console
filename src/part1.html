@@ -6,246 +6,337 @@
     <title>Python Mission - Part 1 - Operation Phantom Chase</title>
     <link rel="stylesheet" href="css/part1.css">
 </head>
-<body class="mission-page">
+<body>
+    <!-- Added intro animation overlay from index page -->
+    <div id="intro-animation" class="fullscreen-overlay">
+        <div class="terminal-container">
+            <div id="terminal-content">
+                <!-- Terminal content will be populated by JS -->
+            </div>
+            <div class="cursor-line">
+                <span class="terminal-prompt">></span>
+                <span class="terminal-cursor">_</span>
+            </div>
+        </div>
+    </div>
+
     <canvas id="matrix-canvas"></canvas>
     <div id="binary-overlay" class="binary-overlay"></div>
     
-    <div id="mission-container">
-        <header>
-            <h1 class="mission-title">Operation Phantom Chase</h1>
-            <h2 class="mission-subtitle">Part 1: Higher or Lower Game Analysis</h2>
-        </header>
-        
-        <div class="mission-directive">
-            <h3 class="directive-title">MISSION DIRECTIVE</h3>
-            <p class="terminal-text">Agent, your first task is to analyze the existing "Higher or Lower" game code we've intercepted from the Phantom group. We need to understand its functionality before we can create our replacement.</p>
-            <p class="terminal-text">Our cyber team has extracted the following code samples from their server. Study them carefully.</p>
-            <p class="terminal-text">You will work in the secure Python environment we've set up. Copy the code below and use the link to access our secure sandbox.</p>
-            <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom members must not suspect our intervention.</p>
-        </div>
-        
-        <div class="code-samples">
-            <!-- HTML Code Section -->
-<!-- HTML Code Section -->
-<div id="html-section" class="code-section">
-    <div class="code-header">
-        <h4 class="code-title">HTML Structure</h4>
-        <button class="copy-btn" data-target="html-code">COPY CODE</button>
-    </div>
-    <pre id="html-code" class="code-block">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;Higher or Lower Game&lt;/title&gt;
-    &lt;link rel="stylesheet" href="style.css"&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div class="game-container"&gt;
-        &lt;h1&gt;Higher or Lower&lt;/h1&gt;
-        &lt;div class="card"&gt;
-            &lt;span id="current-card"&gt;?&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div class="buttons"&gt;
-            &lt;button id="higher-btn"&gt;Higher&lt;/button&gt;
-            &lt;button id="lower-btn"&gt;Lower&lt;/button&gt;
-        &lt;/div&gt;
-        &lt;div class="score"&gt;Score: &lt;span id="score"&gt;0&lt;/span&gt;&lt;/div&gt;
-        &lt;div class="message" id="message"&gt;&lt;/div&gt;
-    &lt;/div&gt;
-    &lt;script src="script.js"&gt;&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</pre>
-</div>
+    <div class="mission-page">
+        <div id="mission-container">
+            <div class="header">
+                <h1 class="mission-title">Operation Phantom Chase</h1>
+                <h2 class="mission-subtitle">Part 1: Higher or Lower Game Analysis</h2>
+            </div>
             
-            <!-- CSS Code Section -->
-            <div id="css-section" class="code-section">
-                <div class="code-header">
-                    <h4 class="code-title">CSS Styling</h4>
-                    <button class="copy-btn" data-target="css-code">COPY CODE</button>
+            <div class="mission-directive">
+                <h3 class="directive-title">MISSION DIRECTIVE</h3>
+                <p class="terminal-text">Agent, your first task is to analyze the existing "Higher or Lower" game code we've intercepted from the Phantom group. We need to understand its functionality before we can create our replacement.</p>
+                <p class="terminal-text">You will work in the secure Python environment we've set up. Copy the code below and use the link to access our secure sandbox.</p>
+                <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom members must not suspect our intervention.</p>
+            </div>
+            
+            <div class="code-samples">
+                <div id="html-section" class="code-section">
+                    <div class="code-header">
+                        <h3 class="code-title">HTML Structure</h3>
+                        <button class="copy-btn" data-target="html-code">COPY CODE</button>
+                    </div>
+                    <pre id="html-code" class="code-block"><!DOCTYPE html>
+<html>
+<head>
+    <title>Higher or Lower Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Higher or Lower</h1>
+        <div class="card">
+            <span id="current-card">?</span>
+        </div>
+        <div class="buttons">
+            <button id="higher-btn">Higher</button>
+            <button id="lower-btn">Lower</button>
+        </div>
+        <div class="score">Score: <span id="score">0</span></div>
+        <div class="message" id="message"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html></pre>
                 </div>
-                <pre id="css-code" class="code-block">body {
-    font-family: Arial, sans-serif;
-    background-color: #1a1a1a;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+                
+                <div id="css-section" class="code-section">
+                    <div class="code-header">
+                        <h3 class="code-title">CSS Styling</h3>
+                        <button class="copy-btn" data-target="css-code">COPY CODE</button>
+                    </div>
+                    <pre id="css-code" class="code-block">
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #1a1a1a;
+  color: #fff;
+  line-height: 1.6;
 }
 
 .game-container {
-    text-align: center;
-    background-color: #333;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.card {
-    width: 150px;
-    height: 200px;
-    background-color: white;
-    color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 3rem;
-    margin: 2rem auto;
-    border-radius: 10px;
+.option {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.left-option {
+  background: linear-gradient(rgba(14, 8, 166, 0.7), rgba(0, 0, 0, 0.7)), url('background1.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.right-option {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('background2.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.vs-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 10;
+}
+
+.value {
+  font-size: 3rem;
+  color: #ffd700;
+  margin: 20px 0;
 }
 
 .buttons {
-    margin: 2rem 0;
+  margin-top: 20px;
 }
 
 button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    margin: 0 0.5rem;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-    background-color: #3e8e41;
+  background: #fff;
+  color: #000;
 }
 
-.score {
-    font-size: 1.5rem;
-    margin: 1rem 0;
+#score-display {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  color: #ffd700;
 }
 
 .message {
-    height: 1.5rem;
-    color: #ff5555;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  display: none;
+  z-index: 20;
+  font-size: 2rem;
+}
+
+.message.show {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .game-container {
+    flex-direction: column;
+  }
+  .option {
+    flex: 1 1 100%;
+  }
+  .vs-badge {
+    width: 50px;
+    height: 50px;
+    font-size: 0.8rem;
+  }
 }</pre>
+                </div>
+                
+                <div id="python-section" class="code-section">
+                    <div class="code-header">
+                        <h3 class="code-title">Python Code</h3>
+                        <button class="copy-btn" data-target="python-code">COPY CODE</button>
+                    </div>
+                    <pre id="python-code" class="code-block">
+from browser import document
+
+# ======================================================
+# OPERATION ORDER:
+# ------------------------------------------------------
+# You are now tasked with modularizing a round of the Higher or Lower challenge.
+# Sections marked as [HACKER TASK] are where you need to implement the functionality.
+# Good luck—every correct code step brings our covert operation closer to success!
+# ======================================================
+
+# S1: This sample data represents one round of the mission for testing purposes.
+sample_data = {
+    "title1": "Russia",
+    "value1": 1709,
+    "title2": "China",
+    "value2": 959,
+    "question": "Land area (million km²)?",
+    "hint": "R",
+}
+
+# S2: Assigning HTML document elements to variables for readability
+option1_title = document["option1-title"]
+option1_value = document["option1-value"]
+option2_title = document["option2-title"]
+option2_value = document["option2-value"]
+message = document["message"]
+higher_btn = document["higher-btn"]
+lower_btn = document["lower-btn"]
+
+# S3: Sets up a round of the game by setting up options and binding events.
+def play_round(data):
+    setup_options(data)
+    bind_buttons(data)
+
+# S4: Updates the UI to display the left option's data while hiding the right option's value.
+def setup_options(data):
+    option1_title.text = data["title1"]
+    option1_value.text = str(data["value1"])
+    option2_title.text = data["title2"]
+    option2_value.text = "?"  # Hidden until guessed
+
+    message.text = data["question"]
+    message.style.display = "block"
+
+# S5: Binds the higher/lower buttons to the guessing function.
+def bind_buttons(data):
+    # Unbind previous events to prevent duplicate event listeners
+    higher_btn.unbind("click")
+    lower_btn.unbind("click")
+
+    # Bind new events
+    higher_btn.bind("click", lambda ev: handle_guess(data, "higher"))
+    lower_btn.bind("click", lambda ev: handle_guess(data, "lower"))
+
+# [HACKER TASK]: Define the function that handles a guess.
+def handle_guess(data, guess):
+    # Reveal the right option’s actual value
+    option2_value.text = str(data["value2"])
+    message.style.display = "block"
+    
+    # T1: Calculate the correct answer:
+    # If the right option's value is greater than the left option's value, then the answer is "higher",
+    # otherwise, it is "lower".
+    # Syntax: if you want to access value 1: data["value1"]
+
+    # ans
+    # if data["value2"] > data["value1"]:
+    #   correct_answer = "higher"
+    # else:
+    #   correct_answer = "lower"
+    
+
+    # T2: Compare the operative's guess to the correct answer:
+    # If the guess is correct, update the mission status with "Correct!".
+    # Else, update with "Wrong!"
+    # Syntax: if you want to access messaage text: message.text
+    
+    # ans
+    # if guess == correct_answer:
+    #     message.text = "Correct!"
+    # else:
+    #     message.text = "Wrong!"
+
+# Initiate the game
+play_round(sample_data)
+
+# Iterating over the dictionary and printing key-value pairs for debugging
+# for key, value in sample_data.items():
+#     print(f"Key: {key} - Value: {value}")</pre>
+                </div>
             </div>
             
-            <!-- Python Code Section -->
-            <div id="python-section" class="code-section">
-                <div class="code-header">
-                    <h4 class="code-title">Python Code</h4>
-                    <button class="copy-btn" data-target="python-code">COPY CODE</button>
-                </div>
-                <pre id="python-code" class="code-block">import random
-
-def initialize_game():
-    """Initialize the Higher or Lower game."""
-    print("Welcome to Higher or Lower!")
-    print("Try to guess if the next card will be higher or lower.")
-    
-    # Card values from 2 to Ace (14)
-    cards = list(range(2, 15))
-    score = 0
-    current_card = random.choice(cards)
-    print(f"Starting card: {card_name(current_card)}")
-    
-    return cards, score, current_card
-
-def card_name(card_value):
-    """Convert numeric card value to name."""
-    if card_value == 14:
-        return "Ace"
-    elif card_value == 13:
-        return "King"
-    elif card_value == 12:
-        return "Queen"
-    elif card_value == 11:
-        return "Jack"
-    else:
-        return str(card_value)
-
-def play_round(cards, current_card, guess):
-    """Play a round of Higher or Lower."""
-    # Draw a new card (different from current)
-    new_card = random.choice([c for c in cards if c != current_card])
-    print(f"New card: {card_name(new_card)}")
-    
-    # Check if guess is correct
-    if guess == "higher" and new_card > current_card:
-        return True, new_card
-    elif guess == "lower" and new_card < current_card:
-        return True, new_card
-    else:
-        return False, new_card
-
-def main():
-    cards, score, current_card = initialize_game()
-    
-    while True:
-        # Get player's guess
-        guess = input("Will the next card be higher or lower? (higher/lower/quit): ").lower()
-        
-        if guess == "quit":
-            break
-        
-        if guess not in ["higher", "lower"]:
-            print("Invalid input. Please enter 'higher' or 'lower'.")
-            continue
-        
-        # Play the round
-        correct, current_card = play_round(cards, current_card, guess)
-        
-        if correct:
-            score += 1
-            print(f"Correct! Your score is now {score}")
-        else:
-            print(f"Wrong! Game over. Final score: {score}")
-            break
-        
-    print("Thanks for playing!")
-
-if __name__ == "__main__":
-    main()</pre>
+            <div class="secure-environment">
+                <h3 class="environment-header">SECURE CODING ENVIRONMENT</h3>
+                <p>Access our secure sandbox to test and modify the code:</p>
+                <a href="#" class="env-link">🔒 OPEN SECURE PYTHON ENVIRONMENT</a>
             </div>
-        </div>
-        
-        <!-- Secure Environment Link -->
-        <div class="secure-environment">
-            <h3 class="environment-header">SECURE CODING ENVIRONMENT</h3>
-            <p>Access our secure sandbox to test and modify the code:</p>
-            <a href="#" class="env-link"><span class="env-icon">🔒</span> OPEN SECURE PYTHON ENVIRONMENT</a>
-        </div>
-        
-        <!-- Task Panel -->
-        <div class="task-panel">
-            <h3 class="directive-title">YOUR TASK</h3>
-            <ul class="task-list">
-                <li>Study the provided code to understand how the game works</li>
-                <li>Run the Python code in the secure environment</li>
-                <li>Identify key game mechanics that must be preserved</li>
-                <li>Make notes of potential areas where monitoring capabilities could be added</li>
-                <li>Be ready to implement your own version in Part 2</li>
-            </ul>
-        </div>
-        
-        <!-- Mission Status -->
-        <div class="mission-status">
-            <span class="status-label">MISSION STATUS:</span> 
-            <span class="status-value">IN PROGRESS</span>
-        </div>
-        
-        <!-- Next Part Button -->
-        <div style="text-align: center;">
-            <button id="next-part-btn" class="mission-button">PROCEED TO PART 2</button>
+            
+            <div class="task-panel">
+                <h3 class="directive-title">YOUR TASK</h3>
+                <ul class="task-list">
+                    <li>Study the provided code to understand how the game works</li>
+                    <li>Run the Python code in the secure environment</li>
+                    <li>Identify key game mechanics that must be preserved</li>
+                    <li>Make notes of potential areas where monitoring capabilities could be added</li>
+                    <li>Be ready to implement your own version in Part 2</li>
+                </ul>
+                
+                <div class="mission-status">
+                    <span class="status-label">MISSION STATUS:</span>
+                    <span class="status-value">IN PROGRESS</span>
+                </div>
+            </div>
+            
+            <button id="next-part-btn">PROCEED TO PART 2</button>
         </div>
     </div>
     
-    <!-- Command Console -->
     <div class="command-console">
         <div class="console-input-area">
-            <span class="console-prefix">></span>
-            <input type="text" class="console-input" id="console-input" placeholder="Type a command... (try /help)" autocomplete="off">
+            <span class="console-prefix">&gt;</span>
+            <input type="text" id="console-input" class="console-input" placeholder="Enter command (type /help for commands)">
         </div>
         <div class="console-logs" id="console-logs">
-            <!-- Initial messages will be added via JS -->
+            
         </div>
     </div>
     
-    <!-- Footer -->
     <div class="logo-container">
         <div class="learnit-logo">LearnIT</div>
         <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>

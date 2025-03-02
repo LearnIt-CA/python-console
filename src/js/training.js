@@ -166,7 +166,12 @@ document.querySelectorAll('.copy-btn').forEach(button => {
       });
   });
 });
-
+  // Add command listener for secure environment link
+  document.querySelector('.env-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    // You could redirect to a specific URL here if needed
+    window.open("https://livecodes.io/?template=python", "_blank");
+  });
 // Intro animation sequence - similar to briefing.js
 document.addEventListener('DOMContentLoaded', function() {
   // Retrieve the agent's name from localStorage
@@ -174,10 +179,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Training-specific intro messages
   const introMessages = [
-    `Agent ${agentName.toUpperCase()}, before we start our mission against Phantom...`,
+    `Agent ${agentName.toUpperCase()}, before we start our mission ...`,
     "We've prepared a special Python training program for you.",
     "This mission is urgent and critical, so we must ensure everything is perfect.",
-    "Agent Ryan personally selected you for this task - he clearly sees your potential.",
     "I'm confident this training will be a piece of cake for someone with your abilities.",
     `Good luck, Agent ${agentName.toUpperCase()}. talk to you soon.`
 ];

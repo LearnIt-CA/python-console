@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Error</title>
+  <link rel="stylesheet" href="css/true-ending.css">
+</head>
+<body>
+  <!-- Binary overlay - creates a background with binary numbers -->
+  <div id="binary-overlay" class="binary-overlay"></div>
+  
+  <!-- Matrix canvas - for the falling matrix-style characters -->
+  <canvas id="matrix-canvas"></canvas>
+  
+  <!-- Intro animation container - shows the initial terminal sequence -->
+  <div id="intro-animation" class="fullscreen-overlay">
+    <div class="terminal-container">
+      <div id="terminal-content"></div>
+      <div class="cursor-line">
+        <span class="terminal-prompt">></span>
+        <span id="terminal-input"></span>
+        <span class="terminal-cursor">█</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Error animation overlay - appears after the intro sequence -->
+  <div id="error-animation" class="hidden">
+    <div id="glitch-container">
+      <div class="glitch-text">SYSTEM ERROR</div>
+      <div class="glitch-text">SYSTEM ERROR</div>
+      <div class="glitch-text">SYSTEM ERROR</div>
+    </div>
+    <div id="warning-container"></div>
+    <div id="matrix-container"></div>
+  </div>
+  
+  <!-- Final message - the "I'LL FIND YOU" full screen message -->
+  <div id="final-message" class="hidden"></div>
+  
+  <!-- Load the JavaScript file -->
+  <script src="js/true-ending.js"></script>
+</body>
+</html>

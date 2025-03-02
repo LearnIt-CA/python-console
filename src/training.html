@@ -37,8 +37,8 @@
             <!-- Secure Python Environment Section -->
             <div class="secure-environment">
                 <h3 class="environment-header">SECURE ENVIRONMENT</h3>
-                <p>You may use the secure Python environment to practice these concepts.</p>
-                <span class="env-icon">🔒</span>
+                <p>You may use the secure Python environment to practice.</p>
+                <span class="env-icon"></span>
                 <a href="#" class="env-link">ACCESS SECURE PYTHON ENVIRONMENT</a>
             </div>
             
@@ -61,6 +61,7 @@
                                 <button class="copy-btn" data-target="code-1">COPY CODE</button>
                             </div>
                             <pre id="code-1" class="code-block">
+#Example:
 name = "Alex"              
 age = 16                        
 print(name, "is", age) </pre>
@@ -85,28 +86,10 @@ print(name, "is", age) </pre>
                                 <button class="copy-btn" data-target="code-2">COPY CODE</button>
                             </div>
                             <pre id="code-2" class="code-block">
-# Strings - text data (enclosed in quotes)
-code_name = "Phantom"
-message = 'Encrypted communication detected'
-
-# Numbers - integers and floating-point
-stolen_amount = 1500000000  # Integer (whole number)
-success_rate = 98.5         # Float (decimal number)
-
-# Boolean - True or False values
-is_secure = True
-is_compromised = False
-
-# Lists - ordered collections of items
-card_values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
-agents = ["Agent 1", "Agent 2", "Agent 3"]
-
-# Check the type of a variable
-print(type(code_name))      # Output:
-print(type(stolen_amount))  # Output:
-print(type(success_rate))   # Output:
-print(type(is_secure))      # Output:
-print(type(card_values))    # Output:</pre>
+#Example:
+text = "Alex"                                  
+is_tree = True                               
+print(type(text), type(is_tree))</pre>
                         </div>
                     </div>
                 </div>
@@ -128,40 +111,19 @@ print(type(card_values))    # Output:</pre>
                                 <button class="copy-btn" data-target="code-3">COPY CODE</button>
                             </div>
                             <pre id="code-3" class="code-block">
-# Arithmetic operations
-a = 10
-b = 3
-sum_result = a + b        # Addition: 13
-diff_result = a - b       # Subtraction: 7
-prod_result = a * b       # Multiplication: 30
-div_result = a / b        # Division: 3.3333...
-floor_div = a // b        # Floor division: 3
-remainder = a % b         # Modulus (remainder): 1
-power = a ** b            # Exponentiation: 1000
+#Example 1:
+x = 9 
+y = "nine"
+print(9 + 2)
+print(9 / 2)
+print(x * y)
 
-# Comparison operations
-x = 5
-y = 10
-print(x > y)   # Greater than: False
-print(x < y)   # Less than: True
-print(x >= y)  # Greater than or equal to: False
-print(x <= y)  # Less than or equal to: True
-print(x == y)  # Equal to: False
-print(x != y)  # Not equal to: True
-
-# Logical operations
-secure = True
-authorized = False
-print(secure and authorized)  # Logical AND: False
-print(secure or authorized)   # Logical OR: True
-print(not secure)            # Logical NOT: False
-
-# String operations
-first = "Cyber"
-last = "Security"
-full = first + " " + last  # Concatenation: "Cyber Security"
-repeated = "Secure" * 3    # Repetition: "SecureSecureSecure"
-print("ber" in first)      # Membership: True</pre>
+#Example 2:
+x = 10 
+y = 5
+print(x > y)
+print(x == y)
+print(x > 5 and y < 10)</pre>
                         </div>
                     </div>
                 </div>
@@ -183,89 +145,18 @@ print("ber" in first)      # Membership: True</pre>
                                 <button class="copy-btn" data-target="code-4">COPY CODE</button>
                             </div>
                             <pre id="code-4" class="code-block">
-# Define a function
-def greet_agent(agent_id):
-    """This function greets an agent with their ID."""
-    return f"Welcome, Agent {agent_id}. Your mission is ready."
-
-# Call the function
-message = greet_agent("007")
-print(message)  # Output: Welcome, Agent 007. Your mission is ready.
-
-# Function with multiple parameters
-def calculate_risk(threat_level, vulnerability_score, asset_value):
-    risk = (threat_level * vulnerability_score) / 10 * asset_value
-    return risk
-
-# Call function with multiple arguments
-mission_risk = calculate_risk(8, 7, 1000)
-print(f"Mission risk assessment: {mission_risk}")
-
-# Function with default parameter values
-def encrypt_message(message, encryption_level=3):
-    # Simplified encryption simulation
-    encrypted = ""
-    for char in message:
-        encrypted += chr(ord(char) + encryption_level)
-    return encrypted
-
-# Using the default parameter
-secret1 = encrypt_message("Attack at dawn")
-# Overriding the default parameter
-secret2 = encrypt_message("Attack at dawn", 5)</pre>
+#Example:
+def greet(name):
+    print("Hello,", name)
+greet("Alice")</pre>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Module 5: Input/Output -->
+                           
+                <!-- Module 5: Conditionals -->
                 <div class="training-module">
                     <div class="module-header">
-                        <h3 class="module-title">05_INPUT_OUTPUT</h3>
-                        <div class="module-controls">
-                            <button class="expand-btn" data-target="module-content-5">EXPAND</button>
-                        </div>
-                    </div>
-                    <div id="module-content-5" class="module-content">
-                        <p class="module-text">Python provides ways to get input from users and display output:</p>
-                        
-                        <div class="code-section">
-                            <div class="code-header">
-                                <span class="code-title">INPUT/OUTPUT OPERATIONS</span>
-                                <button class="copy-btn" data-target="code-5">COPY CODE</button>
-                            </div>
-                            <pre id="code-5" class="code-block">
-# Basic output with print()
-print("System initialized")
-print("Multiple", "arguments", "separated by commas")
-
-# Formatted output
-agent_id = "X7R"
-clearance = "Alpha"
-print(f"Agent {agent_id} has {clearance} clearance")  # f-strings (Python 3.6+)
-print("Agent {} has {} clearance".format(agent_id, clearance))  # .format()
-
-# Getting input from users
-user_guess = input("Enter your guess (higher/lower): ")
-print(f"You guessed: {user_guess}")
-
-# Converting input to other types
-# input() always returns a string, so conversion is needed for numbers
-security_code = int(input("Enter security code: "))  # Convert to integer
-probability = float(input("Enter probability: "))    # Convert to float
-
-# Multiple outputs on same line
-print("Loading", end="")
-print(".", end="")
-print(".", end="")
-print(".")  # Output: Loading...</pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Module 6: Conditionals -->
-                <div class="training-module">
-                    <div class="module-header">
-                        <h3 class="module-title">06_CONDITIONALS</h3>
+                        <h3 class="module-title">05_CONDITIONALS</h3>
                         <div class="module-controls">
                             <button class="expand-btn" data-target="module-content-6">EXPAND</button>
                         </div>
@@ -279,52 +170,20 @@ print(".")  # Output: Loading...</pre>
                                 <button class="copy-btn" data-target="code-6">COPY CODE</button>
                             </div>
                             <pre id="code-6" class="code-block">
-# Basic if statement
-access_level = 7
-if access_level >= 5:
-    print("Access granted to secure terminal")
-
-# if-else statement
-card_value = 10
-player_guess = "higher"
-next_card = 8
-
-if (player_guess == "higher" and next_card > card_value) or \
-   (player_guess == "lower" and next_card < card_value):
-    print("Correct guess!")
+#Example:
+age = 16
+if age >= 18:
+    print("You can vote!")
 else:
-    print("Wrong guess!")
-
-# if-elif-else chain (multiple conditions)
-threat_level = 3
-
-if threat_level == 1:
-    print("STATUS: All clear")
-elif threat_level == 2:
-    print("STATUS: Caution advised")
-elif threat_level == 3:
-    print("STATUS: Alert - security measures activated")
-else:
-    print("STATUS: CRITICAL - immediate action required")
-
-# Nested if statements
-is_authenticated = True
-is_authorized = True
-
-if is_authenticated:
-    print("Authentication successful")
-    if is_authorized:
-        print("Authorization confirmed. Access granted.")
-    else:
-        print("Not authorized for this resource.")</pre>
+    print("You're too young to vote.")</pre>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Module 7: Loops -->
+                <!-- Module 6: Loops -->
                 <div class="training-module">
                     <div class="module-header">
-                        <h3 class="module-title">07_LOOPS</h3>
+                        <h3 class="module-title">06_LOOPS</h3>
                         <div class="module-controls">
                             <button class="expand-btn" data-target="module-content-7">EXPAND</button>
                         </div>
@@ -338,48 +197,9 @@ if is_authenticated:
                                 <button class="copy-btn" data-target="code-7">COPY CODE</button>
                             </div>
                             <pre id="code-7" class="code-block">
-# For loop with range
-print("Initiating countdown:")
-for i in range(5, 0, -1):  # (start, stop, step)
-    print(i)
-print("Launch!")
-
-# For loop with a list
-card_faces = ["Jack", "Queen", "King", "Ace"]
-for card in card_faces:
-    print(f"Card: {card}")
-
-# While loop
-attempts = 0
-max_attempts = 3
-while attempts < max_attempts:
-    print(f"Login attempt {attempts + 1} of {max_attempts}")
-    # Simulated password check
-    password = input("Enter password: ")
-    if password == "secret":
-        print("Access granted")
-        break  # Exit the loop
-    attempts += 1
-
-# Loop control: break and continue
-print("Scanning frequency bands...")
-for freq in range(1, 11):
-    if freq == 5:
-        print("Restricted frequency detected, skipping...")
-        continue  # Skip to the next iteration
-    elif freq == 8:
-        print("Enemy transmission detected. Halting scan.")
-        break  # Exit the loop
-    print(f"Scanning frequency {freq} GHz")
-
-# Loop with else clause (runs if loop completes normally, without break)
-for attempt in range(3):
-    code = input("Enter authorization code: ")
-    if code == "9843":
-        print("Authorization successful")
-        break
-else:
-    print("Maximum attempts reached. Access denied.")</pre>
+#Example:
+for i in range(3):
+    print("Hello!", i)</pre>
                         </div>
                     </div>
                 </div>
@@ -397,7 +217,6 @@ else:
         <div class="logo-text">LearnIT</div>
         <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
     </div>
-    
     <script src="js/training.js"></script>
 </body>
 </html>
