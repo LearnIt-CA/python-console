@@ -61,6 +61,7 @@ setInterval(drawMatrixRain, 50);
 // Create binary overlay
 function createBinaryOverlay() {
     const overlay = document.getElementById("binary-overlay");
+    if (!overlay) return;
 
     for (let i = 0; i < 50; i++) {
         const binaryText = document.createElement("div");
@@ -102,61 +103,236 @@ function createTargetingLines() {
     body.appendChild(vLine);
 }
 
-// Terminal text animation implementation
-function animateTerminalText() {
-    const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
-    const completionMessage = document.querySelector('.completion-message');
+// Intro animation function
+function runIntroAnimation() {
+    // Messages about receiving password, decryption and shock
+    const introMessages = [
+        "Good Job Agent ! We got their secret code .",
+        "Thanks for helping out with this one.",
+        "Starting decryption...",
+        "...",
+        "Almost there, pulling up the suspect profile...",
+        "....",
+        ".......",
+        "Hold on...",
+        "This face looks incredibly familiar...",
+        "My God! IT'S NOT POSSIBLE! IT IS HIM ?!"
+    ];
+
+    // DOM elements
+    const introAnimation = document.getElementById('intro-animation');
+    const terminalContent = document.getElementById('terminal-content');
+    const terminalContainer = document.querySelector('.terminal-container');
     
-    if (!completionMessage) return;
+    // Add computational overlay for effects
+    const compOverlay = document.createElement('div');
+    compOverlay.className = 'computational-overlay';
+    terminalContainer.appendChild(compOverlay);
     
-    // Clear the existing content but save it
-    const originalLines = [];
-    completionMessage.querySelectorAll('.terminal-line').forEach(line => {
-        let text = line.textContent;
-        // Replace Agent with Agent NAME if found
-        if (text.includes("Agent!")) {
-            text = text.replace("Agent!", `Agent ${agentName.toUpperCase()}!`);
-        }
-        originalLines.push(text);
-        line.remove();
-    });
+    // Clear any existing content
+    terminalContent.innerHTML = '';
     
-    // If no lines were found, use the text content
-    if (originalLines.length === 0 && completionMessage.textContent.trim()) {
-        let allText = completionMessage.textContent.trim();
-        // Split by newlines or periods followed by space
-        originalLines = allText.split(/\n|(?<=\.)\s+/).filter(line => line.trim());
-        completionMessage.textContent = '';
+    // Function to create a typing effect for a message with slower speed
+    function typeMessage(message, index) {
+        return new Promise(resolve => {
+            // Create a new line element
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.style.opacity = '1';
+            
+            // For empty messages (spacing), resolve immediately
+            if (message === "") {
+                line.innerHTML = "&nbsp;";
+                terminalContent.appendChild(line);
+                resolve();
+                return;
+            }
+            
+            // Add the typing span
+            const typingSpan = document.createElement('span');
+            typingSpan.className = 'typing';
+            typingSpan.textContent = message;
+            line.appendChild(typingSpan);
+            
+            // Add line to terminal
+            terminalContent.appendChild(line);
+            
+            // Typing speed based on message length
+            const typingDuration = Math.min(message.length * 40, 2000);
+            
+            // Set the animation duration dynamically
+            typingSpan.style.animationDuration = `${typingDuration}ms`;
+            
+            // Auto-scroll to bottom
+            setTimeout(() => {
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+            }, 50);
+            
+            // Add shock effect for relevant messages
+            if (message.includes("WAIT") || message.includes("NOT POSSIBLE")) {
+                setTimeout(() => {
+                    terminalContainer.classList.add('shock');
+                    setTimeout(() => {
+                        terminalContainer.classList.remove('shock');
+                    }, 500);
+                }, typingDuration / 2);
+            }
+            
+            // Resolve after animation completes
+            setTimeout(resolve, typingDuration + 200);
+        });
     }
     
-    // Add a special line about the agent
-    originalLines.push(`Agent ${agentName.toUpperCase()} designated as lead operative for follow-up mission.`);
-    
-    // Create a div for each line with proper styling
-    originalLines.forEach((text, index) => {
-        const lineDiv = document.createElement('div');
-        lineDiv.className = 'terminal-line';
-        lineDiv.style.opacity = '0';
-        completionMessage.appendChild(lineDiv);
-        
-        // Animated typing effect for each character
-        let charIndex = 0;
-        const delay = 1000 * index; // Delay each line 
+    // Function to end the intro animation with transition and show the main content
+    function endIntroAnimation() {
+        // First apply a glitch effect to the terminal
+        terminalContainer.classList.add('terminal-glitch');
         
         setTimeout(() => {
-            lineDiv.style.opacity = '1';
+            // Get the actual position and dimensions of the terminal container
+            const terminalRect = terminalContainer.getBoundingClientRect();
+            const gridSize = 10; // More grid items for a more detailed effect
+            const width = terminalRect.width;
+            const height = terminalRect.height;
+            const itemWidth = width / gridSize;
+            const itemHeight = height / gridSize;
             
-            function typeNextChar() {
-                if (charIndex < text.length) {
-                    lineDiv.textContent = text.substring(0, charIndex + 1);
-                    charIndex++;
-                    setTimeout(typeNextChar, 50); // Type each character with a delay
+            // Clone the terminal content for the grid effect
+            const terminalClone = terminalContent.cloneNode(true);
+            
+            // Hide original terminal content
+            terminalContent.style.visibility = 'hidden';
+            document.querySelector('.cursor-line').style.visibility = 'hidden';
+            
+            // Create grid items
+            const gridItems = [];
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const item = document.createElement('div');
+                    item.className = 'grid-item';
+                    item.style.width = `${itemWidth}px`;
+                    item.style.height = `${itemHeight}px`;
+                    
+                    // Use absolute positioning relative to the terminal container
+                    item.style.position = 'absolute';
+                    item.style.left = `${j * itemWidth}px`;
+                    item.style.top = `${i * itemHeight}px`;
+                    item.style.borderLeft = i % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+                    item.style.borderTop = j % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+                    
+                    // Calculate delay based on pattern
+                    const patternDelay = ((i+j) % 4) * 0.1;
+                    
+                    // Add item content from original terminal (cropped view)
+                    item.style.overflow = 'hidden';
+                    const inner = terminalClone.cloneNode(true);
+                    inner.style.position = 'absolute';
+                    inner.style.top = `-${i * itemHeight}px`;
+                    inner.style.left = `-${j * itemWidth}px`;
+                    inner.style.width = `${width}px`;
+                    inner.style.visibility = 'visible';
+                    item.appendChild(inner);
+                    
+                    // Apply animation with delay
+                    setTimeout(() => {
+                        item.style.animation = `shatter 0.6s cubic-bezier(0.36, 0.11, 0.89, 0.32) forwards`;
+                    }, patternDelay * 1000);
+                    
+                    terminalContainer.appendChild(item);
+                    gridItems.push(item);
                 }
             }
             
-            typeNextChar();
-        }, delay);
-    });
+            // Add system alerts during transition
+            const alertMessages = [
+                "IDENTITY CONFIRMED",
+                "MISSION CRITICAL",
+                "SUSPECT LOCATED",
+                "INTEL SECURE",
+                "TARGET ACQUIRED"
+            ];
+            
+            // Display alerts randomly during transition
+            let alertCount = 0;
+            const alertInterval = setInterval(() => {
+                if (alertCount >= 3) {
+                    clearInterval(alertInterval);
+                    return;
+                }
+                
+                const randomAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+                const alertElem = document.createElement('div');
+                alertElem.className = 'system-alert';
+                alertElem.textContent = randomAlert;
+                alertElem.style.position = 'absolute';
+                alertElem.style.top = `${20 + alertCount * 30}px`;
+                alertElem.style.left = '50%';
+                alertElem.style.transform = 'translateX(-50%)';
+                alertElem.style.zIndex = '10';
+                
+                terminalContainer.appendChild(alertElem);
+                alertCount++;
+            }, 200);
+            
+            // Fade out the entire overlay after transition
+            setTimeout(() => {
+                introAnimation.style.transition = 'opacity 0.5s ease-out';
+                introAnimation.style.opacity = '0';
+                
+                // Remove the intro animation from DOM after fade out
+                setTimeout(() => {
+                    introAnimation.style.display = 'none';
+                    // Display the main page content
+                    showSuspectProfile();
+                }, 500);
+            }, 1500);
+        }, 600);
+    }
+    
+    // Function to handle Enter key press for skipping
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            // Skip the animation and show the main content
+            document.removeEventListener('keydown', handleKeyPress);
+            endIntroAnimation();
+        }
+    }
+    
+    // Add event listener for Enter key
+    document.addEventListener('keydown', handleKeyPress);
+    
+    // Function to display all messages in sequence
+    async function displayMessages() {
+        try {
+            for (let i = 0; i < introMessages.length; i++) {
+                await typeMessage(introMessages[i], i);
+                // Add a small pause between messages
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+            
+            // After messages are displayed, wait a moment and start the transition
+            setTimeout(() => {
+                endIntroAnimation();
+            }, 1000);
+        } catch (error) {
+            console.error("Error in displayMessages:", error);
+            // In case of error, proceed to main content
+            endIntroAnimation();
+        }
+    }
+    
+    // Start the intro animation
+    setTimeout(displayMessages, 500);
+}
+
+// Show suspect profile function
+function showSuspectProfile() {
+    // Display suspect profile with animation
+    const suspectProfile = document.getElementById('suspect-profile');
+    if (suspectProfile) {
+        suspectProfile.style.display = 'block';
+        suspectProfile.style.animation = 'fadeInLeft 1s forwards';
+    }
 }
 
 // Call functions on load
@@ -164,32 +340,18 @@ document.addEventListener("DOMContentLoaded", function() {
     createBinaryOverlay();
     createTargetingLines();
     
-    // Animate terminal text with character-by-character typing
-    setTimeout(animateTerminalText, 500);
+    // Start intro animation
+    runIntroAnimation();
     
     // Retrieve agent name from localStorage
     const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
     
     // Button event listeners
     document.getElementById('reveal-intel').addEventListener('click', function() {
-        // Display the intel panel with animation
-        const intelPanel = document.getElementById('intel-panel');
-        intelPanel.style.display = 'block';
-        setTimeout(() => {
-            intelPanel.style.animation = 'fadeIn 1s forwards';
-        }, 100);
-        
-        // Display suspect profile with animation
-        setTimeout(() => {
-            const suspectProfile = document.getElementById('suspect-profile');
-            suspectProfile.style.display = 'block';
-        }, 1000);
-        
         // Display suspect data with animation
-        setTimeout(() => {
-            const suspectData = document.getElementById('suspect-data');
-            suspectData.style.display = 'block';
-        }, 2000);
+        const suspectData = document.getElementById('suspect-data');
+        suspectData.style.display = 'block';
+        suspectData.style.animation = 'fadeInRight 1s forwards';
         
         // Hide the decrypt button
         this.style.display = 'none';
@@ -198,6 +360,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('show-location').addEventListener('click', function() {
         const mapContainer = document.getElementById('map-container');
         mapContainer.style.display = 'block';
+        mapContainer.style.animation = 'fadeIn 1s forwards';
         
         // Add glitch effect to body temporarily
         document.body.classList.add('glitch');
@@ -205,8 +368,22 @@ document.addEventListener("DOMContentLoaded", function() {
             document.body.classList.remove('glitch');
         }, 500);
         
-        // Hide the reveal location button
+        // Hide the reveal location button 
         this.style.display = 'none';
+    });
+    
+    // Mission complete button to show mission report
+    document.getElementById('mission-complete-btn').addEventListener('click', function() {
+        // Show the mission report panel
+        const missionReportPanel = document.getElementById('mission-report-panel');
+        missionReportPanel.style.display = 'block';
+        missionReportPanel.style.animation = 'fadeInUp 1s forwards';
+        
+        // Start the terminal text animation in the mission report
+        setTimeout(animateTerminalText, 500);
+        
+        // Hide the mission complete button
+        this.parentElement.style.display = 'none';
     });
     
     // Share button function - mock Instagram sharing
@@ -308,18 +485,6 @@ document.addEventListener('DOMContentLoaded', function() {
             margin-bottom: 8px;
             padding-left: 15px;
             color: var(--primary);
-        }
-        
-        .terminal-line::before {
-            content: ">";
-            position: absolute;
-            left: 0;
-            color: var(--secondary);
-        }
-        
-        @keyframes cursor-blink {
-            0%, 100% { border-right-color: transparent; }
-            50% { border-right-color: var(--primary); }
         }
     `;
     document.head.appendChild(style);

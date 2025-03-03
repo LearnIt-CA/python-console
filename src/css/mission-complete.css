@@ -78,7 +78,7 @@ body {
 .mission-complete-panel {
     background-color: rgba(0, 0, 0, 0.7);
     border: 2px solid var(--primary);
-    padding: 25px 25px 25px 25px; /* Further reduced top padding to 15px */
+    padding: 25px 25px 25px 25px; 
     border-radius: 5px;
     width: 100%;
     max-width: 800px;
@@ -102,7 +102,7 @@ body {
 
 .panel-title {
     font-size: 1.5rem;
-    color: var(--secondary);
+    color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 3px;
 }
@@ -119,17 +119,10 @@ body {
 }
 
 .completion-message {
-    line-height: 1.8; /* Further reduced from 1.6 to 1.4 */
+    line-height: 1.8; 
     color: var(--primary);
     margin-bottom: 20px;
-    margin-top: 0px; /* Changed to negative margin to pull content up */
-    opacity: 0;
-    animation: fadeIn 1s forwards 2s;
-}
-
-/* Target and remove br tags inside completion-message */
-.completion-message br {
-    display: none; /* Hide <br> tags completely */
+    opacity: 1;
 }
 
 /* Make first terminal line connect directly to header */
@@ -144,7 +137,7 @@ body {
     margin-top: 20px;
     position: relative;
     opacity: 0;
-    display: none;
+    display: block;
 }
 
 .intel-header {
@@ -181,10 +174,10 @@ body {
 
 .suspect-profile {
     width: 40%;
-    border: 1px solid var(--secondary);
+    border: 1px solid var(--primary);
     padding: 15px;
     background-color: rgba(255, 189, 89, 0.05);
-    display: none;
+    display: block;
     opacity: 0;
     transform: translateX(-20px);
     animation: fadeInLeft 1s forwards;
@@ -273,7 +266,7 @@ body {
     color: var(--secondary);
     font-size: 0.9rem;
     letter-spacing: 1px;
-}
+} 
 
 .data-value {
     width: 65%;
@@ -296,7 +289,7 @@ body {
     width: 100%;
     height: 250px;
     margin: 20px 0;
-    border: 1px solid var(--secondary);
+    border: 1px solid var(--primary);
     background-color: #222;
     position: relative;
     overflow: hidden;
@@ -368,8 +361,8 @@ body {
 
 .action-button {
     background-color: transparent;
-    border: 2px solid var(--primary);
-    color: var(--primary);
+    border: 2px solid var(--secondary);
+    color: var(--secondary);
     padding: 12px 25px;
     font-size: 1rem;
     cursor: pointer;
@@ -380,9 +373,9 @@ body {
 }
 
 .action-button:hover {
-    background-color: var(--primary);
+    background-color: var(--secondary);
     color: var(--background);
-    box-shadow: 0 0 15px var(--primary);
+    box-shadow: 0 0 15px var(--secondary);
 }
 
 .decrypt-button {
@@ -475,14 +468,7 @@ body {
     margin-bottom: 5px; /* Further reduced from 6px to 5px */
     padding-left: 15px;
     color: var(--primary);
-    opacity: 0;
-}
-
-.terminal-line::before {
-    content: ">";
-    position: absolute;
-    left: 0;
-    color: var(--secondary);
+    opacity: 1;
 }
 
 .terminal-prompt {
@@ -493,7 +479,6 @@ body {
 }
 
 .terminal-prompt::before {
-    content: ">";
     margin-right: 10px;
     color: var(--secondary);
     animation: blink 1s step-end infinite;
@@ -691,5 +676,148 @@ body {
     .action-button {
         width: 100%;
         margin: 0;
+    }
+}
+
+/* Added intro animation styles from index.css */
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.terminal-container {
+    width: 80%;
+    max-width: 800px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--primary);
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    overflow: hidden;
+    position: relative;
+}
+
+.terminal-container:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--primary);
+    opacity: 0.8;
+}
+
+#terminal-content {
+    margin-bottom: 15px;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.terminal-glitch {
+    animation: terminal-glitch 0.2s ease 3;
+}
+
+@keyframes terminal-glitch {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-5px, 5px);
+    }
+    40% {
+        transform: translate(-5px, -5px);
+    }
+    60% {
+        transform: translate(5px, 5px);
+    }
+    80% {
+        transform: translate(5px, -5px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+.typing {
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    width: 0;
+    animation: typing-effect 1s steps(40, end) forwards;
+}
+
+@keyframes typing-effect {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.computational-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.system-alert {
+    color: var(--primary);
+    font-weight: bold;
+    animation: alert-blink 0.3s step-end infinite;
+}
+
+@keyframes alert-blink {
+    0%, 100% { color: var(--primary); }
+    50% { color: var(--error); }
+}
+
+.cursor-line {
+    display: flex;
+    align-items: center;
+}
+
+.terminal-cursor {
+    color: var(--primary);
+    animation: blink-cursor 1s step-end infinite;
+}
+
+@keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Mission complete button pulse effect */
+#mission-complete-btn {
+    background-color: transparent;
+    border: 2px solid var(--secondary);
+    color: var(--secondary);
+    animation: pulse-success 2s infinite;
+}
+
+#mission-complete-btn:hover {
+    background-color: var(--secondary);
+    color: var(--background);
+    box-shadow: 0 0 15px var(--secondary);
+}
+
+@keyframes pulse-success {
+    0% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
     }
 }

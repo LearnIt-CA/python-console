@@ -4,114 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python Training</title>
-    <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/training.css">
 </head>
 <body>
-    <!-- Intro animation overlay (similar to briefing page) -->
-    <div class="fullscreen-overlay" id="intro-animation">
+    <!-- Intro animation overlay -->
+    <div id="intro-animation" class="fullscreen-overlay">
         <div class="terminal-container">
-            <div id="terminal-content">
-                <!-- Terminal content will be added by JavaScript -->
-            </div>
+            <div id="terminal-content"></div>
             <div class="cursor-line">
-                <span class="terminal-prompt">></span>
+                <span class="terminal-prompt">&gt;</span>
                 <span class="terminal-cursor">_</span>
             </div>
         </div>
     </div>
 
-    <!-- Matrix background -->
     <canvas id="matrix-canvas"></canvas>
-    
-    <!-- Binary overlay -->
-    <div id="binary-overlay" class="binary-overlay"></div>
-    
-    <!-- Main content -->
-    <div class="container training-page">
+
+    <div class="container">
         <div id="training-page">
-            <header class="mission-header">
+            <div class="mission-header">
                 <h1 class="mission-title">Python Training</h1>
-            </header>
-            
-            <!-- Secure Python Environment Section -->
+            </div>
+
+            <div id="binary-overlay" class="binary-overlay"></div>
+
             <div class="secure-environment">
                 <h3 class="environment-header">SECURE ENVIRONMENT</h3>
                 <p>You may use the secure Python environment to practice.</p>
-                <span class="env-icon"></span>
-                <a href="#" class="env-link">ACCESS SECURE PYTHON ENVIRONMENT</a>
+                <a href="#" class="env-link"><span class="env-icon">&#128274;</span> ACCESS SECURE PYTHON ENVIRONMENT</a>
             </div>
-            
-            <!-- Training modules -->
+
             <div class="modules-container">
                 <!-- Module 1: Variables -->
                 <div class="training-module">
                     <div class="module-header">
                         <h3 class="module-title">01_VARIABLES</h3>
                         <div class="module-controls">
-                            <button class="expand-btn" data-target="module-content-1">EXPAND</button>
+                            <button class="expand-btn" data-target="module1-content">EXPAND</button>
                         </div>
                     </div>
-                    <div id="module-content-1" class="module-content">
+                    <div id="module1-content" class="module-content">
                         <p class="module-text">Variables store data that can be used and modified throughout your code. Think of them as containers with labels.</p>
-                        
                         <div class="code-section">
                             <div class="code-header">
                                 <span class="code-title">VARIABLE SYNTAX</span>
-                                <button class="copy-btn" data-target="code-1">COPY CODE</button>
+                                <button class="copy-btn" data-target="code1">COPY CODE</button>
                             </div>
-                            <pre id="code-1" class="code-block">
-#Example:
+                            <pre id="code1" class="code-block">#Example:
 name = "Alex"              
 age = 16                        
-print(name, "is", age) </pre>
+print(name, "is", age)</pre>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Module 2: Data Types -->
                 <div class="training-module">
                     <div class="module-header">
                         <h3 class="module-title">02_DATA_TYPES</h3>
                         <div class="module-controls">
-                            <button class="expand-btn" data-target="module-content-2">EXPAND</button>
+                            <button class="expand-btn" data-target="module2-content">EXPAND</button>
                         </div>
                     </div>
-                    <div id="module-content-2" class="module-content">
+                    <div id="module2-content" class="module-content">
                         <p class="module-text">Python has several built-in data types. The most common are:</p>
-                        
                         <div class="code-section">
                             <div class="code-header">
                                 <span class="code-title">COMMON DATA TYPES</span>
-                                <button class="copy-btn" data-target="code-2">COPY CODE</button>
+                                <button class="copy-btn" data-target="code2">COPY CODE</button>
                             </div>
-                            <pre id="code-2" class="code-block">
-#Example:
+                            <pre id="code2" class="code-block">#Example:
 text = "Alex"                                  
 is_tree = True                               
 print(type(text), type(is_tree))</pre>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Module 3: Basic Operations -->
                 <div class="training-module">
                     <div class="module-header">
                         <h3 class="module-title">03_BASIC_OPERATIONS</h3>
                         <div class="module-controls">
-                            <button class="expand-btn" data-target="module-content-3">EXPAND</button>
+                            <button class="expand-btn" data-target="module3-content">EXPAND</button>
                         </div>
                     </div>
-                    <div id="module-content-3" class="module-content">
+                    <div id="module3-content" class="module-content">
                         <p class="module-text">Python supports various operations for manipulating data:</p>
-                        
                         <div class="code-section">
                             <div class="code-header">
                                 <span class="code-title">OPERATIONS</span>
-                                <button class="copy-btn" data-target="code-3">COPY CODE</button>
+                                <button class="copy-btn" data-target="code3">COPY CODE</button>
                             </div>
-                            <pre id="code-3" class="code-block">
-#Example 1:
+                            <pre id="code3" class="code-block">#Example 1:
 x = 9 
 y = "nine"
 print(9 + 2)
@@ -127,50 +112,46 @@ print(x > 5 and y < 10)</pre>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Module 4: Functions -->
                 <div class="training-module">
                     <div class="module-header">
                         <h3 class="module-title">04_FUNCTIONS</h3>
                         <div class="module-controls">
-                            <button class="expand-btn" data-target="module-content-4">EXPAND</button>
+                            <button class="expand-btn" data-target="module4-content">EXPAND</button>
                         </div>
                     </div>
-                    <div id="module-content-4" class="module-content">
+                    <div id="module4-content" class="module-content">
                         <p class="module-text">Functions are reusable blocks of code that perform specific tasks:</p>
-                        
                         <div class="code-section">
                             <div class="code-header">
                                 <span class="code-title">FUNCTION DEFINITION & USAGE</span>
-                                <button class="copy-btn" data-target="code-4">COPY CODE</button>
+                                <button class="copy-btn" data-target="code4">COPY CODE</button>
                             </div>
-                            <pre id="code-4" class="code-block">
-#Example:
+                            <pre id="code4" class="code-block">#Example:
 def greet(name):
     print("Hello,", name)
 greet("Alice")</pre>
                         </div>
                     </div>
                 </div>
-                           
+
                 <!-- Module 5: Conditionals -->
                 <div class="training-module">
                     <div class="module-header">
                         <h3 class="module-title">05_CONDITIONALS</h3>
                         <div class="module-controls">
-                            <button class="expand-btn" data-target="module-content-6">EXPAND</button>
+                            <button class="expand-btn" data-target="module5-content">EXPAND</button>
                         </div>
                     </div>
-                    <div id="module-content-6" class="module-content">
+                    <div id="module5-content" class="module-content">
                         <p class="module-text">Conditional statements allow your program to make decisions:</p>
-                        
                         <div class="code-section">
                             <div class="code-header">
                                 <span class="code-title">IF-ELSE STATEMENTS</span>
-                                <button class="copy-btn" data-target="code-6">COPY CODE</button>
+                                <button class="copy-btn" data-target="code5">COPY CODE</button>
                             </div>
-                            <pre id="code-6" class="code-block">
-#Example:
+                            <pre id="code5" class="code-block">#Example:
 age = 16
 if age >= 18:
     print("You can vote!")
@@ -179,44 +160,52 @@ else:
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Module 6: Loops -->
                 <div class="training-module">
                     <div class="module-header">
                         <h3 class="module-title">06_LOOPS</h3>
                         <div class="module-controls">
-                            <button class="expand-btn" data-target="module-content-7">EXPAND</button>
+                            <button class="expand-btn" data-target="module6-content">EXPAND</button>
                         </div>
                     </div>
-                    <div id="module-content-7" class="module-content">
+                    <div id="module6-content" class="module-content">
                         <p class="module-text">Loops execute a block of code multiple times:</p>
-                        
                         <div class="code-section">
                             <div class="code-header">
                                 <span class="code-title">LOOP STRUCTURES</span>
-                                <button class="copy-btn" data-target="code-7">COPY CODE</button>
+                                <button class="copy-btn" data-target="code6">COPY CODE</button>
                             </div>
-                            <pre id="code-7" class="code-block">
-#Example:
+                            <pre id="code6" class="code-block">#Example:
 for i in range(3):
     print("Hello!", i)</pre>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Mission action button -->
+
+            <!-- Password verification section -->
+            <div class="password-verification">
+                <h3 class="verification-title">SECURITY VERIFICATION REQUIRED</h3>
+                <p class="verification-text">Enter access code to proceed with mission:</p>
+                <div class="password-input-container">
+                    <input type="password" id="password-input" class="password-input" placeholder="ENTER ACCESS CODE">
+                    <button id="verify-password-btn" class="verify-btn">VERIFY</button>
+                </div>
+                <p id="password-error" class="password-error hidden">INVALID ACCESS CODE. PLEASE TRY AGAIN.</p>
+            </div>
+
             <div class="mission-buttons">
-                <button id="begin-mission-btn" class="mission-button secondary-button">PROCEED TO MISSION</button>
+                <button id="begin-mission-btn" class="mission-button" disabled>PROCEED TO MISSION</button>
             </div>
         </div>
     </div>
-    
-    <!-- Logo at bottom -->
+
     <div class="logo-container">
-        <div class="logo-text">LearnIT</div>
+        <div class="learnit-logo">LearnIT</div>
         <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
     </div>
+
     <script src="js/training.js"></script>
 </body>
 </html>

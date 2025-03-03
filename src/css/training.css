@@ -312,10 +312,17 @@
   transition: all 0.3s ease;
 }
 
-.mission-button:hover {
+.mission-button:not(:disabled):hover {
   background-color: var(--primary);
   color: var(--background);
   box-shadow: 0 0 10px var(--primary);
+}
+
+.mission-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--error);
+  color: var(--error);
 }
 
 /* New style for secondary button - change color to secondary */
@@ -324,10 +331,15 @@
   color: var(--secondary) !important;
 }
 
-.secondary-button:hover {
+.secondary-button:not(:disabled):hover {
   background-color: var(--secondary) !important;
   box-shadow: 0 0 10px var(--secondary) !important;
   color: black !important;
+}
+
+.secondary-button:disabled {
+  border-color: rgba(255, 189, 89, 0.5) !important;
+  color: rgba(255, 189, 89, 0.5) !important;
 }
 
 #begin-mission-btn {
@@ -406,6 +418,78 @@
   color: #4CAF50;
 }
 
+/* Password verification styles */
+.password-verification {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--primary);
+  padding: 25px;
+  margin: 30px 0;
+  text-align: center;
+  position: relative;
+}
+
+.verification-title {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+.verification-text {
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.password-input-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.password-input {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  padding: 10px 15px;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 1rem;
+  width: 60%;
+  max-width: 300px;
+  outline: none;
+}
+
+.password-input:focus {
+  box-shadow: 0 0 5px var(--primary);
+}
+
+.verify-btn {
+  background-color: transparent;
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.verify-btn:hover {
+  background-color: rgba(0, 255, 65, 0.2);
+}
+
+.password-error {
+  color: var(--error);
+  font-size: 0.9rem;
+  margin-top: 10px;
+  animation: glitch 0.3s ease;
+}
+
+.password-success {
+  color: #4CAF50;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .mission-title {
@@ -436,6 +520,16 @@
   
   .console-logs {
     width: 40%;
+  }
+  
+  .password-input-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .password-input {
+    width: 80%;
+    margin-bottom: 10px;
   }
 }
 

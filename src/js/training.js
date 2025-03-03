@@ -166,12 +166,80 @@ document.querySelectorAll('.copy-btn').forEach(button => {
       });
   });
 });
-  // Add command listener for secure environment link
-  document.querySelector('.env-link').addEventListener('click', function(e) {
-    e.preventDefault();
-    // You could redirect to a specific URL here if needed
-    window.open("https://livecodes.io/?template=python", "_blank");
+
+// Add command listener for secure environment link
+document.querySelector('.env-link').addEventListener('click', function(e) {
+  e.preventDefault();
+  // You could redirect to a specific URL here if needed
+  window.open("https://livecodes.io/", "_blank");
+});
+
+// Password verification logic
+document.addEventListener('DOMContentLoaded', function() {
+  const passwordInput = document.getElementById('password-input');
+  const verifyBtn = document.getElementById('verify-password-btn');
+  const passwordError = document.getElementById('password-error');
+  const beginMissionBtn = document.getElementById('begin-mission-btn');
+  const correctPassword = "123"; // Set the password to "123" as requested
+  
+  // Add verify button click handler
+  verifyBtn.addEventListener('click', function() {
+    verifyPassword();
   });
+  
+  // Allow pressing Enter key in password input field
+  passwordInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      verifyPassword();
+    }
+  });
+  
+  // Password verification function
+  function verifyPassword() {
+    const enteredPassword = passwordInput.value;
+    
+    if (enteredPassword === correctPassword) {
+      // Password is correct
+      passwordError.classList.add('hidden');
+      
+      // Add success message
+      const successMsg = document.createElement('p');
+      successMsg.className = 'password-success';
+      successMsg.textContent = 'ACCESS GRANTED. MISSION UNLOCKED.';
+      passwordError.parentNode.insertBefore(successMsg, passwordError);
+      
+      // Apply highlight effect to password input
+      passwordInput.style.borderColor = '#4CAF50';
+      passwordInput.style.boxShadow = '0 0 10px #4CAF50';
+      
+      // Disable password input and button after successful verification
+      passwordInput.disabled = true;
+      verifyBtn.disabled = true;
+      
+      // Enable mission button with glitch animation
+      beginMissionBtn.disabled = false;
+      beginMissionBtn.classList.add('glitch');
+      setTimeout(() => {
+        beginMissionBtn.classList.remove('glitch');
+      }, 1000);
+      
+    } else {
+      // Password is incorrect
+      passwordError.classList.remove('hidden');
+      
+      // Apply glitch effect to the input field
+      passwordInput.classList.add('glitch');
+      setTimeout(() => {
+        passwordInput.classList.remove('glitch');
+      }, 500);
+      
+      // Clear the input for retry
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  }
+});
+
 // Intro animation sequence - similar to briefing.js
 document.addEventListener('DOMContentLoaded', function() {
   // Retrieve the agent's name from localStorage
@@ -425,57 +493,60 @@ function initTerminalEffect() {
 document
   .getElementById("begin-mission-btn")
   .addEventListener("click", function () {
-    // First scroll to the top of the page
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Add a short delay before showing transition effects to ensure scrolling completes
-    setTimeout(() => {
-      // Add transition effect
-      document.body.classList.add("mission-transition");
+    // Only proceed if the button is not disabled (password has been verified)
+    if (!this.disabled) {
+      // First scroll to the top of the page
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
-      // Show loading overlay
-      const loadingOverlay = document.createElement("div");
-      loadingOverlay.className = "loading-overlay";
-      loadingOverlay.innerHTML = `
-        <div class="loading-content">
-          <h2>INITIALIZING MISSION</h2>
-          <div class="loading-progress">
-            <div class="loading-bar"></div>
+      // Add a short delay before showing transition effects to ensure scrolling completes
+      setTimeout(() => {
+        // Add transition effect
+        document.body.classList.add("mission-transition");
+        
+        // Show loading overlay
+        const loadingOverlay = document.createElement("div");
+        loadingOverlay.className = "loading-overlay";
+        loadingOverlay.innerHTML = `
+          <div class="loading-content">
+            <h2>INITIALIZING MISSION</h2>
+            <div class="loading-progress">
+              <div class="loading-bar"></div>
+            </div>
+            <p class="loading-status">Loading mission parameters...</p>
           </div>
-          <p class="loading-status">Loading mission parameters...</p>
-        </div>
-      `;
-      document.body.appendChild(loadingOverlay);
-      
-      // Simulate loading progress
-      let progress = 0;
-      const loadingBar = loadingOverlay.querySelector(".loading-bar");
-      const loadingStatus = loadingOverlay.querySelector(".loading-status");
-      const statuses = [
-        "Loading mission parameters...",
-        "Analyzing Phantom's communication patterns...",
-        "Preparing code analysis tools...",
-        "Establishing secure connection...",
-        "Mission ready!"
-      ];
-      
-      const interval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress > 100) progress = 100;
+        `;
+        document.body.appendChild(loadingOverlay);
         
-        loadingBar.style.width = `${progress}%`;
-        loadingStatus.textContent = statuses[Math.min(Math.floor(progress/25), 4)];
+        // Simulate loading progress
+        let progress = 0;
+        const loadingBar = loadingOverlay.querySelector(".loading-bar");
+        const loadingStatus = loadingOverlay.querySelector(".loading-status");
+        const statuses = [
+          "Loading mission parameters...",
+          "Analyzing Phantom's communication patterns...",
+          "Preparing code analysis tools...",
+          "Establishing secure connection...",
+          "Mission ready!"
+        ];
         
-        if (progress === 100) {
-          clearInterval(interval);
+        const interval = setInterval(() => {
+          progress += Math.random() * 15;
+          if (progress > 100) progress = 100;
           
-          // Redirect to part1.html page after short delay
-          setTimeout(() => {
-            window.location.href = 'part1.html';
-          }, 1500);
-        }
-      }, 300);
-    }, 500); // 500ms delay to ensure scrolling completes
+          loadingBar.style.width = `${progress}%`;
+          loadingStatus.textContent = statuses[Math.min(Math.floor(progress/25), 4)];
+          
+          if (progress === 100) {
+            clearInterval(interval);
+            
+            // Redirect to part1.html page after short delay
+            setTimeout(() => {
+              window.location.href = 'part1.html';
+            }, 1500);
+          }
+        }, 300);
+      }, 500); // 500ms delay to ensure scrolling completes
+    }
   });
 
 // Apply syntax highlighting to code blocks
@@ -632,6 +703,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if (missionButton) {
       missionButton.textContent = `PROCEED TO MISSION, AGENT ${agentName.toUpperCase()}`;
       missionButton.classList.add("secondary-button");
+      
+      // Set button to disabled initially (until password is verified)
+      missionButton.disabled = true;
     }
     
     // Also consider redirecting unauthorized users

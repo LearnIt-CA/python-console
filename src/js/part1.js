@@ -1,6 +1,5 @@
 // Add intro animation sequence from index.js
 document.addEventListener('DOMContentLoaded', function() {
-  // More conversational messages with Ryan connection
   const introMessages = [
     "part 1 placeholder message1",
     "part 1 placeholder message2",
@@ -192,8 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
       await typeMessage(introMessages[i], i);
     }
     
-    // After all messages, show "PRESS ENTER TO CONTINUE" prompt
-    await typeMessage("PRESS ENTER TO CONTINUE TO MISSION", introMessages.length);
     isComplete = true;
   }
   
@@ -405,57 +402,6 @@ function addBlinkingCursor() {
 // Call blinking cursor
 setTimeout(addBlinkingCursor, 3000);
 
-// Next part button action
-document
-  .getElementById("next-part-btn")
-  .addEventListener("click", function () {
-    // Add transition effect
-    document.body.classList.add("mission-transition");
-    
-    // Show loading overlay
-    const loadingOverlay = document.createElement("div");
-    loadingOverlay.className = "loading-overlay";
-    loadingOverlay.innerHTML = `
-      <div class="loading-content">
-        <h2>LOADING PART 2</h2>
-        <div class="loading-progress">
-          <div class="loading-bar"></div>
-        </div>
-        <p class="loading-status">Processing code analysis...</p>
-      </div>
-    `;
-    document.body.appendChild(loadingOverlay);
-    
-    // Simulate loading progress
-    let progress = 0;
-    const loadingBar = loadingOverlay.querySelector(".loading-bar");
-    const loadingStatus = loadingOverlay.querySelector(".loading-status");
-    const statuses = [
-      "Processing code analysis...",
-      "Preparing development environment...",
-      "Securing communication channels...",
-      "Initializing mission parameters...",
-      "Ready to proceed!"
-    ];
-    
-    const interval = setInterval(() => {
-      progress += Math.random() * 15;
-      if (progress > 100) progress = 100;
-      
-      loadingBar.style.width = `${progress}%`;
-      loadingStatus.textContent = statuses[Math.min(Math.floor(progress/25), 4)];
-      
-      if (progress === 100) {
-        clearInterval(interval);
-        
-        // Redirect to part 2 after short delay
-        setTimeout(() => {
-          window.location.href = "part2.html";
-        }, 1500);
-      }
-    }, 300);
-  });
-
 // Console commands functionality
 document.addEventListener("DOMContentLoaded", function() {
   const consoleInput = document.getElementById("console-input");
@@ -531,13 +477,19 @@ document.addEventListener("DOMContentLoaded", function() {
     addConsoleLog("/clear - Clear console logs", "system");
     addConsoleLog("/showall - Show all code sections", "system");
     addConsoleLog("/hideall - Hide all code sections", "system");
+    addConsoleLog("/submit [code] - Submit your solution with verification code", "system");
     addConsoleLog("========================", "system");
   }
   
   // Process console command
   function processCommand(command) {
-    command = command.trim().toLowerCase();
     
+
+    const fullCommand = command.trim();
+    const parts = fullCommand.split(' ');
+    const baseCommand = parts[0].toLowerCase();
+
+    command = command.trim().toLowerCase();
     // Log the command
     addConsoleLog("> " + command,"system");
     
@@ -569,7 +521,46 @@ document.addEventListener("DOMContentLoaded", function() {
         section.classList.remove("visible");
       });
       addConsoleLog("All code sections hidden.", "system");
-    }  else if (command.startsWith("/")) {
+    }else if (baseCommand === "/submit") {
+      const verificationCode = parts[1]; // Get the verification code argument
+      
+      // Check if a verification code was provided
+      if (!verificationCode) {
+        addConsoleLog("Error: Missing verification code. Usage: /submit [code]", "error");
+        return;
+      }
+      
+      // Check if the verification code is valid (only 123 or 456)
+      if (verificationCode !== "123") {
+        addConsoleLog(`Error: Invalid verification code: ${verificationCode}`, "error");
+        return;
+      }
+      
+      addConsoleLog(`Submitting solution with verification code: ${verificationCode}...`, "success");
+      
+      // Start the submission process
+      const submission = showSubmissionOverlay();
+      
+      // After submission completes, redirect based on verification code
+      setTimeout(() => {
+        clearInterval(submission.progressInterval);
+        
+        // Update the success message
+        const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+        submission.overlay.querySelector(".loading-content").innerHTML = `
+          <h2>PART1 COMPLETE</h2>
+          <p>Excellent work, Agent ${agentName.toUpperCase()}! </p>
+          <p>Proceeding to part2...</p>
+        `;
+        
+        // Redirect to the appropriate page based on verification code
+        setTimeout(() => {
+          if (verificationCode === "123") {
+            window.location.href = "part2.html";
+          }
+        }, 3000);
+      }, 3000);
+    } else if (command.startsWith("/")) {
       addConsoleLog(`Unknown command: ${command}. Type /help for available commands.`, "error");
     } else {
       addConsoleLog(`Command execution failed: ${command}`, "error");
@@ -615,6 +606,57 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(simulateSystemMessages, Math.random() * 4000 + 2000);
   }
   
+
+// Show submission overlay function
+function showSubmissionOverlay() {
+  // Get agent name for personalization
+  const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
+  
+  // Add transition effect
+  document.body.classList.add("submission-transition");
+  
+  // Show submission overlay
+  const submissionOverlay = document.createElement("div");
+  submissionOverlay.className = "loading-overlay";
+  submissionOverlay.innerHTML = `
+    <div class="loading-content">
+      <h2>SUBMITTING SOLUTION</h2>
+      <div class="loading-progress">
+        <div class="loading-bar"></div>
+      </div>
+      <p class="loading-status">Validating code...</p>
+    </div>
+  `;
+  document.body.appendChild(submissionOverlay);
+  
+  // Simulate submission progress
+  let progress = 0;
+  const loadingBar = submissionOverlay.querySelector(".loading-bar");
+  const loadingStatus = submissionOverlay.querySelector(".loading-status");
+  const statuses = [
+    "Validating code...",
+    "Checking monitoring functionality...",
+    "Verifying original game mechanics...",
+    "Testing log structure...",
+    "Solution accepted!"
+  ];
+  
+  return {
+    overlay: submissionOverlay,
+    progressInterval: setInterval(() => {
+      progress += Math.random() * 15;
+      if (progress > 100) progress = 100;
+      
+      loadingBar.style.width = `${progress}%`;
+      loadingStatus.textContent = statuses[Math.min(Math.floor(progress/25), 4)];
+      
+      if (progress === 100) {
+        clearInterval(this.progressInterval);
+      }
+    }, 300)
+  };
+}
+
   // Initialize console
   const agentName = localStorage.getItem('agentName') || 'UNKNOWN';
   addConsoleLog(`Terminal v2.7.4 initialized for Agent ${agentName.toUpperCase()}`, "system");
@@ -633,7 +675,7 @@ document.addEventListener("DOMContentLoaded", function() {
     e.preventDefault();
     addConsoleLog("Opening secure Python environment...", "system");
     // You could redirect to a specific URL here if needed
-    window.open("https://livecodes.io/?template=python", "_blank");
+    window.open("https://livecodes.io/", "_blank");
   });
 });
 

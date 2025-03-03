@@ -1,6 +1,5 @@
 // Intro animation sequence - added from index.js
 document.addEventListener('DOMContentLoaded', function() {
-  // More conversational messages
   const introMessages = [
     "part 2 placeholder message1",
     "part 2 placeholder message2",
@@ -195,9 +194,6 @@ document.addEventListener('DOMContentLoaded', function() {
       currentMessageIndex = i;
       await typeMessage(introMessages[i], i);
     }
-    
-    // After all messages, show "PRESS ENTER TO CONTINUE" prompt
-    await typeMessage("PRESS ENTER TO CONTINUE", introMessages.length);
     isComplete = true;
   }
   
@@ -527,6 +523,7 @@ document.addEventListener("DOMContentLoaded", function() {
     addConsoleLog("/clear - Clear console logs", "system");
     addConsoleLog("/showall - Show all sections", "system");
     addConsoleLog("/hideall - Hide all sections", "system");
+    addConsoleLog("/secret - ???", "system");
     addConsoleLog("/submit [code] - Submit your solution with verification code", "system");
     addConsoleLog("========================", "system");
   }
@@ -558,8 +555,8 @@ document.addEventListener("DOMContentLoaded", function() {
         consoleLogs.removeChild(consoleLogs.lastChild);
       }
       addConsoleLog("Console cleared.", "system");
-    } else if (baseCommand === "/secrect") {
-      addConsoleLog("print secrect", "system");
+    } else if (baseCommand === "/secret") {
+      addConsoleLog("print secret", "system");
     } else if (baseCommand === "/showall") {
       toggleCodeSection("python");
       toggleCodeSection("html");
@@ -659,6 +656,7 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Initialize console
   addConsoleLog(`Terminal v2.7.4 initialized for Agent ${agentName.toUpperCase()}`, "system");
+  addConsoleLog("Type /help for available commands", "system");
   
   // Start system message simulation
   setTimeout(simulateSystemMessages, 2000);
@@ -673,7 +671,7 @@ document.addEventListener("DOMContentLoaded", function() {
     e.preventDefault();
     addConsoleLog("Opening secure Python environment...", "success");
     // You could redirect to a specific URL here if needed 
-    window.open("https://livecodes.io/?template=python", "_blank");
+    window.open("https://livecodes.io/", "_blank");
   });
 });
 

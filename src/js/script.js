@@ -1,12 +1,10 @@
-// Intro animation sequence
 document.addEventListener('DOMContentLoaded', function() {
   // More conversational messages with Ryan connection
   const introMessages = [
     "Hey there, rookie! Nice to meet you.",
     "I believe you've met Agent Ryan already, he's one of our best agents in the field.",
     "Ryan told me he's found an unpolished gem in you, I trust his judgment completely",
-    "Now, I need you to log into our classified portal.",
-    "Let's see what you're made of!"
+    "Now, I need you to log into our classified portal."
   ];
 
   // DOM elements
@@ -296,11 +294,35 @@ function createBinaryOverlay() {
 // Call binary overlay function
 createBinaryOverlay();
 
-// Authorized users list - replace with your actual student list
+// Authorized users list - keep original names and add new ones
 const authorizedUsers = [
   "sean",
   "ethan",
   "dhiraj",
+  "Da Silva Cynthia",
+  "Aguirre JR",
+  "Dayaday Mariamne",
+  "Hussain Mona",
+  "Napoles Kirsten",
+  "Danas JP",
+  "Medrano Jasher",
+  "Nodado Ian",
+  "Facinabao Cyneth",
+  "Valencia Angelo",
+  "Florenosos Jian",
+  "Grajo Vincent",
+  "Ortoli Sabrina",
+  "Costa Raquel",
+  "Galam Jazlene",
+  "Duah Emmanuela",
+  "Jacinto Audrey",
+  "Angob Joanna",
+  "Manuel Anthony",
+  "Stefanishin Tim",
+  "Duchon Nicholas",
+  "Mesfun Sina",
+  "Viera Jake",
+  "Escourse Maryrose"
 ];
 
 // Authentication form submission
@@ -317,13 +339,39 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
   authButton.style.cursor = "not-allowed";
 
   // Check if username is in authorized list (case insensitive)
-  const isAuthorized = authorizedUsers.some(
-    (user) => user.toLowerCase() === username.toLowerCase()
-  );
+  const isAuthorized = authorizedUsers.some(user => {
+    return username.toLowerCase().replace(/\s+/g, "") === user.toLowerCase().replace(/\s+/g, "") || 
+           username.toLowerCase().replace(/\s+/g, "").includes(user.toLowerCase().replace(/\s+/g, ""));
+  });
 
   if (isAuthorized) {
-    // Store the username in localStorage for use across pages
-    localStorage.setItem('agentName', username);
+    // Determine which name matched and extract last name
+    let lastname = "";
+    
+    // Special case for original users (sean, ethan, dhiraj)
+    if (username.toLowerCase().replace(/\s+/g, "") === "sean" || 
+        username.toLowerCase().replace(/\s+/g, "").includes("sean")) {
+      lastname = "sean";
+    } else if (username.toLowerCase().replace(/\s+/g, "") === "ethan" || 
+              username.toLowerCase().replace(/\s+/g, "").includes("ethan")) {
+      lastname = "ethan";
+    } else if (username.toLowerCase().replace(/\s+/g, "") === "dhiraj" || 
+              username.toLowerCase().replace(/\s+/g, "").includes("dhiraj")) {
+      lastname = "dhiraj";
+    } else {
+      // For new users, extract the last name (first word in the full name)
+      for (const user of authorizedUsers) {
+        if (username.toLowerCase().replace(/\s+/g, "") === user.toLowerCase().replace(/\s+/g, "") || 
+            username.toLowerCase().replace(/\s+/g, "").includes(user.toLowerCase().replace(/\s+/g, ""))) {
+          // Get the first part as last name
+          lastname = user.split(" ")[1];
+          break;
+        }
+      }
+    }
+    
+    // Store the last name in localStorage
+    localStorage.setItem('agentName', lastname);
     
     messageElement.textContent =
       "Authentication successful. Initializing secure connection...";
