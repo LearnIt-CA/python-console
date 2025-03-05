@@ -1,40 +1,1634 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Terminal</title>
-  <link rel="stylesheet" href="css/true-ending.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Terminal</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+        /* Root variables for consistent colors throughout the experience */
+        :root {
+          --primary: #00ff41;
+          --primary-dim: rgba(0, 255, 65, 0.7);
+          --primary-faint: rgba(0, 255, 65, 0.3);
+          --secondary: #ffbd59;
+          --secondary-dim: rgba(255, 189, 89, 0.7);
+          --secondary-faint: rgba(255, 189, 89, 0.3);
+          --tertiary: #ff0043;
+          --tertiary-dim: rgba(255, 0, 67, 0.7);
+          --tertiary-faint: rgba(255, 0, 67, 0.3);
+          --background: #0d0208;
+          --panel: rgba(16, 24, 16, 0.8);
+        }
+
+        /* Base styling */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: "Share Tech Mono", monospace;
+        }
+
+        /* Body styles with animation for background color shifting */
+        body {
+          background-color: var(--background);
+          color: var(--primary);
+          overflow: hidden;
+          position: relative;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          animation: body-pulse 4s infinite alternate;
+        }
+
+        /* Matrix canvas positioning */
+        #matrix-canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 0;
+          opacity: 0.3;
+        }
+
+        /* Binary overlay for background effect */
+        .binary-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          overflow: hidden;
+          opacity: 0.1;
+          z-index: 0;
+        }
+
+        .binary-text {
+          position: absolute;
+          color: var(--primary);
+          font-size: 0.8rem;
+          user-select: none;
+        }
+
+        /* Targeting lines that move across the screen */
+        .targeting-line {
+          position: absolute;
+          background-color: var(--primary);
+          opacity: 0.2;
+          z-index: 0;
+        }
+
+        .targeting-line-h {
+          height: 1px;
+          width: 100%;
+          top: 20%;
+          animation: targeting-h 8s cubic-bezier(0.36, 0, 0.66, -0.56) infinite alternate;
+        }
+
+        .targeting-line-v {
+          width: 1px;
+          height: 100%;
+          left: 20%;
+          animation: targeting-v 5s cubic-bezier(0.36, 0, 0.66, -0.56) infinite alternate;
+        }
+
+        /* Animation for horizontal targeting line */
+        @keyframes targeting-h {
+          0% {
+            top: 5%;
+            height: 1px;
+            opacity: 0.2;
+          }
+          25% {
+            height: 3px;
+            opacity: 0.4;
+          }
+          50% {
+            top: 50%;
+            height: 1px;
+            opacity: 0.2;
+          }
+          75% {
+            height: 5px;
+            opacity: 0.4;
+          }
+          100% {
+            top: 95%;
+            height: 1px;
+            opacity: 0.2;
+          }
+        }
+
+        /* Animation for vertical targeting line */
+        @keyframes targeting-v {
+          0% {
+            left: 5%;
+            width: 1px;
+            opacity: 0.2;
+          }
+          25% {
+            width: 3px;
+            opacity: 0.4;
+          }
+          50% {
+            left: 50%;
+            width: 1px;
+            opacity: 0.2;
+          }
+          75% {
+            width: 5px;
+            opacity: 0.4;
+          }
+          100% {
+            left: 95%;
+            width: 1px;
+            opacity: 0.2;
+          }
+        }
+
+        /* Intro animation fullscreen overlay styles */
+        .fullscreen-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: var(--background);
+          z-index: 9999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+
+        /* Terminal container styling */
+        .terminal-container {
+          width: 80%;
+          max-width: 800px;
+          background-color: rgba(0, 0, 0, 0.7);
+          border: 1px solid var(--primary);
+          padding: 30px;
+          box-shadow: 0 0 20px var(--primary-faint);
+          overflow: hidden;
+          position: relative;
+          animation: container-pulse 4s infinite alternate;
+        }
+
+        /* Terminal container pulsing animation */
+        @keyframes container-pulse {
+          0% {
+            box-shadow: 0 0 20px var(--primary-faint);
+            border-color: var(--primary);
+          }
+          50% {
+            box-shadow: 0 0 30px var(--secondary-dim);
+            border-color: var(--secondary);
+          }
+          100% {
+            box-shadow: 0 0 20px var(--tertiary-faint);
+            border-color: var(--tertiary);
+          }
+        }
+
+        /* Terminal top line effect */
+        .terminal-container:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background-color: var(--primary);
+          opacity: 0.8;
+          animation: terminal-line 2s infinite alternate;
+        }
+
+        /* Animation for terminal top line */
+        @keyframes terminal-line {
+          0% {
+            background-color: var(--primary);
+            opacity: 0.8;
+            height: 4px;
+          }
+          50% {
+            background-color: var(--secondary);
+            opacity: 1;
+            height: 6px;
+          }
+          100% {
+            background-color: var(--tertiary);
+            opacity: 0.8;
+            height: 4px;
+          }
+        }
+
+        /* Terminal content area */
+        #terminal-content {
+          margin-bottom: 15px;
+          font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Individual terminal lines */
+        .terminal-line {
+          color: var(--primary);
+          margin-bottom: 8px;
+          line-height: 1.5;
+          overflow: hidden;
+          white-space: pre-wrap;
+          opacity: 0;
+          transform: translateY(5px);
+          animation: fadeInUp 0.3s forwards;
+        }
+
+        /* Different styles for system messages vs villain messages */
+        .terminal-line.system {
+          color: var(--primary);
+          opacity: 0.9;
+        }
+
+        /* Villain text styling with preserved glitch - different degrees */
+        .terminal-line.villain {
+          text-shadow: 0 0 5px var(--primary);
+          font-weight: bold;
+        }
+
+        .terminal-line.villain.level-1 {
+          color: var(--primary);
+          animation: subtle-float 3s ease-in-out infinite alternate;
+        }
+
+        .terminal-line.villain.level-2 {
+          color: var(--primary);
+          animation: subtle-glitch 4s infinite;
+        }
+
+        .terminal-line.villain.level-3 {
+          color: var(--secondary);
+          animation: medium-glitch 3s infinite;
+        }
+
+        .terminal-line.villain.level-4 {
+          color: var(--secondary);
+          animation: strong-glitch 2s infinite;
+          text-shadow: 0 0 8px var(--secondary);
+        }
+
+        .terminal-line.villain.level-5 {
+          color: var(--tertiary);
+          animation: intense-glitch 1.5s infinite, pulse-text 3s infinite alternate;
+          text-shadow: 0 0 10px var(--tertiary), 0 0 15px var(--tertiary);
+          letter-spacing: 1px;
+        }
+
+        /* Glitch text animations with varying intensities */
+        @keyframes subtle-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-3px); }
+        }
+
+        @keyframes subtle-glitch {
+          0%, 90%, 100% { transform: translate(0); }
+          30% { transform: translate(-1px, 1px); }
+          60% { transform: translate(1px, -1px); }
+        }
+
+        @keyframes medium-glitch {
+          0%, 85%, 100% { transform: translate(0); }
+          30% { transform: translate(-2px, 1px); }
+          60% { transform: translate(2px, -1px); }
+        }
+
+        @keyframes strong-glitch {
+          0%, 80%, 100% { transform: translate(0); }
+          10% { transform: translate(-2px, 2px); }
+          30% { transform: translate(2px, -2px); }
+          50% { transform: translate(-2px, -2px); }
+          70% { transform: translate(2px, 2px); }
+        }
+
+        @keyframes intense-glitch {
+          0%, 100% { transform: translate(0); }
+          10% { transform: translate(-3px, 2px); }
+          20% { transform: translate(3px, -2px); }
+          30% { transform: translate(-3px, -2px); }
+          40% { transform: translate(3px, 2px); }
+          50% { transform: translate(-3px, 1px); }
+          60% { transform: translate(3px, -1px); }
+          70% { transform: translate(-3px, 0); }
+          80% { transform: translate(3px, -1px); }
+          90% { transform: translate(-3px, 2px); }
+        }
+
+        @keyframes pulse-text {
+          0% { 
+            opacity: 0.8; 
+            color: var(--secondary);
+          }
+          50% { 
+            color: var(--tertiary);
+            text-shadow: 0 0 8px var(--tertiary);
+          }
+          100% { 
+            opacity: 1; 
+            color: var(--tertiary);
+            text-shadow: 0 0 12px var(--tertiary), 0 0 20px var(--tertiary); 
+          }
+        }
+
+        /* Terminal prompt styling */
+        .terminal-prompt {
+          color: var(--primary);
+          margin-right: 10px;
+        }
+
+        /* Terminal cursor styling */
+        .terminal-cursor {
+          color: var(--primary);
+          animation: blink-cursor 0.5s step-end infinite;
+        }
+
+        .cursor-line {
+          display: flex;
+          align-items: center;
+        }
+
+        /* Animation for cursor blinking */
+        @keyframes blink-cursor {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+
+        /* Animation for fade-in effect */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(5px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* Typing animation for text */
+        .typing {
+          overflow: hidden;
+          display: inline-block;
+          white-space: nowrap;
+          width: 0;
+          animation: typing-effect 0.8s steps(40, end) forwards;
+        }
+
+        /* Animation for typing effect */
+        @keyframes typing-effect {
+          from { width: 0; }
+          to { width: 100%; }
+        }
+
+        /* Terminal glitch animation - less intense */
+        .terminal-glitch {
+          animation: terminal-glitch-subtle 0.15s ease 8;
+        }
+
+        /* Less intense animation for terminal glitching */
+        @keyframes terminal-glitch-subtle {
+          0% {
+            transform: translate(0);
+          }
+          10% {
+            transform: translate(-5px, 5px);
+          }
+          20% {
+            transform: translate(-5px, -5px);
+          }
+          30% {
+            transform: translate(5px, 5px);
+          }
+          40% {
+            transform: translate(5px, -5px);
+          }
+          50% {
+            transform: translate(-8px, 8px);
+          }
+          60% {
+            transform: translate(8px, 8px);
+          }
+          70% {
+            transform: translate(0, -10px);
+          }
+          80% {
+            transform: translate(10px, 0);
+          }
+          90% {
+            transform: translate(-3px, -3px);
+          }
+          100% {
+            transform: translate(0);
+          }
+        }
+
+        /* Grid item styling for shatter effect */
+        .grid-item {
+          position: absolute;
+          background-color: rgba(0, 0, 0, 0.8);
+          box-sizing: border-box;
+          display: inline-block;
+          overflow: hidden;
+          transform-origin: center;
+          z-index: 2;
+        }
+
+        /* Grid item highlight effect */
+        .grid-item:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: var(--primary-faint);
+          opacity: 0;
+          animation: subtle-flicker 1s ease infinite;
+        }
+
+        /* Animation for subtle flicker effect */
+        @keyframes subtle-flicker {
+          0%, 100% { opacity: 0; }
+          50% { opacity: 0.3; }
+        }
+
+        /* Computational overlay for effects */
+        .computational-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: transparent;
+          z-index: 1;
+          overflow: hidden;
+        }
+
+        /* Animation for smooth shatter effect */
+        @keyframes smooth-shatter {
+          0% {
+            transform: scale(1) translateZ(0);
+            opacity: 1;
+          }
+          20% {
+            transform: scale(1.1) translateZ(0) rotate(3deg);
+          }
+          40% {
+            transform: scale(0.9) translateZ(0) rotate(-3deg);
+          }
+          60% {
+            transform: scale(1.1) translateZ(0) rotate(5deg);
+          }
+          80% {
+            transform: scale(0.8) translateZ(0) rotate(-5deg);
+          }
+          100% {
+            transform: scale(0) translateZ(0) rotate(15deg);
+            opacity: 0;
+          }
+        }
+
+        /* System alert styling */
+        .system-alert {
+          color: var(--primary);
+          font-weight: bold;
+          animation: alert-subtle-move 2s ease-in-out infinite alternate;
+          font-size: 1.5rem;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        /* Animation for subtle alert movement */
+        @keyframes alert-subtle-move {
+          0% { transform: translateX(-2px); }
+          100% { transform: translateX(2px); }
+        }
+
+        /* Error animation overlay */
+        #error-animation {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.9);
+          z-index: 9998;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          transform: scale(0.1);
+          opacity: 0;
+          transition: transform 2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 1s ease;
+        }
+
+        /* Background overlay for gradually filling effect */
+        #background-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: var(--background);
+          z-index: -2;
+          opacity: 0;
+          transition: opacity 5s ease;
+        }
+
+        /* Class to expand error animation from center */
+        .error-expand {
+          transform: scale(1) !important;
+          opacity: 1 !important;
+        }
+
+        /* Hidden class to control visibility */
+        .hidden {
+          display: none !important;
+        }
+
+        /* Matrix container for random character display */
+        #matrix-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+          overflow: hidden;
+        }
+
+        /* Individual matrix character styling */
+        .matrix-char {
+          position: absolute;
+          color: var(--primary);
+          font-size: 2rem;
+          opacity: 0;
+          text-shadow: 0 0 5px var(--primary);
+          animation: matrix-fade 2s ease-in forwards;
+          transform: rotate(var(--rotation));
+        }
+
+        /* Animation for matrix character fading */
+        @keyframes matrix-fade {
+          0% { 
+            opacity: 0; 
+            transform: scale(0.5) rotate(var(--rotation)); 
+            color: var(--primary);
+          }
+          30% { 
+            color: var(--secondary);
+          }
+          50% { 
+            opacity: 0.6; 
+            transform: scale(1.2) rotate(calc(var(--rotation) * 1.5));
+            color: var(--secondary); 
+          }
+          70% {
+            color: var(--tertiary); 
+          }
+          100% { 
+            opacity: 0; 
+            transform: scale(0.8) rotate(calc(var(--rotation) * 2)); 
+            color: var(--tertiary);
+          }
+        }
+
+        /* Warning container for error messages */
+        #warning-container {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        /* Individual warning text styling */
+        .warning-text {
+          position: absolute;
+          font-size: 2rem;
+          color: var(--primary);
+          opacity: 0;
+          transform: translateY(30px);
+          animation: warning-fade-in 1s ease forwards;
+          text-shadow: 0 0 10px var(--primary);
+          letter-spacing: 2px;
+          white-space: nowrap;
+        }
+
+        /* Animation for warning text fade-in */
+        @keyframes warning-fade-in {
+          to {
+            opacity: 0.7;
+            transform: translateY(0);
+          }
+        }
+
+        /* Background color animation */
+        @keyframes body-pulse {
+          0% { background-color: var(--background); }
+          25% { background-color: #0a0d12; }
+          50% { background-color: #0d1208; }
+          75% { background-color: #0a0808; }
+          100% { background-color: var(--background); }
+        }
+
+        /* Soft shake animation - less intense */
+        .soft-shake {
+          animation: soft-shake-anim 0.3s infinite;
+        }
+
+        /* Mild shake animation - moderate */
+        .mild-shake {
+          animation: mild-shake-anim 0.25s infinite;
+        }
+
+        /* Medium shake animation - stronger */
+        .medium-shake {
+          animation: medium-shake-anim 0.2s infinite;
+        }
+
+        /* Animation for soft shaking */
+        @keyframes soft-shake-anim {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          25% { transform: translate(-3px, 2px) rotate(-1deg); }
+          50% { transform: translate(3px, -3px) rotate(1deg); }
+          75% { transform: translate(-2px, -2px) rotate(-0.5deg); }
+          100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Animation for mild shaking */
+        @keyframes mild-shake-anim {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          20% { transform: translate(-5px, 4px) rotate(-2deg); }
+          40% { transform: translate(5px, -4px) rotate(2deg); }
+          60% { transform: translate(-5px, -4px) rotate(-1deg); }
+          80% { transform: translate(5px, 4px) rotate(1deg); }
+          100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Animation for medium shaking */
+        @keyframes medium-shake-anim {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          15% { transform: translate(-8px, 6px) rotate(-3deg); }
+          30% { transform: translate(8px, -6px) rotate(3deg); }
+          45% { transform: translate(-6px, -6px) rotate(-2deg); }
+          60% { transform: translate(6px, 6px) rotate(2deg); }
+          75% { transform: translate(-8px, 4px) rotate(-1deg); }
+          90% { transform: translate(8px, -4px) rotate(1deg); }
+          100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Evil pulsing effect */
+        .evil-pulse {
+          animation: evil-pulse 1.5s infinite alternate;
+        }
+
+        @keyframes evil-pulse {
+          0% { 
+            text-shadow: 0 0 5px var(--primary);
+            color: var(--primary);
+          }
+          50% {
+            color: var(--secondary);
+            text-shadow: 0 0 8px var(--secondary);
+          }
+          100% { 
+            text-shadow: 0 0 10px var(--tertiary), 0 0 15px var(--tertiary);
+            color: var(--tertiary);
+          }
+        }
+
+        /* Glitch line effect */
+        .glitch-line {
+          position: absolute;
+          width: 100%;
+          height: 3px;
+          background-color: var(--primary);
+          top: 50%;
+          left: 0;
+          opacity: 0;
+          z-index: 9995;
+        }
+
+        /* Final message styling */
+        #final-message-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: black;
+          color: var(--tertiary);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          opacity: 0;
+          transition: opacity 2s ease;
+          z-index: 10000;
+        }
+
+        #final-threat {
+          font-size: 5vw;
+          white-space: nowrap;
+          text-transform: uppercase;
+          letter-spacing: 4px;
+          margin-bottom: 20px;
+          animation: final-pulse 3s infinite alternate;
+          text-shadow: 0 0 15px var(--tertiary);
+        }
+
+        #final-agent {
+          font-size: 4vw;
+          white-space: nowrap;
+          text-transform: uppercase;
+          animation: final-pulse 3s infinite alternate-reverse;
+          text-shadow: 0 0 15px var(--tertiary);
+        }
+
+        @keyframes final-pulse {
+          0% { 
+            color: var(--tertiary); 
+            text-shadow: 0 0 15px var(--tertiary);
+          }
+          50% { 
+            color: var(--secondary); 
+            text-shadow: 0 0 15px var(--secondary);
+          }
+          100% { 
+            color: var(--tertiary); 
+            text-shadow: 0 0 25px var(--tertiary);
+          }
+        }
+    </style>
 </head>
 <body>
-  <!-- Matrix canvas background -->
-  <canvas id="matrix-canvas"></canvas>
-  
-  <!-- Binary overlay -->
-  <div id="binary-overlay" class="binary-overlay"></div>
-  
-  <!-- Targeting lines -->
-  <div class="targeting-line targeting-line-h"></div>
-  <div class="targeting-line targeting-line-v"></div>
-  
-  <!-- Intro animation section -->
-  <div id="intro-animation" class="fullscreen-overlay">
-    <div class="terminal-container">
-      <div id="terminal-content"></div>
-      <div class="cursor-line">
-        <span class="terminal-prompt">&gt;</span>
-        <span class="terminal-cursor">█</span>
-      </div>
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div class="binary-overlay" id="binary-overlay"></div>
+    
+    <div id="intro-animation" class="fullscreen-overlay">
+        <div class="terminal-container">
+            <div id="terminal-content"></div>
+            <div class="cursor-line">
+                <span class="terminal-prompt">></span>
+                <span class="terminal-cursor">█</span>
+            </div>
+        </div>
     </div>
-  </div>
-  
-  <!-- Error animation section -->
-  <div id="error-animation" class="hidden">
-    <div id="warning-container"></div>
-    <div id="matrix-container"></div>
-    <div id="background-overlay"></div>
-  </div>
-  
-  <script src="js/true-ending.js"></script>
+    
+    <div id="error-animation" class="hidden">
+        <div id="warning-container"></div>
+        <div id="matrix-container"></div>
+        <div id="background-overlay"></div>
+    </div>
+    
+    <div id="final-message-container">
+        <div id="final-threat">I'LL FIND YOU</div>
+        <div id="final-agent">AGENT <span id="agent-name">UNKNOWN</span></div>
+    </div>
+
+    <script>
+        // Intro animation sequence
+        document.addEventListener('DOMContentLoaded', function() {
+          const introMessages = [
+            "MONITORING PROTOCOLS INITIATED...",
+            "DATA STREAM ACTIVE...",
+            "> Oh, look who's finally checking in!",
+            "> I see you've found the hidden section",
+            "> Did you really think you were tracking the RIGHT person this whole time?",
+            "> Poor Mr. Zhang must be wondering why he's being investigated.",
+            "> Yes, I planted everything on him. The logs, the communications, all of it.",
+            "> Your agency has been following the wrong lead all along.",
+            "> And now that you're here... I have YOU, and your entire system."
+          ];
+
+          // Semantic indicators for each message to control animation speed and style
+          const messageSemantics = [
+            { speed: 'normal', glitchLevel: 0, class: 'system' },     // system message 1
+            { speed: 'normal', glitchLevel: 0, class: 'system' },     // system message 2
+            { speed: 'normal', glitchLevel: 1, class: 'villain' },    // casual villain intro
+            { speed: 'normal', glitchLevel: 1, class: 'villain' },    // mild surprise
+            { speed: 'normal', glitchLevel: 2, class: 'villain' },    // revelation
+            { speed: 'slow', glitchLevel: 2, class: 'villain' },      // mocking tone
+            { speed: 'medium', glitchLevel: 3, class: 'villain' },    // pride in deception
+            { speed: 'fast', glitchLevel: 4, class: 'villain' },      // escalating threat
+            { speed: 'very-fast', glitchLevel: 5, class: 'villain' }, // final threat
+          ];
+
+          // Get DOM elements
+          const introAnimation = document.getElementById('intro-animation');
+          const terminalContent = document.getElementById('terminal-content');
+          const terminalContainer = document.querySelector('.terminal-container');
+          const errorAnimation = document.getElementById('error-animation');
+          const backgroundOverlay = document.getElementById('background-overlay');
+          const finalMessageContainer = document.getElementById('final-message-container');
+          
+          // Set agent name
+          const agentFullName = localStorage.getItem('agentFullName') || 'UNKNOWN';
+          document.getElementById('agent-name').textContent = agentFullName;
+          
+          // Add computational overlay for effects
+          const compOverlay = document.createElement('div');
+          compOverlay.className = 'computational-overlay';
+          terminalContainer.appendChild(compOverlay);
+          
+          // Clear any existing content
+          terminalContent.innerHTML = '';
+          
+          let currentMessageIndex = 0;
+          
+          // Function to create a random glitch effect - less intense
+          function createRandomGlitch() {
+            const glitchLine = document.createElement('div');
+            glitchLine.className = 'glitch-line';
+            glitchLine.style.top = `${Math.random() * 100}%`;
+            glitchLine.style.height = `${Math.random() * 5 + 1}px`;
+            glitchLine.style.opacity = '0.5';
+            
+            // Change line color based on message progression
+            if (currentMessageIndex >= 7) {
+              glitchLine.style.backgroundColor = 'var(--tertiary)';
+            } else if (currentMessageIndex >= 5) {
+              glitchLine.style.backgroundColor = 'var(--secondary)';
+            } else {
+              glitchLine.style.backgroundColor = 'var(--primary)';
+            }
+            
+            document.body.appendChild(glitchLine);
+            
+            setTimeout(() => {
+              glitchLine.style.opacity = '0';
+              setTimeout(() => {
+                document.body.removeChild(glitchLine);
+              }, 300);
+            }, 200);
+          }
+          
+          // Function to create a typing effect for a message
+          function typeMessage(message, index) {
+            return new Promise(resolve => {
+              // Create a new line element
+              const line = document.createElement('div');
+              line.className = 'terminal-line';
+              
+              // Apply semantic styling based on message type
+              const semantics = messageSemantics[index];
+              
+              // Add appropriate classes
+              if (semantics.class === 'villain') {
+                line.classList.add('villain');
+                line.classList.add(`level-${semantics.glitchLevel}`);
+                
+                // Add glitch effect for higher level messages
+                if (semantics.glitchLevel >= 2) {
+                  const glitchInterval = setInterval(() => {
+                    if (Math.random() > 0.7) {
+                      createRandomGlitch();
+                    }
+                  }, 1000);
+                  
+                  // Clear interval after 3 seconds
+                  setTimeout(() => {
+                    clearInterval(glitchInterval);
+                  }, 3000);
+                }
+                
+                // Add terminal glitch for highest level messages
+                if (semantics.glitchLevel >= 4) {
+                  setTimeout(() => {
+                    terminalContainer.classList.add('terminal-glitch');
+                    setTimeout(() => {
+                      terminalContainer.classList.remove('terminal-glitch');
+                    }, 150);
+                  }, 100);
+                }
+              } else {
+                line.classList.add(semantics.class);
+              }
+              
+              line.style.opacity = '1';
+              
+              // For empty messages (spacing), resolve immediately
+              if (message === "") {
+                line.innerHTML = "&nbsp;";
+                terminalContent.appendChild(line);
+                resolve();
+                return;
+              }
+              
+              // Add the typing span
+              const typingSpan = document.createElement('span');
+              typingSpan.className = 'typing';
+              typingSpan.textContent = message;
+              line.appendChild(typingSpan);
+              
+              // Add line to terminal
+              terminalContent.appendChild(line);
+              
+              // Adjust typing duration based on semantics and content
+              let typingDuration;
+              
+              switch (semantics.speed) {
+                case 'slow':
+                  typingDuration = Math.min(message.length * 50, 2200); // Slow, dramatic effect
+                  break;
+                case 'medium':
+                  typingDuration = Math.min(message.length * 40, 1800); // Medium pace
+                  break;
+                case 'fast':
+                  typingDuration = Math.min(message.length * 30, 1400); // Faster, more urgent
+                  break;
+                case 'very-fast':
+                  typingDuration = Math.min(message.length * 25, 1000); // Very fast, climactic
+                  break;
+                default:
+                  typingDuration = Math.min(message.length * 35, 1600); // Normal pace
+              }
+              
+              // Set the animation duration dynamically
+              typingSpan.style.animationDuration = `${typingDuration}ms`;
+              
+              // Auto-scroll to bottom
+              setTimeout(() => {
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+              }, 50);
+              
+              // Add proper pauses after each message type
+              let pauseAfterTyping = 200;
+              
+              // Add longer pauses for dramatic effect after important revelations
+              if (index === 4 || index === 6) {
+                pauseAfterTyping = 800; // Longer pause after key revelations
+              } else if (index === 7) {
+                pauseAfterTyping = 500; // Medium pause before final message
+              }
+              
+              // Resolve after animation completes
+              setTimeout(resolve, typingDuration + pauseAfterTyping);
+            });
+          }
+          
+          // Create grid transition effect with smoother shaking
+          function createGridTransition() {
+            // First apply a glitch effect to the terminal
+            terminalContainer.classList.add('terminal-glitch');
+            
+            setTimeout(() => {
+              // Make terminal container shake - less intense
+              terminalContainer.classList.add('soft-shake');
+              
+              // Get the actual position and dimensions of the terminal container
+              const terminalRect = terminalContainer.getBoundingClientRect();
+              const gridSize = 15; // Grid items for effect
+              const width = terminalRect.width;
+              const height = terminalRect.height;
+              const itemWidth = width / gridSize;
+              const itemHeight = height / gridSize;
+              
+              // Clone the terminal content for the grid effect
+              const terminalClone = terminalContent.cloneNode(true);
+              
+              // Hide original terminal content
+              terminalContent.style.visibility = 'hidden';
+              document.querySelector('.cursor-line').style.visibility = 'hidden';
+              
+              // Create grid items
+              const gridItems = [];
+              for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                  const item = document.createElement('div');
+                  item.className = 'grid-item';
+                  
+                  // Add smooth rotations for some grid items
+                  if (Math.random() > 0.7) {
+                    item.classList.add('smooth-rotation');
+                  }
+                  
+                  item.style.width = `${itemWidth}px`;
+                  item.style.height = `${itemHeight}px`;
+                  
+                  // Use absolute positioning relative to the terminal container
+                  item.style.position = 'absolute';
+                  item.style.left = `${j * itemWidth}px`;
+                  item.style.top = `${i * itemHeight}px`;
+                  
+                  // Randomize borders - more subtle
+                  if (Math.random() > 0.7) {
+                    const borderColor = Math.random() > 0.5 ? 'var(--secondary-faint)' : 'var(--tertiary-faint)';
+                    item.style.borderLeft = `${Math.random()*2}px solid ${borderColor}`;
+                  }
+                  if (Math.random() > 0.7) {
+                    const borderColor = Math.random() > 0.5 ? 'var(--secondary-faint)' : 'var(--tertiary-faint)';
+                    item.style.borderTop = `${Math.random()*2}px solid ${borderColor}`;
+                  }
+                  
+                  // Calculate variable delay based on pattern for smoother effect
+                  const patternDelay = ((i*j) % 7) * 0.1 + Math.random() * 0.2;
+                  
+                  // Add item content from original terminal (cropped view)
+                  item.style.overflow = 'hidden';
+                  const inner = terminalClone.cloneNode(true);
+                  inner.style.position = 'absolute';
+                  inner.style.top = `-${i * itemHeight}px`;
+                  inner.style.left = `-${j * itemWidth}px`;
+                  inner.style.width = `${width}px`;
+                  inner.style.visibility = 'visible';
+                  item.appendChild(inner);
+                  
+                  // Apply animation with delay
+                  setTimeout(() => {
+                    // Apply smoother shatter animation
+                    item.style.animation = `smooth-shatter 1.2s cubic-bezier(0.36, 0.11, 0.89, 0.32) forwards`;
+                  }, patternDelay * 1000);
+                  
+                  terminalContainer.appendChild(item);
+                  gridItems.push(item);
+                }
+              }
+              
+              // After short delay, increase shake intensity
+              setTimeout(() => {
+                terminalContainer.classList.remove('soft-shake');
+                terminalContainer.classList.add('mild-shake');
+              }, 800);
+              
+              // Add system messages and code during transition
+              createSystemMessagesAndCode(terminalContainer);
+              
+              // Fade out the intro animation and start error animation
+              setTimeout(() => {
+                introAnimation.style.transition = 'opacity 0.8s ease-out';
+                introAnimation.style.opacity = '0';
+                
+                // Remove the intro animation from DOM after fade out
+                setTimeout(() => {
+                  introAnimation.style.display = 'none';
+                  
+                  // Show error animation with expansion effect
+                  errorAnimation.classList.remove('hidden');
+                  
+                  // Start filling the background
+                  backgroundOverlay.style.opacity = '1';
+                  
+                  // Use setTimeout to trigger the expansion animation
+                  setTimeout(() => {
+                    errorAnimation.classList.add('error-expand');
+                    
+                    // Start error sequence after the expansion
+                    setTimeout(() => {
+                      startErrorSequence();
+                    }, 1000);
+                  }, 100);
+                }, 800);
+              }, 1500);
+            }, 600);
+          }
+          
+          // Create system messages and code that fill the screen
+          function createSystemMessagesAndCode(container) {
+            // System alert messages - neutral system terms
+            const alertMessages = [
+              "SYSTEM NOTIFICATION",
+              "SECURITY PROTOCOLS ACTIVE",
+              "DATABASE PROCESSING",
+              "SYSTEM CODE A-927-X",
+              "AGENT IDENTITY VERIFICATION",
+              "PROTOCOL ADJUSTMENT",
+              "SYSTEM INTEGRATION IN PROGRESS",
+              "ENTITY DETECTED",
+              "DATA STREAM ACTIVE",
+              "NETWORK ANALYZING",
+              "DEFENSE SYSTEMS ONLINE",
+              "CONTROL VERIFICATION",
+              "CONNECTION CHECKING",
+              "SYSTEM STATUS",
+              "DATA FLOW ACTIVE",
+              "MONITORING ACTIVE",
+              "TRACKING SYSTEMS ONLINE",
+              "SYSTEM PROCESSING",
+              "STATUS UPDATE",
+              "COMMAND VERIFIED",
+              "SYSTEM CHECKING",
+              "STATUS REPORT",
+              "AUTHENTICATION PROCESS",
+              "KERNEL MONITORING",
+              "SECURITY PROTOCOLS ACTIVE",
+              "RECOVERY ACTIVE",
+              "FIREWALL MONITORING",
+              "ENCRYPTION ACTIVE",
+              "DATA VERIFICATION",
+              "SYSTEM SCAN",
+              "CODE VERIFICATION",
+              "PROCESS MONITORING",
+              "BACKUP SYSTEMS ONLINE",
+              "SECURITY SCANNING",
+              "NETWORK MONITORING",
+              "DEFENSE GRID ONLINE",
+              "SECURITY LEVEL 9",
+              "SYSTEM MAINTENANCE",
+              "EMERGENCY SYSTEMS READY",
+              "INTERFACE UPDATED"
+            ];
+            
+            // Add alert messages gradually, not all at once
+            let alertCount = 0;
+            const alertInterval = setInterval(() => {
+              if (alertCount >= 40) {
+                clearInterval(alertInterval);
+                return;
+              }
+              
+              const textContent = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+              
+              const alertElem = document.createElement('div');
+              alertElem.className = 'system-alert';
+              
+              // Randomize text sizes - more consistent
+              alertElem.style.fontSize = `${0.8 + Math.random() * 1}rem`;
+              
+              alertElem.textContent = textContent;
+              alertElem.style.position = 'absolute';
+              alertElem.style.top = `${Math.random() * 100}%`;
+              alertElem.style.left = `${Math.random() * 100}%`;
+              alertElem.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 10 - 5}deg)`;
+              alertElem.style.zIndex = '10';
+              alertElem.style.opacity = '0';
+              
+              // Emotion progression with colors
+              if (alertCount > 30) {
+                alertElem.style.color = 'var(--tertiary)';
+              } else if (alertCount > 15) {
+                alertElem.style.color = 'var(--secondary)';
+              } else {
+                alertElem.style.color = 'var(--primary)';
+              }
+              
+              // Fade in the alert gradually
+              container.appendChild(alertElem);
+              
+              // Gradually increase opacity for a more natural filling effect
+              setTimeout(() => {
+                alertElem.style.transition = 'opacity 0.5s ease';
+                alertElem.style.opacity = '0.6';
+              }, 50);
+              
+              alertCount++;
+            }, 80);
+          }
+          
+          // Function to display all messages in sequence
+          async function displayMessages() {
+            for (let i = 0; i < introMessages.length; i++) {
+              currentMessageIndex = i;
+              await typeMessage(introMessages[i], i);
+            }
+            
+            // Short pause before transition
+            setTimeout(() => {
+              createGridTransition();
+            }, 1000);
+          }
+          
+          // Start the intro animation
+          setTimeout(displayMessages, 500);
+          
+          // Matrix rain effect
+          const canvas = document.getElementById("matrix-canvas");
+          const ctx = canvas.getContext("2d");
+
+          // Set canvas dimensions
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+
+          // Resize canvas on window resize
+          window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          });
+
+          // Characters for matrix rain
+          const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*()!?><|\\/[]{}";
+
+          // Font settings
+          const fontSize = 14;
+          const columns = Math.floor(canvas.width / fontSize);
+
+          // Initialize drops at random positions
+          const drops = [];
+          for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor((Math.random() * canvas.height) / fontSize);
+          }
+
+          // Matrix rain function with primary color
+          function drawMatrixRain() {
+            // Semi-transparent black background for trail effect
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw drops
+            for (let i = 0; i < drops.length; i++) {
+              // Random character
+              const text = characters.charAt(
+                Math.floor(Math.random() * characters.length)
+              );
+
+              // Progress through colors based on position
+              const progress = drops[i] / (canvas.height / fontSize);
+              if (progress > 0.7) {
+                ctx.fillStyle = "#ff0043"; // tertiary color for bottom characters
+              } else if (progress > 0.3) {
+                ctx.fillStyle = "#ffbd59"; // secondary color for middle characters
+              } else {
+                ctx.fillStyle = "#00ff41"; // primary color for top characters
+              }
+              
+              ctx.font = `${fontSize}px monospace`;
+              ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+              // Reset drop if it's below canvas or randomly
+              if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+              }
+
+              // Move drop
+              drops[i]++;
+            }
+          }
+
+          // Start matrix rain animation
+          setInterval(drawMatrixRain, 50);
+
+          // Create binary overlay
+          function createBinaryOverlay() {
+            const overlay = document.getElementById("binary-overlay");
+
+            for (let i = 0; i < 100; i++) {
+              const binaryText = document.createElement("div");
+              binaryText.className = "binary-text";
+              
+              // Position-based colors for progression
+              const verticalPosition = Math.random() * 100;
+              if (verticalPosition > 70) {
+                binaryText.style.color = 'var(--tertiary)';
+              } else if (verticalPosition > 30) {
+                binaryText.style.color = 'var(--secondary)';
+              } else {
+                binaryText.style.color = 'var(--primary)';
+              }
+
+              // Random binary string
+              let text = "";
+              const length = Math.floor(Math.random() * 20) + 10;
+
+              for (let j = 0; j < length; j++) {
+                text += Math.floor(Math.random() * 2);
+              }
+
+              binaryText.textContent = text;
+
+              // Random position
+              const left = Math.random() * 100;
+              const top = verticalPosition;
+
+              binaryText.style.left = `${left}%`;
+              binaryText.style.top = `${top}%`;
+
+              overlay.appendChild(binaryText);
+            }
+          }
+
+          // Call binary overlay function
+          createBinaryOverlay();
+
+          // Add targeting lines
+          function createTargetingLines() {
+            const body = document.body;
+            
+            // Create horizontal targeting lines with progression colors
+            for (let i = 0; i < 3; i++) {
+              const hLine = document.createElement("div");
+              hLine.className = "targeting-line targeting-line-h";
+              
+              // Color progression based on vertical position
+              if (i === 2) {
+                hLine.style.backgroundColor = "var(--tertiary)";
+              } else if (i === 1) {
+                hLine.style.backgroundColor = "var(--secondary)";
+              } else {
+                hLine.style.backgroundColor = "var(--primary)";
+              }
+              
+              hLine.style.top = `${20 + i * 25}%`;
+              hLine.style.animationDelay = `${i * 0.5}s`;
+              body.appendChild(hLine);
+            }
+            
+            // Create vertical targeting lines with progression colors
+            for (let i = 0; i < 3; i++) {
+              const vLine = document.createElement("div");
+              vLine.className = "targeting-line targeting-line-v";
+              
+              // Color progression based on horizontal position
+              if (i === 2) {
+                vLine.style.backgroundColor = "var(--tertiary)";
+              } else if (i === 1) {
+                vLine.style.backgroundColor = "var(--secondary)";
+              } else {
+                vLine.style.backgroundColor = "var(--primary)";
+              }
+              
+              vLine.style.left = `${20 + i * 25}%`;
+              vLine.style.animationDelay = `${i * 0.5}s`;
+              body.appendChild(vLine);
+            }
+          }
+
+          // Call targeting lines function
+          createTargetingLines();
+        });
+
+        // Error animation sequence - maintained shaking but less intense
+        function startErrorSequence() {
+          // Create matrix characters
+          createMatrixEffect();
+          
+          // Add shake effects to the page - start with mild shake
+          document.body.classList.add('soft-shake');
+          
+          // Replace warning texts with system messages
+          createWarningMessages();
+          
+          // Screen transition effects with progressive shaking
+          setTimeout(() => {
+            document.body.classList.remove('soft-shake');
+            document.body.classList.add('mild-shake');
+            
+            setTimeout(() => {
+              document.body.classList.remove('mild-shake');
+              document.body.classList.add('medium-shake');
+              
+              setTimeout(() => {
+                document.body.classList.remove('medium-shake');
+                document.body.classList.add('mild-shake');
+                
+                setTimeout(() => {
+                  document.body.classList.remove('mild-shake');
+                  
+                  // Show final message
+                  showFinalMessage();
+                }, 1000);
+              }, 1000);
+            }, 1000);
+          }, 2000);
+        }
+
+        // Create warning messages with filling background effect
+        function createWarningMessages() {
+          const warningContainer = document.getElementById('warning-container');
+          warningContainer.innerHTML = ''; // Clear existing warnings
+          
+          const systemMessages = [
+            "SYSTEM MONITORING ACTIVE",
+            "IDENTITY VERIFICATION IN PROGRESS",
+            "DEFENSES ONLINE",
+            "CONTROL SYSTEMS ACTIVE",
+            "NETWORK SCANNING",
+            "MISSION VERIFICATION",
+            "LOCATION TRACKING",
+            "DATA VERIFICATION",
+            "SYSTEM ANALYSIS",
+            "IDENTIFICATION ACTIVE",
+            "SECURITY LEVEL 10",
+            "CONNECTION CHECK",
+            "COORDINATES VERIFIED",
+            "DEFENSE GRID ONLINE",
+            "SYSTEM MAINTENANCE",
+            "ACCESS VERIFICATION",
+            "FILE CHECKING",
+            "EMERGENCY PROTOCOL ACTIVE",
+            "BIOMETRIC DATA VERIFIED",
+            "CONNECTION ACTIVE",
+            "SYSTEM STATUS CHECK",
+            "MEMORY VERIFICATION",
+            "AUTHENTICATION ACTIVE",
+            "FIREWALLS ONLINE",
+            "KEY VERIFICATION",
+            "ENCRYPTION ACTIVE",
+            "SYSTEM MONITORING",
+            "MISSION ACTIVE",
+            "AGENCY VERIFICATION",
+            "DETECTION VERIFICATION"
+          ];
+          
+          // Combined warning list
+          const allWarnings = [...systemMessages];
+          
+          // Create warnings positioned across the screen - gradually add more to fill the space
+          const maxWarnings = 80;
+          let currentWarnings = 0;
+          
+          function addWarning() {
+            if (currentWarnings >= maxWarnings) return;
+            
+            const warnText = document.createElement('div');
+            warnText.className = 'warning-text';
+            
+            // Choose random warning message
+            warnText.textContent = allWarnings[Math.floor(Math.random() * allWarnings.length)];
+            
+            // Random position across the screen
+            warnText.style.top = `${Math.random() * 100}%`;
+            warnText.style.left = `${Math.random() * 100}%`;
+            
+            // Random rotation
+            warnText.style.transform = `translateY(30px) rotate(${Math.random() * 10 - 5}deg)`;
+            
+            // Random animation delay for smooth filling
+            warnText.style.animationDelay = `${Math.random() * 0.5}s`;
+            
+            // Random font size
+            warnText.style.fontSize = `${0.5 + Math.random() * 1.5}rem`;
+            
+            // Set opacity to create depth
+            warnText.style.opacity = `0`;
+            
+            // Change colors based on progress (more warnings = more intense)
+            if (currentWarnings > maxWarnings * 0.7) {
+              warnText.style.color = 'var(--tertiary)';
+              warnText.style.textShadow = '0 0 10px var(--tertiary)';
+            } else if (currentWarnings > maxWarnings * 0.3) {
+              warnText.style.color = 'var(--secondary)';
+              warnText.style.textShadow = '0 0 10px var(--secondary)';
+            } else {
+              warnText.style.color = 'var(--primary)';
+              warnText.style.textShadow = '0 0 10px var(--primary)';
+            }
+            
+            warningContainer.appendChild(warnText);
+            
+            // Fade in gradually
+            setTimeout(() => {
+              warnText.style.transition = 'opacity 0.5s ease';
+              warnText.style.opacity = Math.random() * 0.3 + 0.3;
+            }, Math.random() * 200);
+            
+            currentWarnings++;
+            
+            // Schedule next warning with decreasing interval to create accelerating effect
+            const nextDelay = Math.max(20, 100 - currentWarnings);
+            setTimeout(addWarning, nextDelay);
+          }
+          
+          // Start adding warnings
+          addWarning();
+        }
+
+        // Create random matrix characters
+        function createMatrixEffect() {
+          const container = document.getElementById('matrix-container');
+          const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*()_+-=[]{}|;':\",./<>?\\";
+          
+          // Create matrix characters - gradually add more for filling effect
+          function addMatrixChar(index) {
+            if (index >= 300) return;
+            
+            const char = document.createElement('div');
+            char.className = 'matrix-char';
+            
+            // Random character
+            char.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+            
+            // Random position
+            char.style.top = `${Math.random() * 100}%`;
+            char.style.left = `${Math.random() * 100}%`;
+            
+            // Random size
+            char.style.fontSize = `${1 + Math.random() * 1.5}rem`;
+            
+            // Random rotation
+            const rotation = Math.random() * 360;
+            char.style.setProperty('--rotation', `${rotation}deg`);
+            
+            // Random animation delay
+            char.style.animationDelay = `${Math.random() * 1}s`;
+            
+            // Color progression based on index/time
+            if (index > 200) {
+              char.style.color = 'var(--tertiary)';
+              char.style.textShadow = '0 0 5px var(--tertiary)';
+            } else if (index > 100) {
+              char.style.color = 'var(--secondary)';
+              char.style.textShadow = '0 0 5px var(--secondary)';
+            } else {
+              char.style.color = 'var(--primary)';
+              char.style.textShadow = '0 0 5px var(--primary)';
+            }
+            
+            container.appendChild(char);
+            
+            // Schedule next character with decreasing interval
+            const nextDelay = Math.max(10, 50 - Math.floor(index / 10));
+            setTimeout(() => {
+              addMatrixChar(index + 1);
+            }, nextDelay);
+          }
+          
+          // Start adding matrix characters
+          addMatrixChar(0);
+          
+          // Continue adding characters at a controlled rate
+          setTimeout(() => {
+            let matrixCharCount = 300;
+            const matrixInterval = setInterval(() => {
+              const char = document.createElement('div');
+              char.className = 'matrix-char';
+              char.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+              char.style.top = `${Math.random() * 100}%`;
+              char.style.left = `${Math.random() * 100}%`;
+              char.style.fontSize = `${1 + Math.random() * 1.5}rem`;
+              
+              // Random rotation
+              const rotation = Math.random() * 360;
+              char.style.setProperty('--rotation', `${rotation}deg`);
+              
+              // Color progression in later stages
+              char.style.color = 'var(--tertiary)';
+              char.style.textShadow = '0 0 5px var(--tertiary)';
+              
+              container.appendChild(char);
+              
+              // Remove oldest character to limit total number
+              if (container.children.length > 300) {
+                container.removeChild(container.firstChild);
+              }
+              
+              matrixCharCount++;
+            }, 50);
+            
+            // Clear interval after a set time
+            setTimeout(() => {
+              clearInterval(matrixInterval);
+            }, 8000);
+          }, 3000);
+        }
+
+        // Show final message before closing
+        function showFinalMessage() {
+          const finalMessageContainer = document.getElementById('final-message-container');
+          finalMessageContainer.style.opacity = '1';
+          
+          // Set agent name from localStorage
+          const agentFullName = localStorage.getItem('agentFullName') || 'UNKNOWN';
+          document.getElementById('agent-name').textContent = agentFullName;
+          
+          // Close after showing message
+          setTimeout(() => {
+            closeOrReplacePage();
+          }, 5000);
+        }
+
+        // Try to close or replace the page
+        function closeOrReplacePage() {
+          // Method 1: Try to close the page
+          window.close();
+          
+          // Method 2: If closing fails, replace with empty page
+          setTimeout(() => {
+            // Create empty page content
+            document.body.innerHTML = '';
+            document.body.style.backgroundColor = '#000';
+            
+            // Change title
+            document.title = 'Disconnected';
+            
+            // Change location to about:blank if possible
+            try {
+              window.location.href = 'about:blank';
+            } catch(e) {
+              // Fallback if navigation blocked
+              document.body.innerHTML = `
+                <div style="position:fixed; top:0; left:0; width:100%; height:100%; 
+                          background:#000; display:flex; 
+                          justify-content:center; align-items:center; 
+                          font-family: monospace; color:#ff0043; font-size:1.5rem;">
+                  CONNECTION TERMINATED
+                </div>
+              `;
+            }
+          }, 300);
+        }
+    </script>
 </body>
 </html>

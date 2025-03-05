@@ -68,8 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to handle enter key press for skipping or continuing
 function handleKeyPress(event) {
   if (event.key === 'Enter') {
-    // Always allow skipping the intro animation with Enter
-    createGridTransition();
+    if (isComplete) {
+      createGridTransition();
+    }
   }
 }
   
@@ -185,18 +186,22 @@ function createGridTransition() {
   }, 600);
 }
   
-  // Function to display all messages in sequence
-  async function displayMessages() {
-    
-    for (let i = 0; i < introMessages.length; i++) {
-      currentMessageIndex = i;
-      await typeMessage(introMessages[i], i);
-    }
-    
-    // After all messages, show "PRESS ENTER TO CONTINUE" prompt
-    await typeMessage("PRESS ENTER TO CONTINUE TO LOGIN", introMessages.length);
-    isComplete = true;
+// Function to display all messages in sequence
+async function displayMessages() {
+  for (let i = 0; i < introMessages.length; i++) {
+    currentMessageIndex = i;
+    await typeMessage(introMessages[i], i);
   }
+  
+  // Instead of immediately calling createGridTransition, just set isComplete
+  isComplete = true;
+  
+  // Add a prompt to press Enter
+  const promptLine = document.createElement('div');
+  promptLine.className = 'terminal-line prompt-line';
+  promptLine.innerHTML = "<span class='blink'>Press Enter to continue...</span>";
+  terminalContent.appendChild(promptLine);
+}
   
   // Start the intro animation
   setTimeout(displayMessages, 500);
@@ -372,6 +377,7 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
     
     // Store the last name in localStorage
     localStorage.setItem('agentName', lastname);
+    localStorage.setItem('agentFullName', username);
     
     messageElement.textContent =
       "Authentication successful. Initializing secure connection...";

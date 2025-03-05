@@ -26,15 +26,13 @@
     <div id="mission-container">
       <header class="header">
         <h1 class="mission-title">Operation Phantom Chase</h1>
-        <h2 class="mission-subtitle">Part 2: Implement Modified Game</h2>
+        <h2 class="mission-subtitle">Part 2</h2>
       </header>
       
       <div class="mission-directive">
         <h3 class="directive-title">MISSION DIRECTIVE</h3>
-        <p class="terminal-text">Agent, now that you've analyzed the original game code, your next task is to create a modified version with monitoring capabilities.</p>
-        <p class="terminal-text">This new version must maintain identical functionality to avoid detection by Phantom group members, while secretly logging all game activities and player choices.</p>
-        <p class="terminal-text">Your implementation should track: game sessions, player decisions, scores, and play patterns.</p>
-        <p class="terminal-text">Use the secure Python environment and skeleton code below as a starting point.</p>
+        <p class="terminal-text">Agent, your task is to analyze and modify the existing "Higher or Lower" game code we've intercepted from the Phantom.</p>
+        <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom  must not suspect our intervention.</p>
       </div>
       
       <div class="code-samples">
@@ -47,156 +45,171 @@
           <pre class="code-block" id="python-code">
 from browser import document
 
-# ======================================================
-# OPERATION ORDER:
-# ------------------------------------------------------
-# In this ultimate mission phase, the secret code is hidden across multiple rounds.
-# Each round challenges you to determine whether the hidden value is 'higher' or 'lower.'
-# If your click-based guess is correct, a secret hint letter is revealed.
-#
-# Your tasks are:
-#   - Use a for loop within a generator function to iterate over all mission rounds.
-#   - When you click on the "Higher" or "Lower" buttons, compare your guess to the computed answer.
-#   - If correct, append the round's secret hint to the final secret code.
-#   - Use the "Next Round" button to advance through the rounds.
-#   - After processing all rounds, display the complete secret code to complete the mission.
-#
-# [HACKER TASK]: Areas where you must complete the necessary code.
-# ======================================================
+# -------------------------------
+# Higher or Lower Game P2
+# -------------------------------
 
-# Intercepted mission data with all challenge rounds.
+# Secion 1: Game data for a full 6 round
+# [Task 1 Completed]
 game_data = [
-    {
-        "title1": "Russia",
-        "value1": 1709,
-        "title2": "China",
-        "value2": 959,
-        "hint": "M",
-        "question": "Land area (million km²)?"
-    },
-    {
-        "title1": "Coca-Cola.com",
-        "value1": 15400000,
-        "title2": "Pepsi.com",
-        "value2": 369100,
-        "hint": "3",
-        "question": "Monthly visitors?"
-    },
-    {
-        "title1": "MrBeast",
-        "value1": 150000000,
-        "title2": "PewDiePie",
-        "value2": 111000000,
-        "hint": "J",
-        "question": "Subscriber count?"
-    },
-    {
-        "title1": "Shroud",
-        "value1": 60000,
-        "title2": "Ninja",
-        "value2": 30000,
-        "hint": "1",
-        "question": "Twitch subscribers?"
-    },
-    {
-        "title1": "Google Workspace",
-        "value1": 12,
-        "title2": "Office 365",
-        "value2": 15,
-        "hint": "P",
-        "question": "Monthly fee (USD)?"
-    },
-    {
-        "title1": "Bitcoin",
-        "value1": 96701,
-        "title2": "Ethereum",
-        "value2": 2784,
-        "hint": "3",
-        "question": "Price (USD)?"
-    }
+    {"title1": "Russia", "value1": 1709, "title2": "China", "value2": 959, "hint": "M", "secret": "T", "question": "Land area (million km²)?"},
+    {"title1": "Coca-Cola.com", "value1": 15400000, "title2": "Pepsi.com", "value2": 369100, "hint": "3", "secret": "R", "question": "Monthly visitors?"},
+    {"title1": "MrBeast", "value1": 150000000, "title2": "PewDiePie", "value2": 111000000, "hint": "J", "secret": "U", "question": "Subscriber count?"},
+    {"title1": "Shroud", "value1": 60000, "title2": "Ninja", "value2": 30000, "hint": "1", "secret": "T", "question": "Twitch subscribers?"},
+    {"title1": "Google Workspace", "value1": 12, "title2": "Office 365", "value2": 15, "hint": "P", "secret": "H", "question": "Monthly fee (USD)?"},
+    {"title1": "Bitcoin", "value1": 96701, "title2": "Ethereum", "value2": 2784, "hint": "3", "secret": "!", "question": "Price (USD)?"}
 ]
 
-# Global variable to accumulate the secret code.
+# -------------------------------
+# Section 2: Global Variables
+# -------------------------------
 secret_message = ""
+current_round_index = 0
+results = []
 
-# Create the "Next Round" button and position it on the screen (hidden initially).
-next_btn = document.createElement("button")
-next_btn.textContent = "Next Round"
-next_btn.id = "next-btn"
-next_btn.style.display = "none"
-next_btn.style.position = "fixed"
-next_btn.style.top = "20px"
-next_btn.style.right = "20px"
-document.body.appendChild(next_btn)
+# -------------------------------
+# Section 3: UI Elements
+# -------------------------------
+option1_title = document["option1-title"]
+option1_value = document["option1-value"]
+option2_title = document["option2-title"]
+option2_value = document["option2-value"]
+message = document["message"]
+higher_btn = document["higher-btn"]
+lower_btn = document["lower-btn"]
+round_counter = document["round-counter"]
+next_btn = document["next-btn"]
+results_section = document["results-section"]
+secret_code_display = document["secret-code"]
+results_display = [
+    document["result-1"],
+    document["result-2"],
+    document["result-3"],
+    document["result-4"],
+    document["result-5"],
+    document["result-6"]
+]
 
-# Helper function to update the mission log (message element) on the web interface.
-def show_message(text):
-    document["message"].text = text
-    document["message"].classList.add("show")
+# -------------------------------
+# Section 4: Load the game round (initial UI setup)
+# -------------------------------
+def load_round():
+    global current_round_index
 
-# Display the current round’s details on the UI.
-def load_round(data):
-    document["option1-title"].text = data["title1"]
-    document["option1-value"].text = str(data["value1"])
-    document["option2-title"].text = data["title2"]
-    document["option2-value"].text = "?"  # Hide the real value until the guess is made.
-    show_message(data["question"])
+    if current_round_index >= len(game_data):
+        show_results_summary()
+        return
 
-# [HACKER TASK] Define a function to process the operative's click-based guess.
-def process_guess(data, guess):
-    global secret_message
-    # Compute the correct answer: if the second option's value is greater than the first, then it is "higher"; otherwise "lower".
-    correct_answer = "higher" if data["value2"] > data["value1"] else "lower"
+    current_round = game_data[current_round_index]
+    round_counter.text = f"Round {current_round_index + 1} of {len(game_data)}"
+
+    # [Task 2 Completed]
+    option1_title.text = current_round["title1"]
+    option1_value.text = str(current_round["value1"])
+    option2_title.text = current_round["title2"]
+    option2_value.text = "?"  # Hide actual value until guessed
+    show_message(current_round["question"])
     
+    bind_buttons(current_round)
+
+# -------------------------------
+# Section 5: Process player's guess
+# -------------------------------
+def process_guess(current_round, guess):
+    global results
+
+    # [Task 3 Completed]
+    if current_round["value2"] > current_round["value1"]:
+      correct_answer = "higher"
+    else:
+      correct_answer = "lower"
+
+    # [Task 4 Completed]
     if guess == correct_answer:
         show_message("Correct!")
-        # [HACKER TASK]: Append the secret hint letter for this round to the global secret code.
-        secret_message += data["hint"]
-        print("secret_message "+secret_message)
+        results.append("✅ Correct")
     else:
         show_message("Wrong!")
+        results.append("❌ Wrong")
+
+    option2_value.text = str(current_round["value2"])
+
+    unbind_buttons()
+    next_btn.classList.remove("hidden")
+
+# -------------------------------
+# Section 6: Helper functions - message, buttons
+# -------------------------------
+def show_message(text):
+    """Update the message display."""
+    message.text = text
+    message.classList.add("show")
+
+def unbind_buttons():
+    """Remove event bindings from answer buttons."""
+    higher_btn.unbind("click")
+    lower_btn.unbind("click")
+
+def bind_buttons(current_round):
+    """Bind answer buttons to process the guess."""
     
-    # Reveal the actual numerical value for confirmation.
-    document["option2-value"].text = str(data["value2"])
-    # Unbind the higher and lower buttons for this round to prevent multiple submissions.
-    document["higher-btn"].unbind("click")
-    document["lower-btn"].unbind("click")
-    # Show the Next Round button to proceed.
-    next_btn.style.display = "inline-block"
+    def next_round(ev=None):
+        global current_round_index
+        next_btn.classList.add("hidden")
+        current_round_index += 1
+        load_round()
 
-# [HACKER TASK] Define a generator function that uses a for loop to iterate over all mission rounds.
-def round_generator():
-    # [HACKER TASK]: Use a for loop to yield each round's data to be processed.
-    for data in game_data:   
-        yield data
+    unbind_buttons()
+    higher_btn.bind("click", lambda ev: process_guess(current_round, "higher"))
+    lower_btn.bind("click", lambda ev: process_guess(current_round, "lower"))
+    next_btn.unbind("click")
+    next_btn.bind("click", next_round)
 
-# Initialize the round generator.
-round_gen = round_generator()
+# -------------------------------
+# Section 7: Update Predefined Results
+# -------------------------------
+def show_results_summary():
+    global secret_message
+    results_section.classList.remove("hidden")  # Show results section
 
-# This function loads the next mission round from the generator.
-def load_next_round(ev=None):
-    try:
-        data = next(round_gen)
-    except StopIteration:
-        # All rounds are complete.
-        show_message("Complete!")
-        return
-    load_round(data)
-    
-    # Unbind any previous click events to avoid duplicate bindings.
-    document["higher-btn"].unbind("click")
-    document["lower-btn"].unbind("click")
-    
-    # Bind the "Higher" and "Lower" buttons to process the operative's guess.
-    document["higher-btn"].bind("click", lambda ev: process_guess(data, "higher"))
-    document["lower-btn"].bind("click", lambda ev: process_guess(data, "lower"))
+    # [Hacker Task 1]: Determine the number of loops required.
+    # Objective: Understand the iteration count of a for-loop.
+    # Hint 1: How many elements are in the results list?
+    # Hint 2: Still remember the function to get the number of elements in a list?
+    loop_count = len(results)
 
-# Bind the Next Round button's click event to move to the following round.
-next_btn.unbind("click")
-next_btn.bind("click", load_next_round)
+    # In this for loop, we go through the result list in the UI 
+    # and update each result based on the user's correctness,
+    # so it displays their choice history.
+    for i in range(loop_count):
+      # [Hacker Task 2]: Retrieve the result of the current round in the UI element
+      # Objective: Understand how to access a list element using its index
+      # Hint 1: The UI display list variable is named results_display
+      # Hint 2: How do you access a value in a list?
+      current_result = "unknown"
+      # [Hacker Task 3]: Determine the current round number
+      # Objective: Understand how list indexing begins in Python
+      # Hint 1: In Python, list indexing does not begin at 1
+      # Hint 2: Use str() to convert int / float to a string
+      current_round = "unknown"
+      # Sets the current UI element to display the correct message.
+      current_result.textContent = "Square " + current_round + ": " + results[i]
 
-# Start the mission by loading the first round.
-load_next_round()</pre>
+    for i in range(len(results)):
+      if results[i] == "✅ Correct":
+        # [Hacker Task 4]: Append the hint message
+        # Objective: Understand string manipulation
+        # Hint 1: Syntax to retrieve the ith hint: game_data[i]["hint"]
+        # Hint 2: How do you append a character to a string in a for-loop?
+        secret_message = "unknown"
+
+    secret_code_display.textContent = "🔑 Secret Code: " + secret_message
+
+# -------------------------------
+# Section 8: Start the Game
+# -------------------------------
+load_round()
+</pre>
         </div>
         
         <!-- HTML Section -->
@@ -207,22 +220,45 @@ load_next_round()</pre>
           </div>
           <pre id="html-code" class="code-block">
 &lt;div class="game-container"&gt;
+    <!-- Round Counter -->
+    &lt;h3 id="round-counter"&gt;Round X of Y&lt;/h3&gt;
+
+    <!-- Left Side Option -->
     &lt;div class="option left-option"&gt;
-        &lt;h2 id="option1-title"&gt;option1-title&lt;/h2&gt;
-        &lt;div class="value" id="option1-value"&gt;option1-value&lt;/div&gt;
+        &lt;h2 id="option1-title"&gt;Option 1&lt;/h2&gt;
+        &lt;div class="value" id="option1-value"&gt;?&lt;/div&gt;
     &lt;/div&gt;
 
+    <!-- VS Badge -->
     &lt;div class="vs-badge"&gt;VS&lt;/div&gt;
 
+    <!-- Right Side Option -->
     &lt;div class="option right-option"&gt;
-        &lt;h2 id="option2-title"&gt;option2-title&lt;/h2&gt;
-        &lt;div class="value" id="option2-value"&gt;option2-value&lt;/div&gt;
+        &lt;h2 id="option2-title"&gt;Option 2&lt;/h2&gt;
+        &lt;div class="value" id="option2-value"&gt;?&lt;/div&gt;
         &lt;div class="buttons"&gt;
             &lt;button id="higher-btn"&gt;Higher&lt;/button&gt;
             &lt;button id="lower-btn"&gt;Lower&lt;/button&gt;
         &lt;/div&gt;
     &lt;/div&gt;
+
+    <!-- Message Display -->
     &lt;div id="message" class="message"&gt;&lt;/div&gt;
+
+    <!-- Next Round Button (Hidden Initially) -->
+    &lt;button id="next-btn" class="hidden"&gt;Next Round&lt;/button&gt;
+
+    <!-- Results Section -->
+    &lt;div id="results-section" class="hidden"&gt;
+        &lt;h3&gt;Game Results Summary&lt;/h3&gt;
+        &lt;p id="result-1"&gt;Round 1: &lt;/p&gt;
+        &lt;p id="result-2"&gt;Round 2: &lt;/p&gt;
+        &lt;p id="result-3"&gt;Round 3: &lt;/p&gt;
+        &lt;p id="result-4"&gt;Round 4: &lt;/p&gt;
+        &lt;p id="result-5"&gt;Round 5: &lt;/p&gt;
+        &lt;p id="result-6"&gt;Round 6: &lt;/p&gt;
+        &lt;p id="secret-code"&gt;&lt;/p&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 </pre>
         </div>
@@ -234,133 +270,115 @@ load_next_round()</pre>
             <button class="copy-btn" data-target="css-code">COPY CODE</button>
           </div>
           <pre class="code-block" id="css-code">
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
+/* -------------------------------
+   General Styles (Dark Theme)
+------------------------------- */
 body {
-  font-family: sans-serif;
-  background-color: #1a1a1a;
-  color: #fff;
-  line-height: 1.6;
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
 }
 
 .game-container {
-  display: flex;
-  flex-wrap: wrap;
-  min-height: 100vh;
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    margin: auto;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .option {
-  flex: 1 1 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  text-align: center;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    padding: 15px;
+    background: #2a2a2a;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 3px solid;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
 }
 
-.left-option {
-  background: linear-gradient(rgba(14, 8, 166, 0.7), rgba(0, 0, 0, 0.7)), url('background1.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
+.left-option { border-color: #3498db; }
+.right-option { border-color: #e74c3c; }
 
-.right-option {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('background2.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+h2, .value {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
 }
 
 .vs-badge {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: #fff;
-  color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  z-index: 10;
-}
-
-.value {
-  font-size: 3rem;
-  color: #ffd700;
-  margin: 20px 0;
-}
-
-.buttons {
-  margin-top: 20px;
-}
-
-button {
-  padding: 10px 20px;
-  margin: 0 5px;
-  border: 2px solid #fff;
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  background: #fff;
-  color: #000;
-}
-
-#score-display {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 1.5rem;
-  color: #ffd700;
+    font-size: 24px;
+    background: #f39c12;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 10px 0;
 }
 
 .message {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: #fff;
-  display: none;
-  z-index: 20;
-  font-size: 2rem;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
 }
 
-.message.show {
-  display: block;
+button {
+    background: #27ae60;
+    color: white;
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    transition: 0.3s;
 }
 
-@media (max-width: 768px) {
-  .game-container {
-    flex-direction: column;
-  }
-  .option {
-    flex: 1 1 100%;
-  }
-  .vs-badge {
-    width: 50px;
-    height: 50px;
-    font-size: 0.8rem;
-  }
+button:hover { background: #219150; transform: scale(1.05); }
+button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+#next-btn {
+    margin-top: 15px;
+    background: #e67e22;
+}
+
+#next-btn:hover { background: #d35400; }
+
+#round-counter {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+#results-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+#results-list p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.hidden { display: none; }
+
+/* -------------------------------
+   Responsive Design
+------------------------------- */
+@media (max-width: 600px) {
+    .option { width: 100%; }
+    button { font-size: 14px; padding: 8px 12px; }
+    .vs-badge { font-size: 20px; padding: 8px 15px; }
 }</pre>
         </div>
       </div>
@@ -379,10 +397,8 @@ button:hover {
       <div class="task-panel">
         <h3 class="directive-title">YOUR TASK</h3>
         <ul class="task-list">
-          <li>Implement the game with hidden monitoring functionality</li>
-          <li>Ensure it looks and plays exactly like the original game</li>
-          <li>Add comprehensive logging of player actions and game state</li>
-          <li>Store logs in a structured JSON format</li>
+          <li>Implement the game and extract Phantom's message</li>
+          <li>Complete the missing function and ensure the app is fully functional.</li>
           <li>Test thoroughly to ensure no bugs or performance issues</li>
           <li>Submit your solution when completed</li>
         </ul>

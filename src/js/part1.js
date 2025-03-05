@@ -1,10 +1,11 @@
 // Add intro animation sequence from index.js
 document.addEventListener('DOMContentLoaded', function() {
   const introMessages = [
-    "part 1 placeholder message1",
-    "part 1 placeholder message2",
-    "part 1 placeholder message3",
-    "part 1 placeholder message4",
+    "Congrats on acing the training! I knew I didn't misjudge you.",
+    "We're about to start the official mission now.",
+    "Take a deep breath, don't be nervous.",
+    "I know Agent Ryan has already briefed you on the background.",
+    "Time to track down this Phantom guy and put an end to his game."
   ];
 
   // DOM elements
@@ -68,8 +69,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to handle enter key press for skipping or continuing
   function handleKeyPress(event) {
     if (event.key === 'Enter') {
-      // Always allow skipping the intro animation with Enter
-      createGridTransition();
+      if (isComplete) {
+        createGridTransition();
+      }
     }
   }
   
@@ -191,7 +193,14 @@ document.addEventListener('DOMContentLoaded', function() {
       await typeMessage(introMessages[i], i);
     }
     
+    // Instead of immediately calling createGridTransition, just set isComplete
     isComplete = true;
+    
+    // Add a prompt to press Enter
+    const promptLine = document.createElement('div');
+    promptLine.className = 'terminal-line prompt-line';
+    promptLine.innerHTML = "<span class='blink'>Press Enter to continue...</span>";
+    terminalContent.appendChild(promptLine);
   }
   
   // Start the intro animation
@@ -530,8 +539,8 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
       
-      // Check if the verification code is valid (only 123 or 456)
-      if (verificationCode !== "123") {
+      // Check if the verification code is valid (only 1qaz )
+      if (verificationCode !== "1qaz") {
         addConsoleLog(`Error: Invalid verification code: ${verificationCode}`, "error");
         return;
       }
@@ -555,7 +564,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // Redirect to the appropriate page based on verification code
         setTimeout(() => {
-          if (verificationCode === "123") {
+          if (verificationCode === "1qaz") {
             window.location.href = "part2.html";
           }
         }, 3000);

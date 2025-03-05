@@ -317,8 +317,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to handle enter key press for skipping or continuing
 function handleKeyPress(event) {
   if (event.key === 'Enter') {
-    // Always allow skipping the intro animation with Enter
-    createGridTransition();
+    if (isComplete) {
+      createGridTransition();
+    }
   }
 }
   
@@ -443,9 +444,14 @@ function handleKeyPress(event) {
       await typeMessage(introMessages[i], i);
     }
     
-    // After all messages, show "PRESS ENTER TO CONTINUE" prompt
-    await typeMessage("PRESS ENTER TO CONTINUE", introMessages.length);
+    // Instead of immediately calling createGridTransition, just set isComplete
     isComplete = true;
+    
+    // Add a prompt to press Enter
+    const promptLine = document.createElement('div');
+    promptLine.className = 'terminal-line prompt-line';
+    promptLine.innerHTML = "<span class='blink'>Press Enter to continue...</span>";
+    terminalContent.appendChild(promptLine);
   }
   
   // Start the intro animation

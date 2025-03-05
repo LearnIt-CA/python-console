@@ -35,10 +35,40 @@
             </div>
 
             <div class="modules-container">
-                <!-- Module 1: Variables -->
+
+
+                <!-- Module 1: Data Types -->
                 <div class="training-module">
                     <div class="module-header">
-                        <h3 class="module-title">01_VARIABLES</h3>
+                        <h3 class="module-title">01_DATA_TYPES</h3>
+                        <div class="module-controls">
+                            <button class="expand-btn" data-target="module2-content">EXPAND</button>
+                        </div>
+                    </div>
+                    <div id="module2-content" class="module-content">
+                        <p class="module-text">Python has several built-in data types. The most common are:</p>
+                        <div class="code-section">
+                            <div class="code-header">
+                                <span class="code-title">COMMON DATA TYPES</span>
+                                <button class="copy-btn" data-target="code2">COPY CODE</button>
+                            </div>
+                            <pre id="code2" class="code-block">
+#Example:
+print(type(0), type(2.0))
+print(type("False"), type(True))
+
+print(type([0]))
+print(len([0]))
+print(type({}))
+</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 2: Variables -->
+                <div class="training-module">
+                    <div class="module-header">
+                        <h3 class="module-title">02_VARIABLES</h3>
                         <div class="module-controls">
                             <button class="expand-btn" data-target="module1-content">EXPAND</button>
                         </div>
@@ -54,29 +84,6 @@
 name = "Alex"              
 age = 16                        
 print(name, "is", age)</pre>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Module 2: Data Types -->
-                <div class="training-module">
-                    <div class="module-header">
-                        <h3 class="module-title">02_DATA_TYPES</h3>
-                        <div class="module-controls">
-                            <button class="expand-btn" data-target="module2-content">EXPAND</button>
-                        </div>
-                    </div>
-                    <div id="module2-content" class="module-content">
-                        <p class="module-text">Python has several built-in data types. The most common are:</p>
-                        <div class="code-section">
-                            <div class="code-header">
-                                <span class="code-title">COMMON DATA TYPES</span>
-                                <button class="copy-btn" data-target="code2">COPY CODE</button>
-                            </div>
-                            <pre id="code2" class="code-block">#Example:
-text = "Alex"                                  
-is_tree = True                               
-print(type(text), type(is_tree))</pre>
                         </div>
                     </div>
                 </div>

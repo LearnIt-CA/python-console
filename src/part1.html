@@ -27,14 +27,13 @@
         <div id="mission-container">
             <div class="header">
                 <h1 class="mission-title">Operation Phantom Chase</h1>
-                <h2 class="mission-subtitle">Part 1: Higher or Lower Game Analysis</h2>
+                <h2 class="mission-subtitle">Part 1</h2>
             </div>
             
             <div class="mission-directive">
                 <h3 class="directive-title">MISSION DIRECTIVE</h3>
-                <p class="terminal-text">Agent, your first task is to analyze the existing "Higher or Lower" game code we've intercepted from the Phantom group. We need to understand its functionality before we can create our replacement.</p>
-                <p class="terminal-text">You will work in the secure Python environment we've set up. Copy the code below and use the link to access our secure sandbox.</p>
-                <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom members must not suspect our intervention.</p>
+                <p class="terminal-text">Agent, your task is to analyze and modify the existing "Higher or Lower" game code we've intercepted from the Phantom.</p>
+                <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom  must not suspect our intervention.</p>
             </div>
             
             <div class="code-samples">
@@ -45,22 +44,28 @@
                     </div>
                     <pre id="html-code" class="code-block">
 &lt;div class="game-container"&gt;
-    &lt;div class="option left-option"&gt;
-        &lt;h2 id="option1-title"&gt;option1-title&lt;/h2&gt;
-        &lt;div class="value" id="option1-value"&gt;option1-value&lt;/div&gt;
+    <!-- Options -->
+    &lt;div class="option left"&gt;
+        &lt;h2 id="option1-title"&gt;Option 1&lt;/h2&gt;
+        &lt;div class="value" id="option1-value"&gt;?&lt;/div&gt;
     &lt;/div&gt;
 
     &lt;div class="vs-badge"&gt;VS&lt;/div&gt;
 
-    &lt;div class="option right-option"&gt;
-        &lt;h2 id="option2-title"&gt;option2-title&lt;/h2&gt;
-        &lt;div class="value" id="option2-value"&gt;option2-value&lt;/div&gt;
+    &lt;div class="option right"&gt;
+        &lt;h2 id="option2-title"&gt;Option 2&lt;/h2&gt;
+        &lt;div class="value" id="option2-value"&gt;?&lt;/div&gt;
         &lt;div class="buttons"&gt;
             &lt;button id="higher-btn"&gt;Higher&lt;/button&gt;
             &lt;button id="lower-btn"&gt;Lower&lt;/button&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-    &lt;div id="message" class="message"&gt;&lt;/div&gt;
+
+    <!-- Message & Result Display -->
+    &lt;div id="message"&gt;&lt;/div&gt;
+    &lt;div id="result-display" class="hidden"&gt;
+        &lt;p id="result-text"&gt;&lt;/p&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 </pre>
                 </div>
@@ -71,134 +76,70 @@
                         <button class="copy-btn" data-target="css-code">COPY CODE</button>
                     </div>
                     <pre id="css-code" class="code-block">
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  font-family: sans-serif;
-  background-color: #1a1a1a;
-  color: #fff;
-  line-height: 1.6;
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
 }
 
 .game-container {
-  display: flex;
-  flex-wrap: wrap;
-  min-height: 100vh;
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    margin: auto;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .option {
-  flex: 1 1 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  text-align: center;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    padding: 15px;
+    background: #2a2a2a;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 3px solid;
 }
 
-.left-option {
-  background: linear-gradient(rgba(14, 8, 166, 0.7), rgba(0, 0, 0, 0.7)), url('background1.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
+.left { border-color: #3498db; }
+.right { border-color: #e74c3c; }
 
-.right-option {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('background2.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
+.value { font-size: 24px; font-weight: bold; }
 
 .vs-badge {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: #fff;
-  color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  z-index: 10;
-}
-
-.value {
-  font-size: 3rem;
-  color: #ffd700;
-  margin: 20px 0;
-}
-
-.buttons {
-  margin-top: 20px;
+    font-size: 24px;
+    background: #f39c12;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 10px 0;
 }
 
 button {
-  padding: 10px 20px;
-  margin: 0 5px;
-  border: 2px solid #fff;
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+    background: #27ae60;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    transition: 0.3s;
 }
 
-button:hover {
-  background: #fff;
-  color: #000;
-}
+button:hover { background: #219150; transform: scale(1.05); }
+button:disabled { background: #7f8c8d; cursor: not-allowed; }
 
-#score-display {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 1.5rem;
-  color: #ffd700;
-}
+.message { font-size: 18px; font-weight: bold; margin-top: 15px; }
 
-.message {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: #fff;
-  display: none;
-  z-index: 20;
-  font-size: 2rem;
-}
-
-.message.show {
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .game-container {
-    flex-direction: column;
-  }
-  .option {
-    flex: 1 1 100%;
-  }
-  .vs-badge {
-    width: 50px;
-    height: 50px;
-    font-size: 0.8rem;
-  }
-}</pre>
+.hidden { display: none; }
+</pre>
                 </div>
                 
                 <div id="python-section" class="code-section">
@@ -209,25 +150,30 @@ button:hover {
                     <pre id="python-code" class="code-block">
 from browser import document
 
-# ======================================================
-# OPERATION ORDER:
-# ------------------------------------------------------
-# You are now tasked with modularizing a round of the Higher or Lower challenge.
-# Sections marked as [HACKER TASK] are where you need to implement the functionality.
-# Good luck—every correct code step brings our covert operation closer to success!
-# ======================================================
+# -------------------------------
+# Higher or Lower Game P1
+# -------------------------------
 
-# S1: This sample data represents one round of the mission for testing purposes.
+# Secion 1: Sample game data for a single round
 sample_data = {
     "title1": "Russia",
     "value1": 1709,
     "title2": "China",
     "value2": 959,
-    "question": "Land area (million km²)?",
-    "hint": "R",
+    "question": "Land area (million km²)?"
 }
 
-# S2: Assigning HTML document elements to variables for readability
+
+# [Hacker Task 1]: Create new game data following the syntax of the sample data.
+# For the content, include anything interesting and suitable.
+# ! To simplify this activity, make sure NOT to use the same value for both options.
+# Objective: Understand the syntax of dictionaries.
+game_data = {}
+
+
+# -------------------------------
+# Section 2: UI Elements (for HTML)
+# -------------------------------
 option1_title = document["option1-title"]
 option1_value = document["option1-value"]
 option2_title = document["option2-title"]
@@ -235,67 +181,60 @@ option2_value = document["option2-value"]
 message = document["message"]
 higher_btn = document["higher-btn"]
 lower_btn = document["lower-btn"]
+result_display = document["result-display"]
+result_text = document["result-text"]
+higher_btn.bind("click", lambda ev: process_guess("higher"))
+lower_btn.bind("click", lambda ev: process_guess("lower"))
 
-# S3: Sets up a round of the game by setting up options and binding events.
-def play_round(data):
-    setup_options(data)
-    bind_buttons(data)
+# -------------------------------
+# Section 3: Load the game round (initial UI setup)
+# -------------------------------
+def load_round():
+    # [Hacker Task 2]: Fix the title of the first option.
+    # Objective: Accessing dictionary data.
+    # Hint: Refer to other similar variables.
+    option1_title.text = "MISSING!!!"
+    option1_value.text = str(game_data["value1"])  # Show first value
+    option2_title.text = game_data["title2"] # Show second title
+    option2_value.text = "?"  # Hide second value until guessed
+    message.text = game_data["question"]  # Display the question
+    result_display.classList.add("hidden")  # Hide results initially
 
-# S4: Updates the UI to display the left option's data while hiding the right option's value.
-def setup_options(data):
-    option1_title.text = data["title1"]
-    option1_value.text = str(data["value1"])
-    option2_title.text = data["title2"]
-    option2_value.text = "?"  # Hidden until guessed
-
-    message.text = data["question"]
-    message.style.display = "block"
-
-# S5: Binds the higher/lower buttons to the guessing function.
-def bind_buttons(data):
-    # Unbind previous events to prevent duplicate event listeners
+# -------------------------------
+# Section 4: Disable buttons after a round
+# -------------------------------
+def unbind_buttons():
     higher_btn.unbind("click")
     lower_btn.unbind("click")
 
-    # Bind new events
-    higher_btn.bind("click", lambda ev: handle_guess(data, "higher"))
-    lower_btn.bind("click", lambda ev: handle_guess(data, "lower"))
+# -------------------------------
+# Section 5: Process player's guess
+# -------------------------------
+def process_guess(guess):
+    # [Hacker Task 3]: Update the answer to this question and store it in correct_answer
+    # if value 2 > value 1, the correct_answer should be "higher"
+    # otherwise, the correct should be "lower"
+    # Objective: Practice if-else statement.
+    # Hint: How to get value 2 and value 1 from game_data?
+    correct_answer = "unknown"
 
-# [HACKER TASK]: Define the function that handles a guess.
-def handle_guess(data, guess):
-    # Reveal the right option’s actual value
-    option2_value.text = str(data["value2"])
-    message.style.display = "block"
+    # [Hacker Task 4]: Update the result based on the guess and store it in result_text.text
+    # if the player guesses correctly, set the result_text.text to ✅ string
+    # else, set the result_text.text to ❌ string
+    # Objective: Strengthen your understanding of the if-else statement.
+    # Hint 1: variable guess stores player's answer
+    # Hint 2: variable correct stores the question's answer
+    result_text.text = "unknown"
     
-    # T1: Calculate the correct answer:
-    # If the right option's value is greater than the left option's value, then the answer is "higher",
-    # otherwise, it is "lower".
-    # Syntax: if you want to access value 1: data["value1"]
+    # other steps
+    option2_value.text = str(game_data["value2"]) # Reveal the actual value
+    result_display.classList.remove("hidden") # Show the result display
+    unbind_buttons() # Disable further inputs
 
-    # ans
-    # if data["value2"] > data["value1"]:
-    #   correct_answer = "higher"
-    # else:
-    #   correct_answer = "lower"
-    
-
-    # T2: Compare the operative's guess to the correct answer:
-    # If the guess is correct, update the mission status with "Correct!".
-    # Else, update with "Wrong!"
-    # Syntax: if you want to access messaage text: message.text
-    
-    # ans
-    # if guess == correct_answer:
-    #     message.text = "Correct!"
-    # else:
-    #     message.text = "Wrong!"
-
-# Initiate the game
-play_round(sample_data)
-
-# Iterating over the dictionary and printing key-value pairs for debugging
-# for key, value in sample_data.items():
-#     print(f"Key: {key} - Value: {value}")</pre>
+# -------------------------------
+# Section 6: Call the main function and start the first round
+# -------------------------------
+load_round()</pre>
                 </div>
             </div>
             
@@ -309,10 +248,8 @@ play_round(sample_data)
                 <h3 class="directive-title">YOUR TASK</h3>
                 <ul class="task-list">
                     <li>Study the provided code to understand how the game works</li>
-                    <li>Run the Python code in the secure environment</li>
-                    <li>Identify key game mechanics that must be preserved</li>
-                    <li>Make notes of potential areas where monitoring capabilities could be added</li>
-                    <li>Be ready to implement your own version in Part 2</li>
+                    <li>Complete the missing function and ensure the app is fully functional.</li>
+                    <li>Test thoroughly to ensure no bugs or performance issues</li>
                 </ul>
                 
                 <div class="mission-status">

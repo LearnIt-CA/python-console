@@ -1,10 +1,10 @@
 // Intro animation sequence - added from index.js
 document.addEventListener('DOMContentLoaded', function() {
   const introMessages = [
-    "part 2 placeholder message1",
-    "part 2 placeholder message2",
-    "part 2 placeholder message3",
-    "part 2 placeholder message4",
+    "Impressive, I didn't expect you to finish in such a short time",
+    "Now we're at the final step",
+    "Getting closer and closer to the truth",
+    "Keep going, I believe in you",
   ];
 
   // DOM elements
@@ -68,8 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to handle enter key press for skipping or continuing
   function handleKeyPress(event) {
     if (event.key === 'Enter') {
-      // Always allow skipping the intro animation with Enter
-      createGridTransition();
+      if (isComplete) {
+        createGridTransition();
+      }
     }
   }
   
@@ -189,12 +190,19 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Function to display all messages in sequence
   async function displayMessages() {
-    
     for (let i = 0; i < introMessages.length; i++) {
       currentMessageIndex = i;
       await typeMessage(introMessages[i], i);
     }
+    
+    // Instead of immediately calling createGridTransition, just set isComplete
     isComplete = true;
+    
+    // Add a prompt to press Enter
+    const promptLine = document.createElement('div');
+    promptLine.className = 'terminal-line prompt-line';
+    promptLine.innerHTML = "<span class='blink'>Press Enter to continue...</span>";
+    terminalContent.appendChild(promptLine);
   }
   
   // Start the intro animation
@@ -556,7 +564,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       addConsoleLog("Console cleared.", "system");
     } else if (baseCommand === "/secret") {
-      addConsoleLog("print secret", "system");
+      addConsoleLog("Ryan's message", "system");
     } else if (baseCommand === "/showall") {
       toggleCodeSection("python");
       toggleCodeSection("html");
@@ -576,8 +584,8 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
       
-      // Check if the verification code is valid (only 123 or 456)
-      if (verificationCode !== "123" && verificationCode !== "456") {
+      // Check if the verification code is valid (only M5N3B1 or TRUTH!)
+      if (verificationCode !== "M5N3B1" && verificationCode !== "TRUTH!") {
         addConsoleLog(`Error: Invalid verification code: ${verificationCode}`, "error");
         return;
       }
@@ -602,9 +610,9 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // Redirect to the appropriate page based on verification code
         setTimeout(() => {
-          if (verificationCode === "123") {
+          if (verificationCode === "M5N3B1") {
             window.location.href = "mission-complete.html";
-          } else if (verificationCode === "456") {
+          } else if (verificationCode === "TRUTH!") {
             window.location.href = "true-ending.html";
           }
         }, 3000);

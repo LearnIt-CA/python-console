@@ -116,7 +116,7 @@ function runIntroAnimation() {
         ".......",
         "Hold on...",
         "This face looks incredibly familiar...",
-        "My God! IT'S NOT POSSIBLE! IT IS HIM ?!"
+        "My God! IT'S NOT POSSIBLE! IT IS ... ?!"
     ];
 
     // DOM elements
@@ -291,7 +291,7 @@ function runIntroAnimation() {
     
     // Function to handle Enter key press for skipping
     function handleKeyPress(event) {
-        if (event.key === 'Enter') {
+        if (event.key === '~') {
             // Skip the animation and show the main content
             document.removeEventListener('keydown', handleKeyPress);
             endIntroAnimation();
