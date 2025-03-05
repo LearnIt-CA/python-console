@@ -304,6 +304,7 @@ const authorizedUsers = [
   "sean",
   "ethan",
   "dhiraj",
+  "agent 0",
   "Da Silva Cynthia",
   "Aguirre JR",
   "Dayaday Mariamne",
@@ -363,6 +364,9 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
     } else if (username.toLowerCase().replace(/\s+/g, "") === "dhiraj" || 
               username.toLowerCase().replace(/\s+/g, "").includes("dhiraj")) {
       lastname = "dhiraj";
+    } else if (username.toLowerCase().replace(/\s+/g, "") === "agent 0" || 
+              username.toLowerCase().replace(/\s+/g, "").includes("agent 0")) {
+      lastname = "0";
     } else {
       // For new users, extract the last name (first word in the full name)
       for (const user of authorizedUsers) {
