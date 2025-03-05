@@ -486,7 +486,7 @@ document.addEventListener("DOMContentLoaded", function() {
     addConsoleLog("/clear - Clear console logs", "system");
     addConsoleLog("/showall - Show all code sections", "system");
     addConsoleLog("/hideall - Hide all code sections", "system");
-    addConsoleLog("/submit [code] - Submit your solution with verification code", "system");
+    addConsoleLog("/submit code - Submit your solution with verification code", "system");
     addConsoleLog("========================", "system");
   }
   
@@ -535,7 +535,7 @@ document.addEventListener("DOMContentLoaded", function() {
       
       // Check if a verification code was provided
       if (!verificationCode) {
-        addConsoleLog("Error: Missing verification code. Usage: /submit [code]", "error");
+        addConsoleLog("Error: Missing verification code. Usage: /submit code", "error");
         return;
       }
       
@@ -565,7 +565,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Redirect to the appropriate page based on verification code
         setTimeout(() => {
           if (verificationCode === "1qaz") {
-            window.location.href = "part2.html";
+            window.location.href = "part2n.html";
           }
         }, 3000);
       }, 3000);

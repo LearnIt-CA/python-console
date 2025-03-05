@@ -379,7 +379,7 @@ body {
 }
 
 .decrypt-button {
-    background-color: var(--error);
+    background-color: var(--secondary);
     border: none;
     color: white;
     padding: 8px 15px;

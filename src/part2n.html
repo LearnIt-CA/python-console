@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Python Mission - Part 2 - Operation Phantom Chase</title>
   <link rel="stylesheet" href="css/part2.css">
 </head>
+
 <body>
   <div id="intro-animation" class="fullscreen-overlay">
     <div class="terminal-container">
@@ -21,197 +23,25 @@
 
   <canvas id="matrix-canvas"></canvas>
   <div class="binary-overlay" id="binary-overlay"></div>
-  
+
   <div class="mission-page">
     <div id="mission-container">
       <header class="header">
         <h1 class="mission-title">Operation Phantom Chase</h1>
         <h2 class="mission-subtitle">Part 2</h2>
       </header>
-      
+
       <div class="mission-directive">
         <h3 class="directive-title">MISSION DIRECTIVE</h3>
-        <p class="terminal-text">Agent, your task is to analyze and modify the existing "Higher or Lower" game code we've intercepted from the Phantom.</p>
-        <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom  must not suspect our intervention.</p>
+        <p class="terminal-text">Agent, your task is to analyze and modify the existing "Higher or Lower" game code
+          we've intercepted from the Phantom.</p>
+        <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom must not suspect our
+          intervention.</p>
       </div>
-      
+
       <div class="code-samples">
-        <!-- Python Code Section -->
-        <div id="python-section" class="code-section">
-          <div class="code-header">
-            <h4 class="code-title">Python Skeleton Code</h4>
-            <button class="copy-btn" data-target="python-code">COPY CODE</button>
-          </div>
-          <pre class="code-block" id="python-code">
-from browser import document
-
-# -------------------------------
-# Higher or Lower Game P2
-# -------------------------------
-
-# Secion 1: Game data for a full 6 round
-# [Task 1 Completed]
-game_data = [
-    {"title1": "Russia", "value1": 1709, "title2": "China", "value2": 959, "hint": "M", "secret": "T", "question": "Land area (million km²)?"},
-    {"title1": "Coca-Cola.com", "value1": 15400000, "title2": "Pepsi.com", "value2": 369100, "hint": "3", "secret": "R", "question": "Monthly visitors?"},
-    {"title1": "MrBeast", "value1": 150000000, "title2": "PewDiePie", "value2": 111000000, "hint": "J", "secret": "U", "question": "Subscriber count?"},
-    {"title1": "Shroud", "value1": 60000, "title2": "Ninja", "value2": 30000, "hint": "1", "secret": "T", "question": "Twitch subscribers?"},
-    {"title1": "Google Workspace", "value1": 12, "title2": "Office 365", "value2": 15, "hint": "P", "secret": "H", "question": "Monthly fee (USD)?"},
-    {"title1": "Bitcoin", "value1": 96701, "title2": "Ethereum", "value2": 2784, "hint": "3", "secret": "!", "question": "Price (USD)?"}
-]
-
-# -------------------------------
-# Section 2: Global Variables
-# -------------------------------
-secret_message = ""
-current_round_index = 0
-results = []
-
-# -------------------------------
-# Section 3: UI Elements
-# -------------------------------
-option1_title = document["option1-title"]
-option1_value = document["option1-value"]
-option2_title = document["option2-title"]
-option2_value = document["option2-value"]
-message = document["message"]
-higher_btn = document["higher-btn"]
-lower_btn = document["lower-btn"]
-round_counter = document["round-counter"]
-next_btn = document["next-btn"]
-results_section = document["results-section"]
-secret_code_display = document["secret-code"]
-results_display = [
-    document["result-1"],
-    document["result-2"],
-    document["result-3"],
-    document["result-4"],
-    document["result-5"],
-    document["result-6"]
-]
-
-# -------------------------------
-# Section 4: Load the game round (initial UI setup)
-# -------------------------------
-def load_round():
-    global current_round_index
-
-    if current_round_index >= len(game_data):
-        show_results_summary()
-        return
-
-    current_round = game_data[current_round_index]
-    round_counter.text = f"Round {current_round_index + 1} of {len(game_data)}"
-
-    # [Task 2 Completed]
-    option1_title.text = current_round["title1"]
-    option1_value.text = str(current_round["value1"])
-    option2_title.text = current_round["title2"]
-    option2_value.text = "?"  # Hide actual value until guessed
-    show_message(current_round["question"])
-    
-    bind_buttons(current_round)
-
-# -------------------------------
-# Section 5: Process player's guess
-# -------------------------------
-def process_guess(current_round, guess):
-    global results
-
-    # [Task 3 Completed]
-    if current_round["value2"] > current_round["value1"]:
-      correct_answer = "higher"
-    else:
-      correct_answer = "lower"
-
-    # [Task 4 Completed]
-    if guess == correct_answer:
-        show_message("Correct!")
-        results.append("✅ Correct")
-    else:
-        show_message("Wrong!")
-        results.append("❌ Wrong")
-
-    option2_value.text = str(current_round["value2"])
-
-    unbind_buttons()
-    next_btn.classList.remove("hidden")
-
-# -------------------------------
-# Section 6: Helper functions - message, buttons
-# -------------------------------
-def show_message(text):
-    """Update the message display."""
-    message.text = text
-    message.classList.add("show")
-
-def unbind_buttons():
-    """Remove event bindings from answer buttons."""
-    higher_btn.unbind("click")
-    lower_btn.unbind("click")
-
-def bind_buttons(current_round):
-    """Bind answer buttons to process the guess."""
-    
-    def next_round(ev=None):
-        global current_round_index
-        next_btn.classList.add("hidden")
-        current_round_index += 1
-        load_round()
-
-    unbind_buttons()
-    higher_btn.bind("click", lambda ev: process_guess(current_round, "higher"))
-    lower_btn.bind("click", lambda ev: process_guess(current_round, "lower"))
-    next_btn.unbind("click")
-    next_btn.bind("click", next_round)
-
-# -------------------------------
-# Section 7: Update Predefined Results
-# -------------------------------
-def show_results_summary():
-    global secret_message
-    results_section.classList.remove("hidden")  # Show results section
-
-    # [Hacker Task 1]: Determine the number of loops required.
-    # Objective: Understand the iteration count of a for-loop.
-    # Hint 1: How many elements are in the results list?
-    # Hint 2: Still remember the function to get the number of elements in a list?
-    loop_count = len(results)
-
-    # In this for loop, we go through the result list in the UI 
-    # and update each result based on the user's correctness,
-    # so it displays their choice history.
-    for i in range(loop_count):
-      # [Hacker Task 2]: Retrieve the result of the current round in the UI element
-      # Objective: Understand how to access a list element using its index
-      # Hint 1: The UI display list variable is named results_display
-      # Hint 2: How do you access a value in a list?
-      current_result = "unknown"
-      # [Hacker Task 3]: Determine the current round number
-      # Objective: Understand how list indexing begins in Python
-      # Hint 1: In Python, list indexing does not begin at 1
-      # Hint 2: Use str() to convert int / float to a string
-      current_round = "unknown"
-      # Sets the current UI element to display the correct message.
-      current_result.textContent = "Square " + current_round + ": " + results[i]
-
-    for i in range(len(results)):
-      if results[i] == "✅ Correct":
-        # [Hacker Task 4]: Append the hint message
-        # Objective: Understand string manipulation
-        # Hint 1: Syntax to retrieve the ith hint: game_data[i]["hint"]
-        # Hint 2: How do you append a character to a string in a for-loop?
-        secret_message = "unknown"
-
-    secret_code_display.textContent = "🔑 Secret Code: " + secret_message
-
-# -------------------------------
-# Section 8: Start the Game
-# -------------------------------
-load_round()
-</pre>
-        </div>
         
+
         <!-- HTML Section -->
         <div id="html-section" class="code-section">
           <div class="code-header">
@@ -262,7 +92,7 @@ load_round()
 &lt;/div&gt;
 </pre>
         </div>
-        
+
         <!-- Example Log Structure Section -->
         <div id="css-section" class="code-section">
           <div class="code-header">
@@ -382,7 +212,182 @@ button:disabled { background: #7f8c8d; cursor: not-allowed; }
 }</pre>
         </div>
       </div>
-      
+      <!-- Python Code Section -->
+      <div id="python-section" class="code-section">
+        <div class="code-header">
+          <h4 class="code-title">Python Skeleton Code</h4>
+          <button class="copy-btn" data-target="python-code">COPY CODE</button>
+        </div>
+        <pre class="code-block" id="python-code">
+from browser import document
+
+# -------------------------------
+# Higher or Lower Game P2
+# -------------------------------
+
+# Secion 1: Game data for a full 6 round
+# [Task 1 Completed]
+game_data = [
+  {"title1": "Russia", "value1": 1709, "title2": "China", "value2": 959, "hint": "M", "secret": "T", "question": "Land area (million km²)?"},
+  {"title1": "Coca-Cola.com", "value1": 15400000, "title2": "Pepsi.com", "value2": 369100, "hint": "5", "secret": "R", "question": "Monthly visitors?"},
+  {"title1": "MrBeast", "value1": 150000000, "title2": "PewDiePie", "value2": 111000000, "hint": "N", "secret": "U", "question": "Subscriber count?"},
+  {"title1": "Shroud", "value1": 60000, "title2": "Ninja", "value2": 30000, "hint": "3", "secret": "T", "question": "Twitch subscribers?"},
+  {"title1": "Google Workspace", "value1": 12, "title2": "Office 365", "value2": 15, "hint": "B", "secret": "H", "question": "Monthly fee (USD)?"},
+  {"title1": "Bitcoin", "value1": 96701, "title2": "Ethereum", "value2": 2784, "hint": "1", "secret": "!", "question": "Price (USD)?"}
+]
+
+# -------------------------------
+# Section 2: Global Variables
+# -------------------------------
+secret_message = ""
+current_round_index = 0
+results = []
+
+# -------------------------------
+# Section 3: UI Elements
+# -------------------------------
+option1_title = document["option1-title"]
+option1_value = document["option1-value"]
+option2_title = document["option2-title"]
+option2_value = document["option2-value"]
+message = document["message"]
+higher_btn = document["higher-btn"]
+lower_btn = document["lower-btn"]
+round_counter = document["round-counter"]
+next_btn = document["next-btn"]
+results_section = document["results-section"]
+secret_code_display = document["secret-code"]
+results_display = [
+  document["result-1"],
+  document["result-2"],
+  document["result-3"],
+  document["result-4"],
+  document["result-5"],
+  document["result-6"]
+]
+
+# -------------------------------
+# Section 4: Load the game round (initial UI setup)
+# -------------------------------
+def load_round():
+  global current_round_index
+
+  if current_round_index >= len(game_data):
+      show_results_summary()
+      return
+
+  current_round = game_data[current_round_index]
+  round_counter.text = f"Round {current_round_index + 1} of {len(game_data)}"
+
+  # [Task 2 Completed]
+  option1_title.text = current_round["title1"]
+  option1_value.text = str(current_round["value1"])
+  option2_title.text = current_round["title2"]
+  option2_value.text = "?"  # Hide actual value until guessed
+  show_message(current_round["question"])
+  
+  bind_buttons(current_round)
+
+# -------------------------------
+# Section 5: Process player's guess
+# -------------------------------
+def process_guess(current_round, guess):
+  global results
+
+  # [Task 3 Completed]
+  if current_round["value2"] > current_round["value1"]:
+    correct_answer = "higher"
+  else:
+    correct_answer = "lower"
+
+  # [Task 4 Completed]
+  if guess == correct_answer:
+      show_message("Correct!")
+      results.append("✅ Correct")
+  else:
+      show_message("Wrong!")
+      results.append("❌ Wrong")
+
+  option2_value.text = str(current_round["value2"])
+
+  unbind_buttons()
+  next_btn.classList.remove("hidden")
+
+# -------------------------------
+# Section 6: Helper functions - message, buttons
+# -------------------------------
+def show_message(text):
+  """Update the message display."""
+  message.text = text
+  message.classList.add("show")
+
+def unbind_buttons():
+  """Remove event bindings from answer buttons."""
+  higher_btn.unbind("click")
+  lower_btn.unbind("click")
+
+def bind_buttons(current_round):
+  """Bind answer buttons to process the guess."""
+  
+  def next_round(ev=None):
+      global current_round_index
+      next_btn.classList.add("hidden")
+      current_round_index += 1
+      load_round()
+
+  unbind_buttons()
+  higher_btn.bind("click", lambda ev: process_guess(current_round, "higher"))
+  lower_btn.bind("click", lambda ev: process_guess(current_round, "lower"))
+  next_btn.unbind("click")
+  next_btn.bind("click", next_round)
+
+# -------------------------------
+# Section 7: Update Predefined Results
+# -------------------------------
+def show_results_summary():
+  global secret_message
+  results_section.classList.remove("hidden")  # Show results section
+
+  # [Hacker Task 1]: Determine the number of loops required.
+  # Objective: Understand the iteration count of a for-loop.
+  # Hint 1: How many elements are in the results list?
+  # Hint 2: Still remember the function to get the number of elements in a list?
+  loop_count = len(results)
+
+  # In this for loop, we go through the result list in the UI 
+  # and update each result based on the user's correctness,
+  # so it displays their choice history.
+  for i in range(loop_count):
+    # [Hacker Task 2]: Retrieve the result of the current round in the UI element
+    # Objective: Understand how to access a list element using its index
+    # Hint 1: The UI display list variable is named results_display
+    # Hint 2: How do you access a value in a list?
+    current_result = "unknown"
+    # [Hacker Task 3]: Determine the current round number
+    # Objective: Understand how list indexing begins in Python
+    # Hint 1: In Python, list indexing does not begin at 1
+    # Hint 2: Use str() to convert int / float to a string
+    current_round = "unknown"
+    # Sets the current UI element to display the correct message.
+    current_result.textContent = "Round " + current_round + ": " + results[i]
+
+  for i in range(len(results)):
+    if results[i] == "✅ Correct":
+      # [Hacker Task 4]: Append the hint message
+      # Objective: Understand string manipulation
+      # Hint 1: Syntax to retrieve the ith hint: game_data[i]["hint"]
+      # Hint 2: How do you append a character to a string in a for-loop?
+      secret_message = "unknown"
+
+  secret_code_display.textContent = "🔑 Secret Code: " + secret_message
+
+# -------------------------------
+# Section 8: Start the Game
+# -------------------------------
+load_round()
+</pre>
+      </div>
+
       <!-- Secure Environment Section -->
       <div class="secure-environment">
         <h3 class="environment-header">SECURE CODING ENVIRONMENT</h3>
@@ -392,7 +397,7 @@ button:disabled { background: #7f8c8d; cursor: not-allowed; }
           OPEN SECURE PYTHON ENVIRONMENT
         </a>
       </div>
-      
+
       <!-- Task List Section -->
       <div class="task-panel">
         <h3 class="directive-title">YOUR TASK</h3>
@@ -403,18 +408,18 @@ button:disabled { background: #7f8c8d; cursor: not-allowed; }
           <li>Submit your solution when completed</li>
         </ul>
       </div>
-      
+
       <!-- Implementation Hints Section removed as requested -->
-      
+
       <div class="mission-status">
         <span class="status-label">MISSION STATUS:</span>
         <span class="status-value">IN PROGRESS</span>
       </div>
-      
+
       <!-- Submit button removed as requested -->
     </div>
   </div>
-  
+
   <!-- Command Console -->
   <div class="command-console">
     <div class="console-input-area">
@@ -425,8 +430,9 @@ button:disabled { background: #7f8c8d; cursor: not-allowed; }
       <!-- Console logs will be added here by JS -->
     </div>
   </div>
-  
+
   <!-- Include part2 script with animation -->
   <script src="js/part2.js"></script>
 </body>
+
 </html>

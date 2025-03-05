@@ -57,8 +57,8 @@
 
 .copy-btn {
   background-color: transparent;
-  border: 1px solid var(--primary);
-  color: var(--primary);
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
   padding: 5px 10px;
   font-size: 0.8rem;
   cursor: pointer;
@@ -66,11 +66,11 @@
 }
 
 .copy-btn:hover {
-  background-color: rgba(0, 255, 65, 0.2);
+  background-color: rgba(255, 189, 89, 0.3);
 }
 
 .copy-btn.copied {
-  background-color: var(--primary);
+  background-color: var(--secondary);
   color: #000;
 }
 

@@ -305,30 +305,31 @@ const authorizedUsers = [
   "ethan",
   "dhiraj",
   "agent 0",
-  "Da Silva Cynthia",
-  "Aguirre JR",
-  "Dayaday Mariamne",
-  "Hussain Mona",
-  "Napoles Kirsten",
-  "Danas JP",
-  "Medrano Jasher",
-  "Nodado Ian",
-  "Facinabao Cyneth",
-  "Valencia Angelo",
-  "Florenosos Jian",
-  "Grajo Vincent",
-  "Ortoli Sabrina",
-  "Costa Raquel",
-  "Galam Jazlene",
-  "Duah Emmanuela",
-  "Jacinto Audrey",
-  "Angob Joanna",
-  "Manuel Anthony",
-  "Stefanishin Tim",
-  "Duchon Nicholas",
-  "Mesfun Sina",
-  "Viera Jake",
-  "Escourse Maryrose"
+  "Bucco, Deanna",
+  "Da Silva, Cynthia",
+  "Aguirre, JR",
+  "Dayaday, Mariamne",
+  "Hussain, Mona",
+  "Napoles, Kirsten",
+  "Danas, JP",
+  "Medrano, Jasher",
+  "Nodado, Ian",
+  "Facinabao, Cyneth",
+  "Valencia, Angelo",
+  "Florenosos, Jian",
+  "Grajo, Vincent",
+  "Ortoli, Sabrina",
+  "Costa, Raquel",
+  "Galam, Jazlene",
+  "Duah, Emmanuela",
+  "Jacinto, Audrey",
+  "Angob, Joanna",
+  "Manuel, Anthony",
+  "Stefanishin, Tim",
+  "Duchon, Nicholas",
+  "Mesfun, Sina",
+  "Viera, Jake",
+  "Escourse, Maryrose"
 ];
 
 // Authentication form submission
@@ -352,7 +353,10 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
 
   if (isAuthorized) {
     // Determine which name matched and extract last name
+    let parts = "";
     let lastname = "";
+    let firstname = "";
+    let fullname = "";
     
     // Special case for original users (sean, ethan, dhiraj)
     if (username.toLowerCase().replace(/\s+/g, "") === "sean" || 
@@ -373,7 +377,10 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
         if (username.toLowerCase().replace(/\s+/g, "") === user.toLowerCase().replace(/\s+/g, "") || 
             username.toLowerCase().replace(/\s+/g, "").includes(user.toLowerCase().replace(/\s+/g, ""))) {
           // Get the first part as last name
-          lastname = user.split(" ")[1];
+          parts = user.split(",");
+          lastname = parts[0].trim();
+          firstname = parts[1].trim();
+          fullname = `${firstname} ${lastname}`;
           break;
         }
       }
@@ -381,7 +388,7 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
     
     // Store the last name in localStorage
     localStorage.setItem('agentName', lastname);
-    localStorage.setItem('agentFullName', username);
+    localStorage.setItem('agentFullName', fullname);
     
     messageElement.textContent =
       "Authentication successful. Initializing secure connection...";

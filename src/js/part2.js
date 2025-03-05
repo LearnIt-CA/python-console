@@ -525,14 +525,14 @@ document.addEventListener("DOMContentLoaded", function() {
   function showHelp() {
     addConsoleLog(`=== COMMANDS FOR AGENT ${agentName.toUpperCase()} ===`, "system");
     addConsoleLog("/help - Show this help message", "system");
-    addConsoleLog("/python - Toggle Python skeleton code", "system");
-    addConsoleLog("/css - Toggle css code", "system");
     addConsoleLog("/html - Toggle html code", "system");
+    addConsoleLog("/css - Toggle css code", "system");
+    addConsoleLog("/python - Toggle Python skeleton code", "system");
     addConsoleLog("/clear - Clear console logs", "system");
     addConsoleLog("/showall - Show all sections", "system");
     addConsoleLog("/hideall - Hide all sections", "system");
-    addConsoleLog("/secret - ???", "system");
-    addConsoleLog("/submit [code] - Submit your solution with verification code", "system");
+    addConsoleLog("/secret - Ordinary information??", "system");
+    addConsoleLog("/submit code - Submit your solution with verification code", "system");
     addConsoleLog("========================", "system");
   }
   
@@ -564,7 +564,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       addConsoleLog("Console cleared.", "system");
     } else if (baseCommand === "/secret") {
-      addConsoleLog("Ryan's message", "system");
+      addConsoleLog('Message from Ryan: Hey agent, in your Hacker Task 4, try retrieving ["secret"] instead of ["hint"] to uncover the truth, if you dare.', "system");
     } else if (baseCommand === "/showall") {
       toggleCodeSection("python");
       toggleCodeSection("html");
@@ -580,7 +580,7 @@ document.addEventListener("DOMContentLoaded", function() {
       
       // Check if a verification code was provided
       if (!verificationCode) {
-        addConsoleLog("Error: Missing verification code. Usage: /submit [code]", "error");
+        addConsoleLog("Error: Missing verification code. Usage: /submit code", "error");
         return;
       }
       
