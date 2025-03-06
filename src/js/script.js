@@ -304,6 +304,8 @@ const authorizedUsers = [
   "sean",
   "ethan",
   "dhiraj",
+  "ryan",
+  "aishwarya",
   "agent 0",
   "Bucco, Deanna",
   "Da Silva, Cynthia",
@@ -368,6 +370,12 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
     } else if (username.toLowerCase().replace(/\s+/g, "") === "dhiraj" || 
               username.toLowerCase().replace(/\s+/g, "").includes("dhiraj")) {
       lastname = "dhiraj";
+    } else if (username.toLowerCase().replace(/\s+/g, "") === "ryan" || 
+              username.toLowerCase().replace(/\s+/g, "").includes("ryan")) {
+      lastname = "ryan";
+    } else if (username.toLowerCase().replace(/\s+/g, "") === "aishwarya" || 
+              username.toLowerCase().replace(/\s+/g, "").includes("aishwarya")) {
+      lastname = "aishwarya";
     } else if (username.toLowerCase().replace(/\s+/g, "") === "agent 0" || 
               username.toLowerCase().replace(/\s+/g, "").includes("agent 0")) {
       lastname = "0";
