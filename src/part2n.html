@@ -361,7 +361,8 @@ def show_results_summary():
     # [Hacker Task 2]: Retrieve the result of the current round in the UI element
     # Objective: Understand how to access a list element using its index
     # Hint 1: The UI display list variable is named results_display
-    # Hint 2: How do you access a value in a list?
+    # Hint 2: The results list maps directly to the result_display list one-to-one.
+    # Hint 3: How do you access a value in a list?
     current_result = "unknown"
     # [Hacker Task 3]: Determine the current round number
     # Objective: Understand how list indexing begins in Python
@@ -373,7 +374,7 @@ def show_results_summary():
 
   for i in range(len(results)):
     if results[i] == "✅ Correct":
-      # [Hacker Task 4]: Append the hint message
+      # [Hacker Task 4]: Append the hint character
       # Objective: Understand string manipulation
       # Hint 1: Syntax to retrieve the ith hint: game_data[i]["hint"]
       # Hint 2: How do you append a character to a string in a for-loop?

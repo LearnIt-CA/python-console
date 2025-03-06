@@ -444,7 +444,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             // In a real app, you might use the Instagram API or a similar approach
             // For this simulation, we'll just open a new window/tab to Instagram
-            window.open('https://www.instagram.com', '_blank');
+            window.open('https://www.instagram.com/learnit.ed/', '_blank');
             
             // Remove the modal
             document.body.removeChild(alertModal);
