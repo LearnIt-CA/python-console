@@ -325,7 +325,7 @@ const authorizedUsers = [
   "Jacinto, Audrey",
   "Angob, Joanna",
   "Manuel, Anthony",
-  "Stefanishin, Tim",
+  "Bellissimo, Amadeo Rocco",
   "Duchon, Nicholas",
   "Mesfun, Sina",
   "Viera, Jake",

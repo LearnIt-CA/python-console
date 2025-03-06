@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const verifyBtn = document.getElementById('verify-password-btn');
   const passwordError = document.getElementById('password-error');
   const beginMissionBtn = document.getElementById('begin-mission-btn');
-  const correctPassword = "123"; // Set the password to "123" as requested
+  const correctPassword = "8068";
   
   // Add verify button click handler
   verifyBtn.addEventListener('click', function() {
