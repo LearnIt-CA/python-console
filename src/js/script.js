@@ -65,143 +65,143 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-// Function to handle enter key press for skipping or continuing
-function handleKeyPress(event) {
-  if (event.key === 'Enter') {
-    if (isComplete) {
-      createGridTransition();
+  // Function to handle enter key press for skipping or continuing
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      if (isComplete) {
+        createGridTransition();
+      }
     }
   }
-}
   
   // Add event listener for key press
   document.addEventListener('keydown', handleKeyPress);
   
   // Create grid transition effect
-function createGridTransition() {
-  // Remove keyboard event listener
-  document.removeEventListener('keydown', handleKeyPress);
-  
-  // First apply a glitch effect to the terminal
-  terminalContainer.classList.add('terminal-glitch');
-  
-  setTimeout(() => {
-    // Get the actual position and dimensions of the terminal container
-    const terminalRect = terminalContainer.getBoundingClientRect();
-    const gridSize = 10; // More grid items for a more detailed effect
-    const width = terminalRect.width;
-    const height = terminalRect.height;
-    const itemWidth = width / gridSize;
-    const itemHeight = height / gridSize;
+  function createGridTransition() {
+    // Remove keyboard event listener
+    document.removeEventListener('keydown', handleKeyPress);
     
-    // Clone the terminal content for the grid effect
-    const terminalClone = terminalContent.cloneNode(true);
+    // First apply a glitch effect to the terminal
+    terminalContainer.classList.add('terminal-glitch');
     
-    // Hide original terminal content
-    terminalContent.style.visibility = 'hidden';
-    document.querySelector('.cursor-line').style.visibility = 'hidden';
-    
-    // Create grid items
-    const gridItems = [];
-    for (let i = 0; i < gridSize; i++) {
-      for (let j = 0; j < gridSize; j++) {
-        const item = document.createElement('div');
-        item.className = 'grid-item';
-        item.style.width = `${itemWidth}px`;
-        item.style.height = `${itemHeight}px`;
-        
-        // Use absolute positioning relative to the terminal container
-        item.style.position = 'absolute';
-        item.style.left = `${j * itemWidth}px`;
-        item.style.top = `${i * itemHeight}px`;
-        item.style.borderLeft = i % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
-        item.style.borderTop = j % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
-        
-        // Calculate delay based on pattern
-        const patternDelay = ((i+j) % 4) * 0.1;
-        
-        // Add item content from original terminal (cropped view)
-        item.style.overflow = 'hidden';
-        const inner = terminalClone.cloneNode(true);
-        inner.style.position = 'absolute';
-        inner.style.top = `-${i * itemHeight}px`;
-        inner.style.left = `-${j * itemWidth}px`;
-        inner.style.width = `${width}px`;
-        inner.style.visibility = 'visible';
-        item.appendChild(inner);
-        
-        // Apply animation with delay
-        setTimeout(() => {
-          item.style.animation = `shatter 0.6s cubic-bezier(0.36, 0.11, 0.89, 0.32) forwards`;
-        }, patternDelay * 1000);
-        
-        terminalContainer.appendChild(item);
-        gridItems.push(item);
-      }
-    }
-    
-    // Add system alerts during transition
-    const alertMessages = [
-      "SYSTEM BREACH DETECTED",
-      "FIREWALL BYPASSED",
-      "ENCRYPTION KEYS COMPROMISED",
-      "INITIATING CORE DUMP",
-      "REROUTING CONNECTION",
-      "BACKDOOR ACTIVATED"
-    ];
-    
-    // Display alerts randomly during transition
-    let alertCount = 0;
-    const alertInterval = setInterval(() => {
-      if (alertCount >= 3) {
-        clearInterval(alertInterval);
-        return;
-      }
-      
-      const randomAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-      const alertElem = document.createElement('div');
-      alertElem.className = 'system-alert';
-      alertElem.textContent = randomAlert;
-      alertElem.style.position = 'absolute';
-      alertElem.style.top = `${20 + alertCount * 30}px`;
-      alertElem.style.left = '50%';
-      alertElem.style.transform = 'translateX(-50%)';
-      alertElem.style.zIndex = '10';
-      
-      terminalContainer.appendChild(alertElem);
-      alertCount++;
-    }, 200);
-    
-    // Fade out the entire overlay after transition
     setTimeout(() => {
-      introAnimation.style.transition = 'opacity 0.5s ease-out';
-      introAnimation.style.opacity = '0';
+      // Get the actual position and dimensions of the terminal container
+      const terminalRect = terminalContainer.getBoundingClientRect();
+      const gridSize = 10; // More grid items for a more detailed effect
+      const width = terminalRect.width;
+      const height = terminalRect.height;
+      const itemWidth = width / gridSize;
+      const itemHeight = height / gridSize;
       
-      // Remove the intro animation from DOM after fade out
+      // Clone the terminal content for the grid effect
+      const terminalClone = terminalContent.cloneNode(true);
+      
+      // Hide original terminal content
+      terminalContent.style.visibility = 'hidden';
+      document.querySelector('.cursor-line').style.visibility = 'hidden';
+      
+      // Create grid items
+      const gridItems = [];
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          const item = document.createElement('div');
+          item.className = 'grid-item';
+          item.style.width = `${itemWidth}px`;
+          item.style.height = `${itemHeight}px`;
+          
+          // Use absolute positioning relative to the terminal container
+          item.style.position = 'absolute';
+          item.style.left = `${j * itemWidth}px`;
+          item.style.top = `${i * itemHeight}px`;
+          item.style.borderLeft = i % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+          item.style.borderTop = j % 2 === 0 ? '1px solid rgba(0, 255, 65, 0.3)' : 'none';
+          
+          // Calculate delay based on pattern
+          const patternDelay = ((i+j) % 4) * 0.1;
+          
+          // Add item content from original terminal (cropped view)
+          item.style.overflow = 'hidden';
+          const inner = terminalClone.cloneNode(true);
+          inner.style.position = 'absolute';
+          inner.style.top = `-${i * itemHeight}px`;
+          inner.style.left = `-${j * itemWidth}px`;
+          inner.style.width = `${width}px`;
+          inner.style.visibility = 'visible';
+          item.appendChild(inner);
+          
+          // Apply animation with delay
+          setTimeout(() => {
+            item.style.animation = `shatter 0.6s cubic-bezier(0.36, 0.11, 0.89, 0.32) forwards`;
+          }, patternDelay * 1000);
+          
+          terminalContainer.appendChild(item);
+          gridItems.push(item);
+        }
+      }
+      
+      // Add system alerts during transition
+      const alertMessages = [
+        "SYSTEM BREACH DETECTED",
+        "FIREWALL BYPASSED",
+        "ENCRYPTION KEYS COMPROMISED",
+        "INITIATING CORE DUMP",
+        "REROUTING CONNECTION",
+        "BACKDOOR ACTIVATED"
+      ];
+      
+      // Display alerts randomly during transition
+      let alertCount = 0;
+      const alertInterval = setInterval(() => {
+        if (alertCount >= 3) {
+          clearInterval(alertInterval);
+          return;
+        }
+        
+        const randomAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+        const alertElem = document.createElement('div');
+        alertElem.className = 'system-alert';
+        alertElem.textContent = randomAlert;
+        alertElem.style.position = 'absolute';
+        alertElem.style.top = `${20 + alertCount * 30}px`;
+        alertElem.style.left = '50%';
+        alertElem.style.transform = 'translateX(-50%)';
+        alertElem.style.zIndex = '10';
+        
+        terminalContainer.appendChild(alertElem);
+        alertCount++;
+      }, 200);
+      
+      // Fade out the entire overlay after transition
       setTimeout(() => {
-        introAnimation.style.display = 'none';
-        // Your existing login screen should now be visible
-      }, 500);
-    }, 1500);
-  }, 600);
-}
-  
-// Function to display all messages in sequence
-async function displayMessages() {
-  for (let i = 0; i < introMessages.length; i++) {
-    currentMessageIndex = i;
-    await typeMessage(introMessages[i], i);
+        introAnimation.style.transition = 'opacity 0.5s ease-out';
+        introAnimation.style.opacity = '0';
+        
+        // Remove the intro animation from DOM after fade out
+        setTimeout(() => {
+          introAnimation.style.display = 'none';
+          // Your existing login screen should now be visible
+        }, 500);
+      }, 1500);
+    }, 600);
   }
   
-  // Instead of immediately calling createGridTransition, just set isComplete
-  isComplete = true;
-  
-  // Add a prompt to press Enter
-  const promptLine = document.createElement('div');
-  promptLine.className = 'terminal-line prompt-line';
-  promptLine.innerHTML = "<span class='blink'>Press Enter to continue...</span>";
-  terminalContent.appendChild(promptLine);
-}
+  // Function to display all messages in sequence
+  async function displayMessages() {
+    for (let i = 0; i < introMessages.length; i++) {
+      currentMessageIndex = i;
+      await typeMessage(introMessages[i], i);
+    }
+    
+    // Instead of immediately calling createGridTransition, just set isComplete
+    isComplete = true;
+    
+    // Add a prompt to press Enter
+    const promptLine = document.createElement('div');
+    promptLine.className = 'terminal-line prompt-line';
+    promptLine.innerHTML = "<span class='blink'>Press Enter to continue...</span>";
+    terminalContent.appendChild(promptLine);
+  }
   
   // Start the intro animation
   setTimeout(displayMessages, 500);
@@ -307,40 +307,40 @@ const authorizedUsers = [
   "ryan",
   "aishwarya",
   "agent 0",
-  "Bucco, Deanna",
-  "Da Silva, Cynthia",
-  "Aguirre, JR",
-  "Dayaday, Mariamne",
-  "Hussain, Mona",
-  "Napoles, Kirsten",
-  "Danas, JP",
-  "Medrano, Jasher",
-  "Nodado, Ian",
-  "Facinabao, Cyneth",
-  "Valencia, Angelo",
-  "Florenosos, Jian",
-  "Grajo, Vincent",
-  "Ortoli, Sabrina",
-  "Costa, Raquel",
-  "Galam, Jazlene",
-  "Duah, Emmanuela",
-  "Jacinto, Audrey",
-  "Angob, Joanna",
-  "Manuel, Anthony",
-  "Bellissimo, Amadeo Rocco",
-  "Duchon, Nicholas",
-  "Mesfun, Sina",
-  "Viera, Jake",
-  "Escourse, Maryrose"
+  "Arraial Cabral, Afonso",
+  "Blankson, Sean",
+  "Glover, Jordan",
+  "Ikram, Yahya",
+  "Marenger, Ethan",
+  "Panaccione, Nathan",
+  "Salami, Hassan",
+  "Chan, Kris",
+  "Awan, Khalil",
+  "Korjus, Oliver",
+  "Esunu, Othniel",
+  "Mirian, Valentyna",
+  "Zagorodski, Theo",
+  "Aba, Sean",
+  "Alnakhal, Omar",
+  "Amaral, Seth",
+  "Anduse, Mesih",
+  "Dinnes, Nathan",
+  "Genc, Beyazit",
+  "Gezahegn, Lael",
+  "Ibekwe, Daniel",
+  "Mendis, Antonio",
+  "Mutraji, Abdullah",
+  "Ngo, Ethan",
+  "Ruth, Travis",
+  "To, Aiden",
+  "Vong, Daniel"
 ];
 
-// Authentication form submission
-document.getElementById("auth-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-
+// Authentication button click handler 
+document.getElementById("auth-button").addEventListener("click", function () {
   const username = document.getElementById("username").value.trim();
   const messageElement = document.getElementById("message");
-  const authButton = document.querySelector(".form-button");
+  const authButton = this;
   
   // Disable the authentication button immediately
   authButton.disabled = true;
@@ -446,6 +446,13 @@ document.getElementById("auth-form").addEventListener("submit", function (e) {
   }
 });
 
+// 添加回车键支持
+document.getElementById("username").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    document.getElementById("auth-button").click();
+  }
+});
+
 // Continue button action - not needed anymore but keeping for reference
 document.getElementById("continue-btn").addEventListener("click", function () {
   window.location.href = "briefing.html";
@@ -478,6 +485,7 @@ function typeNextLine() {
 
 // Start typing effect
 setTimeout(typeNextLine, 1000);
+
 // Additional CSS injection for console height and layout changes
 document.addEventListener("DOMContentLoaded", function() {
   // Create style element

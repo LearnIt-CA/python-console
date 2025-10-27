@@ -1,280 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Mission - Part 1 - Operation Phantom Chase</title>
-    <link rel="stylesheet" href="css/part1.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Mission - Operation Phantom Chase</title>
+  <link rel="stylesheet" href="css/part1.css">
+  <script src="js/part1.js" defer></script>
 </head>
-<body>
-    <!-- Added intro animation overlay from index page -->
-    <div id="intro-animation" class="fullscreen-overlay">
-        <div class="terminal-container">
-            <div id="terminal-content">
-                <!-- Terminal content will be populated by JS -->
-            </div>
-            <div class="cursor-line">
-                <span class="terminal-prompt">></span>
-                <span class="terminal-cursor">_</span>
-            </div>
+<body class="mission-page">
+  <canvas id="matrix-canvas"></canvas>
+  <div id="binary-overlay"></div>
+
+  <div class="fullscreen-overlay" id="intro-animation">
+    <div class="terminal-container">
+      <div id="terminal-content"></div>
+      <div class="computational-overlay"></div>
+      <div class="cursor-line">
+        <span class="terminal-prompt">&gt;</span>
+        <span class="terminal-cursor">_</span>
+      </div>
+    </div>
+  </div>
+
+  <main id="mission-container">
+    <h1 class="mission-title">Python Mission - Operation Phantom Chase</h1>
+    <h2 class="mission-subtitle">Secure Connection Established</h2>
+
+    <section class="mission-directive">
+      <h3 class="directive-title">Mission Directive</h3>
+      <p class="terminal-text">Agent, we've successfully locked down the Phantom's location, but there's one final obstacle.</p>
+      <p class="terminal-text">The Phantom has encrypted his system behind a firewall with a secret passcode. Your mission is to write a Python program that can decipher the firewall by brute-forcing every possible PIN.</p>
+      <p class="terminal-text">Intelligence suggests the firewall uses a multi-digit PIN. Once you master the approach, you will execute the official up-to-6-digit breach.</p>
+      <p class="terminal-text warning">Reminder: speed matters. The Phantom is preparing an escape route.</p>
+    </section>
+
+    <section class="algorithm-explanation">
+      <h3>Brute-Force Algorithm Overview</h3>
+      <div class="explanation-content">
+        <div class="logic-box">
+          <h4>Logic Plan</h4>
+          <ul>
+            <li>Initialize a counter for the total number of guesses.</li>
+            <li>Define the PIN length and compute the keyspace (all possible combinations).</li>
+            <li>Iterate through every candidate PIN one by one.
+              <ul>
+                <li>Increment the attempt counter.</li>
+                <li>Compare the current guess with the secret PIN.</li>
+                <li>Stop immediately when the correct PIN is found.</li>
+              </ul>
+            </li>
+            <li>Report the discovered PIN and total number of attempts.</li>
+          </ul>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <canvas id="matrix-canvas"></canvas>
-    <div id="binary-overlay" class="binary-overlay"></div>
-    
-    <div class="mission-page">
-        <div id="mission-container">
-            <div class="header">
-                <h1 class="mission-title">Operation Phantom Chase</h1>
-                <h2 class="mission-subtitle">Part 1</h2>
-            </div>
-            
-            <div class="mission-directive">
-                <h3 class="directive-title">MISSION DIRECTIVE</h3>
-                <p class="terminal-text">Agent, your task is to analyze and modify the existing "Higher or Lower" game code we've intercepted from the Phantom.</p>
-                <p class="terminal-text">REMEMBER: Do not modify the original functionality as Phantom  must not suspect our intervention.</p>
-            </div>
-            
-            <div class="code-samples">
-                <div id="html-section" class="code-section">
-                    <div class="code-header">
-                        <h3 class="code-title">HTML Structure</h3>
-                        <button class="copy-btn" data-target="html-code">COPY CODE</button>
-                    </div>
-                    <pre id="html-code" class="code-block">
-&lt;div class="game-container"&gt;
-    <!-- Options -->
-    &lt;div class="option left"&gt;
-        &lt;h2 id="option1-title"&gt;Option 1&lt;/h2&gt;
-        &lt;div class="value" id="option1-value"&gt;?&lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;div class="vs-badge"&gt;VS&lt;/div&gt;
-
-    &lt;div class="option right"&gt;
-        &lt;h2 id="option2-title"&gt;Option 2&lt;/h2&gt;
-        &lt;div class="value" id="option2-value"&gt;?&lt;/div&gt;
-        &lt;div class="buttons"&gt;
-            &lt;button id="higher-btn"&gt;Higher&lt;/button&gt;
-            &lt;button id="lower-btn"&gt;Lower&lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-
-    <!-- Message & Result Display -->
-    &lt;div id="message"&gt;&lt;/div&gt;
-    &lt;div id="result-display" class="hidden"&gt;
-        &lt;p id="result-text"&gt;&lt;/p&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
-</pre>
-                </div>
-                
-                <div id="css-section" class="code-section">
-                    <div class="code-header">
-                        <h3 class="code-title">CSS Styling</h3>
-                        <button class="copy-btn" data-target="css-code">COPY CODE</button>
-                    </div>
-                    <pre id="css-code" class="code-block">
-body {
-    font-family: Arial, sans-serif;
-    background: #121212;
-    color: white;
-    text-align: center;
-    margin: 0;
-    padding: 20px;
-}
-
-.game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 600px;
-    margin: auto;
-    background: #1e1e1e;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-.option {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-    padding: 15px;
-    background: #2a2a2a;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border: 3px solid;
-}
-
-.left { border-color: #3498db; }
-.right { border-color: #e74c3c; }
-
-.value { font-size: 24px; font-weight: bold; }
-
-.vs-badge {
-    font-size: 24px;
-    background: #f39c12;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin: 10px 0;
-}
-
-button {
-    background: #27ae60;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 5px;
-    transition: 0.3s;
-}
-
-button:hover { background: #219150; transform: scale(1.05); }
-button:disabled { background: #7f8c8d; cursor: not-allowed; }
-
-.message { font-size: 18px; font-weight: bold; margin-top: 15px; }
-
-.hidden { display: none; }
-</pre>
-                </div>
-                
-                <div id="python-section" class="code-section">
-                    <div class="code-header">
-                        <h3 class="code-title">Python Code</h3>
-                        <button class="copy-btn" data-target="python-code">COPY CODE</button>
-                    </div>
-                    <pre id="python-code" class="code-block">
-from browser import document
-
-# -------------------------------
-# Higher or Lower Game P1
-# -------------------------------
-
-# Secion 1: Sample game data for a single round
-sample_data = {
-    "title1": "Russia",
-    "value1": 1709,
-    "title2": "China",
-    "value2": 959,
-    "question": "Land area (million km²)?"
-}
-
-
-# [Hacker Task 1]: Create new game data following the syntax of the sample data.
-# For the content, include anything interesting and suitable.
-# ! To simplify this activity, make sure NOT to use the same value for both options.
-# Objective: Understand the syntax of dictionaries.
-game_data = {}
-
-
-# -------------------------------
-# Section 2: UI Elements (for HTML)
-# -------------------------------
-option1_title = document["option1-title"]
-option1_value = document["option1-value"]
-option2_title = document["option2-title"]
-option2_value = document["option2-value"]
-message = document["message"]
-higher_btn = document["higher-btn"]
-lower_btn = document["lower-btn"]
-result_display = document["result-display"]
-result_text = document["result-text"]
-higher_btn.bind("click", lambda ev: process_guess("higher"))
-lower_btn.bind("click", lambda ev: process_guess("lower"))
-
-# -------------------------------
-# Section 3: Load the game round (initial UI setup)
-# -------------------------------
-def load_round():
-    # [Hacker Task 2]: Fix the title of the first option.
-    # Objective: Accessing dictionary data.
-    # Hint: Refer to other similar variables.
-    option1_title.text = "MISSING!!!"
-    option1_value.text = str(game_data["value1"])  # Show first value
-    option2_title.text = game_data["title2"] # Show second title
-    option2_value.text = "?"  # Hide second value until guessed
-    message.text = game_data["question"]  # Display the question
-    result_display.classList.add("hidden")  # Hide results initially
-
-# -------------------------------
-# Section 4: Disable buttons after a round
-# -------------------------------
-def unbind_buttons():
-    higher_btn.unbind("click")
-    lower_btn.unbind("click")
-
-# -------------------------------
-# Section 5: Process player's guess
-# -------------------------------
-def process_guess(guess):
-    # [Hacker Task 3]: Update the answer to this question and store it in correct_answer
-    # if value 2 > value 1, the correct_answer should be "higher"
-    # otherwise, the correct should be "lower"
-    # Objective: Practice if-else statement.
-    # Hint: How to get value 2 and value 1 from game_data?
-    correct_answer = "unknown"
-
-    # [Hacker Task 4]: Update the result based on the guess and store it in result_text.text
-    # if the player guesses correctly, set the result_text.text to ✅ string
-    # else, set the result_text.text to ❌ string
-    # Objective: Strengthen your understanding of the if-else statement.
-    # Hint 1: variable guess stores player's answer
-    # Hint 2: variable correct stores the question's answer
-    result_text.text = "unknown"
-    
-    # other steps
-    option2_value.text = str(game_data["value2"]) # Reveal the actual value
-    result_display.classList.remove("hidden") # Show the result display
-    unbind_buttons() # Disable further inputs
-
-# -------------------------------
-# Section 6: Call the main function and start the first round
-# -------------------------------
-load_round()</pre>
-                </div>
-            </div>
-            
-            <div class="secure-environment">
-                <h3 class="environment-header">SECURE CODING ENVIRONMENT</h3>
-                <p>Access our secure sandbox to test and modify the code:</p>
-                <a href="#" class="env-link">🔒 OPEN SECURE PYTHON ENVIRONMENT</a>
-            </div>
-            
-            <div class="task-panel">
-                <h3 class="directive-title">YOUR TASK</h3>
-                <ul class="task-list">
-                    <li>Study the provided code to understand how the game works</li>
-                    <li>Complete the missing function and ensure the app is fully functional.</li>
-                    <li>Test thoroughly to ensure no bugs or performance issues</li>
-                </ul>
-                
-                <div class="mission-status">
-                    <span class="status-label">MISSION STATUS:</span>
-                    <span class="status-value">IN PROGRESS</span>
-                </div>
-            </div>
-                    </div>
-    </div>
-    
-    <div class="command-console">
-        <div class="console-input-area">
-            <span class="console-prefix">&gt;</span>
-            <input type="text" id="console-input" class="console-input" placeholder="Enter command (type /help for commands)">
+    <section class="code-samples">
+      <div class="code-section" id="training-section">
+        <div class="code-header">
+          <h4 class="code-title">Python Code Template (Training)</h4>
+          <button class="copy-btn" data-target="training-code-block">COPY CODE</button>
         </div>
-        <div class="console-logs" id="console-logs">
-            
+        <pre class="code-block" id="training-code-block"># Pre-defined values
+# Pre-Defined
+SECRET = 789
+attempts = 0
+
+# Constants & Variables
+LENGTH = ?
+keyspace = ?
+print(f"Trying all {keyspace} combinations for a {LENGTH}-digit PIN...")
+
+# Algorithm
+for ?:
+    attempts = ?
+    if ?:
+        print(f"Found! PIN = {guess}")
+        print(f"Attempts: {attempts} / {keyspace}")
+        break</pre>
+      </div>
+
+      <div class="code-section" id="official-section">
+        <div class="code-header">
+          <h4 class="code-title">Python Code - Official Mission</h4>
+          <button class="copy-btn" data-target="official-code-block">COPY CODE</button>
         </div>
+        <pre class="code-block" id="official-code-block"># Library
+import time as time_lib
+import base64
+
+# Pre-defined values
+SEED = "MTAyODI1"
+SECRET = int(base64.b64decode(SEED).decode())
+start = time_lib.time()
+attempts = 0
+
+# Variables
+LENGTH = ?
+keyspace = ?
+print(f"Trying all {keyspace} combinations for a {LENGTH}-digit PIN...")
+
+# Algorithm
+for ?:
+    attempts ?
+    if ?:
+        elapsed = ?
+        print(f"Found! PIN = {guess}")
+        print(f"Attempts: {attempts} / {keyspace}")
+        print(f"Elapsed: {elapsed:.3f} s")
+        break</pre>
+      </div>
+    </section>
+
+    <section class="secure-environment">
+      <p class="environment-header">Need a safe place to test your Python solution?</p>
+      <a class="env-link" href="https://livecodes.io/" target="_blank" rel="noopener">
+        <span class="env-icon">🔒</span>OPEN SECURE PYTHON ENVIRONMENT
+      </a>
+    </section>
+
+    <section class="task-panel">
+      <h3 class="directive-title">Your Task List</h3>
+      <ul class="task-list">
+        <li>Study the brute-force logic flow.</li>
+        <li>Complete the training code template with the correct constants.</li>
+        <li>Confirm your code identifies the 3-digit training PIN.</li>
+        <li>Review the official mission script and understand each step.</li>
+        <li>Run the official program and validate the up-to-6-digit breach.</li>
+      </ul>
+      <div class="mission-status">
+        <span class="status-label">MISSION STATUS:</span>
+        <span class="status-value">IN PROGRESS</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="command-console">
+    <div class="console-input-area">
+      <span class="console-prefix">&gt;</span>
+      <input type="text" id="console-input" class="console-input" placeholder="Type /help to begin...">
     </div>
-    
-    <div class="logo-container">
-        <div class="learnit-logo">LearnIT</div>
-        <div class="connection-info">SECURE CONNECTION ESTABLISHED</div>
-    </div>
-    
-    <script src="js/part1.js"></script>
+    <div id="console-logs" class="console-logs"></div>
+  </div>
 </body>
 </html>

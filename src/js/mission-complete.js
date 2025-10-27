@@ -107,7 +107,7 @@ function createTargetingLines() {
 function runIntroAnimation() {
     // Messages about receiving password, decryption and shock
     const introMessages = [
-        "Good Job Agent ! We got their secret code .",
+        "Good Job Agent ! We've breached their firewall .",
         "Thanks for helping out with this one.",
         "Starting decryption...",
         "...",

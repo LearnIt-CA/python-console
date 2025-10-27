@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     "> Oh, look who's finally checking in!",
     "> I see you've found the hidden section",
     "> Did you really think you were tracking the RIGHT person this whole time?",
-    "> Poor Ms. Bucco must be wondering why she's being investigated.",
-    "> Yes, I planted everything on her. The logs, the communications, all of it.",
+    "> That fake phantom must be wondering why he's being investigated.",
+    "> Yes, I planted everything on him. The logs, the communications, all of it.",
     "> Your agency has been following the wrong lead all along.",
     "> And now that you're here... I have YOU, and your entire system."
   ];
